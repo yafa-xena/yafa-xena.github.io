@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>在Mac上安装Gentoo Linux - Yafa Xena&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Yafa Xena" /><meta name="description" content="缘起 我是一个非常贫苦刚刚步入社会的学生。
+今年毕业之后因为疫情的影响好不容易进了一家公司，但是日常的开销不足以让我更换掉现在的机器（只有单个核心的年迈机器。）。
+前些日子在和一位学姐的茶会上，聊起了工作的一些事情可能是听到了我的抱怨了吧哈哈哈，当时说要送我一台笔记本，当时还在想不会吧？这两天收到了发现是一台Macbook Pro 2015年的15寸版本，还有一个yubico。
+配置大概是这样子的
+   型号 CPU 内存 硬盘     Macbook Pro 2015 15inch I7 4770HQ 16G 2TB    在此之前一直都有想要试试看Gentoo的想法，但是奈何手上的笔记本只有可怜的单核2G内存，因为日常还需要使用的缘故结果自然也是不了了之。
+这次就有机会尝试一下了。
+环境准备 先来说明一下安装Gentoo的环境准备。
+我这里是准备了以下：
+ Macbook Pro * 1 （安装机器） Dell 老机器 * 1 （我将会在这个节点进行操作） U盘 * 1 （安装介质）  拓扑图如下：
+制作安装介质 之前一直有听说Gentoo安装比较麻烦，看了一些关于Gentoo安装的文档，我认为难点在于内核的配置上，其他应该问题不大（😂）。
+为了能够最大程度少去配置内核我这里选择了Ubuntu Desktop Livecd，将会以这个内核配置为基础进行自己的内核配置
+ 下载ISO文件
+ 1  wget -c https://mirrors.aliyun.com/ubuntu-releases/20.10/ubuntu-20.10-desktop-amd64.iso    制作USB启动盘
+ 将U盘插入这台老的Dell机器然后使用dd刻录安装介质" /><meta name="keywords" content="Linux, Emacs, Python, Golang, Devops, Zabbix" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.80.0 with theme even" />
+
+
+<link rel="canonical" href="https://yafa-xena.github.io/post/install-gentoo-on-mac/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.2e81bbed97b8b282c1aeb57488cc71c8d8c8ec559f3931531bd396bf31e0d4dd.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="在Mac上安装Gentoo Linux" />
+<meta property="og:description" content="缘起 我是一个非常贫苦刚刚步入社会的学生。
+今年毕业之后因为疫情的影响好不容易进了一家公司，但是日常的开销不足以让我更换掉现在的机器（只有单个核心的年迈机器。）。
+前些日子在和一位学姐的茶会上，聊起了工作的一些事情可能是听到了我的抱怨了吧哈哈哈，当时说要送我一台笔记本，当时还在想不会吧？这两天收到了发现是一台Macbook Pro 2015年的15寸版本，还有一个yubico。
+配置大概是这样子的
+   型号 CPU 内存 硬盘     Macbook Pro 2015 15inch I7 4770HQ 16G 2TB    在此之前一直都有想要试试看Gentoo的想法，但是奈何手上的笔记本只有可怜的单核2G内存，因为日常还需要使用的缘故结果自然也是不了了之。
+这次就有机会尝试一下了。
+环境准备 先来说明一下安装Gentoo的环境准备。
+我这里是准备了以下：
+ Macbook Pro * 1 （安装机器） Dell 老机器 * 1 （我将会在这个节点进行操作） U盘 * 1 （安装介质）  拓扑图如下：
+制作安装介质 之前一直有听说Gentoo安装比较麻烦，看了一些关于Gentoo安装的文档，我认为难点在于内核的配置上，其他应该问题不大（😂）。
+为了能够最大程度少去配置内核我这里选择了Ubuntu Desktop Livecd，将会以这个内核配置为基础进行自己的内核配置
+ 下载ISO文件
+ 1  wget -c https://mirrors.aliyun.com/ubuntu-releases/20.10/ubuntu-20.10-desktop-amd64.iso    制作USB启动盘
+ 将U盘插入这台老的Dell机器然后使用dd刻录安装介质" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yafa-xena.github.io/post/install-gentoo-on-mac/" />
+<meta property="article:published_time" content="2021-01-18T19:41:36-05:00" />
+<meta property="article:modified_time" content="2021-01-18T19:41:36-05:00" />
+<meta itemprop="name" content="在Mac上安装Gentoo Linux">
+<meta itemprop="description" content="缘起 我是一个非常贫苦刚刚步入社会的学生。
+今年毕业之后因为疫情的影响好不容易进了一家公司，但是日常的开销不足以让我更换掉现在的机器（只有单个核心的年迈机器。）。
+前些日子在和一位学姐的茶会上，聊起了工作的一些事情可能是听到了我的抱怨了吧哈哈哈，当时说要送我一台笔记本，当时还在想不会吧？这两天收到了发现是一台Macbook Pro 2015年的15寸版本，还有一个yubico。
+配置大概是这样子的
+   型号 CPU 内存 硬盘     Macbook Pro 2015 15inch I7 4770HQ 16G 2TB    在此之前一直都有想要试试看Gentoo的想法，但是奈何手上的笔记本只有可怜的单核2G内存，因为日常还需要使用的缘故结果自然也是不了了之。
+这次就有机会尝试一下了。
+环境准备 先来说明一下安装Gentoo的环境准备。
+我这里是准备了以下：
+ Macbook Pro * 1 （安装机器） Dell 老机器 * 1 （我将会在这个节点进行操作） U盘 * 1 （安装介质）  拓扑图如下：
+制作安装介质 之前一直有听说Gentoo安装比较麻烦，看了一些关于Gentoo安装的文档，我认为难点在于内核的配置上，其他应该问题不大（😂）。
+为了能够最大程度少去配置内核我这里选择了Ubuntu Desktop Livecd，将会以这个内核配置为基础进行自己的内核配置
+ 下载ISO文件
+ 1  wget -c https://mirrors.aliyun.com/ubuntu-releases/20.10/ubuntu-20.10-desktop-amd64.iso    制作USB启动盘
+ 将U盘插入这台老的Dell机器然后使用dd刻录安装介质">
+<meta itemprop="datePublished" content="2021-01-18T19:41:36-05:00" />
+<meta itemprop="dateModified" content="2021-01-18T19:41:36-05:00" />
+<meta itemprop="wordCount" content="123">
+
+
+
+<meta itemprop="keywords" content="Linux,Gentoo," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="在Mac上安装Gentoo Linux"/>
+<meta name="twitter:description" content="缘起 我是一个非常贫苦刚刚步入社会的学生。
+今年毕业之后因为疫情的影响好不容易进了一家公司，但是日常的开销不足以让我更换掉现在的机器（只有单个核心的年迈机器。）。
+前些日子在和一位学姐的茶会上，聊起了工作的一些事情可能是听到了我的抱怨了吧哈哈哈，当时说要送我一台笔记本，当时还在想不会吧？这两天收到了发现是一台Macbook Pro 2015年的15寸版本，还有一个yubico。
+配置大概是这样子的
+   型号 CPU 内存 硬盘     Macbook Pro 2015 15inch I7 4770HQ 16G 2TB    在此之前一直都有想要试试看Gentoo的想法，但是奈何手上的笔记本只有可怜的单核2G内存，因为日常还需要使用的缘故结果自然也是不了了之。
+这次就有机会尝试一下了。
+环境准备 先来说明一下安装Gentoo的环境准备。
+我这里是准备了以下：
+ Macbook Pro * 1 （安装机器） Dell 老机器 * 1 （我将会在这个节点进行操作） U盘 * 1 （安装介质）  拓扑图如下：
+制作安装介质 之前一直有听说Gentoo安装比较麻烦，看了一些关于Gentoo安装的文档，我认为难点在于内核的配置上，其他应该问题不大（😂）。
+为了能够最大程度少去配置内核我这里选择了Ubuntu Desktop Livecd，将会以这个内核配置为基础进行自己的内核配置
+ 下载ISO文件
+ 1  wget -c https://mirrors.aliyun.com/ubuntu-releases/20.10/ubuntu-20.10-desktop-amd64.iso    制作USB启动盘
+ 将U盘插入这台老的Dell机器然后使用dd刻录安装介质"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Yafa-Xena</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Yafa-Xena</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">在Mac上安装Gentoo Linux</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-01-18 </span>
+        
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#缘起">缘起</a></li>
+    <li><a href="#环境准备">环境准备</a>
+      <ul>
+        <li><a href="#制作安装介质">制作安装介质</a></li>
+        <li><a href="#启动安装介质">启动安装介质</a></li>
+        <li><a href="#配置ssh">配置SSH</a></li>
+        <li><a href="#连接到livecd">连接到livecd</a></li>
+      </ul>
+    </li>
+    <li><a href="#安装gentoo">安装Gentoo</a>
+      <ul>
+        <li><a href="#分区">分区</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="缘起">缘起</h2>
+<p>我是一个非常贫苦刚刚步入社会的学生。</p>
+<p>今年毕业之后因为疫情的影响好不容易进了一家公司，但是日常的开销不足以让我更换掉现在的机器（只有单个核心的年迈机器。）。</p>
+<p>前些日子在和一位学姐的茶会上，聊起了工作的一些事情可能是听到了我的抱怨了吧哈哈哈，当时说要送我一台笔记本，当时还在想不会吧？这两天收到了发现是一台Macbook Pro 2015年的15寸版本，还有一个yubico。</p>
+<p>配置大概是这样子的</p>
+<table>
+<thead>
+<tr>
+<th>型号</th>
+<th>CPU</th>
+<th>内存</th>
+<th>硬盘</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Macbook Pro 2015 15inch</td>
+<td>I7 4770HQ</td>
+<td>16G</td>
+<td>2TB</td>
+</tr>
+</tbody>
+</table>
+<p>在此之前一直都有想要试试看Gentoo的想法，但是奈何手上的笔记本只有可怜的单核2G内存，因为日常还需要使用的缘故结果自然也是不了了之。</p>
+<p>这次就有机会尝试一下了。</p>
+<h2 id="环境准备">环境准备</h2>
+<p>先来说明一下安装Gentoo的环境准备。</p>
+<p>我这里是准备了以下：</p>
+<ol>
+<li>Macbook Pro * 1 （安装机器）</li>
+<li>Dell 老机器 * 1 （我将会在这个节点进行操作）</li>
+<li>U盘 * 1 （安装介质）</li>
+</ol>
+<p>拓扑图如下：</p>
+<p><img src="../../images/network_arch.png" alt="Network_Arch"></p>
+<h3 id="制作安装介质">制作安装介质</h3>
+<p>之前一直有听说Gentoo安装比较麻烦，看了一些关于Gentoo安装的文档，我认为难点在于内核的配置上，其他应该问题不大（😂）。</p>
+<p>为了能够最大程度少去配置内核我这里选择了Ubuntu Desktop Livecd，将会以这个内核配置为基础进行自己的内核配置</p>
+<blockquote>
+<p>下载ISO文件</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">wget -c https://mirrors.aliyun.com/ubuntu-releases/20.10/ubuntu-20.10-desktop-amd64.iso
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>制作USB启动盘</p>
+</blockquote>
+<p>将U盘插入这台老的Dell机器然后使用<code>dd</code>刻录安装介质</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">sudo dd <span class="k">if</span><span class="o">=</span>ubuntu-20.10-desktop-amd64.iso <span class="nv">of</span><span class="o">=</span>/dev/sdb <span class="nv">bs</span><span class="o">=</span>20M <span class="nv">status</span><span class="o">=</span>progress
+</code></pre></td></tr></table>
+</div>
+</div><p>耐心等待程序执行完成。</p>
+<p>等到执行完成之后你就有了一个Ubuntu 20.10 Desktop的安装介质</p>
+<h3 id="启动安装介质">启动安装介质</h3>
+<p>将制作好的启动介质插到Macbook Pro上然后按住<code>Option</code>键再按开机，会出现一个EFI的选项，这个EFI选项就是我们的Ubuntu安装介质选择这个然后回车启动！</p>
+<p>接下来会出现一个Grub菜单，选择 <code>safe graphical</code> 这个选项回车。</p>
+<p><img src="../../images/grub.png" alt="Grub Menu"></p>
+<p>接下来会检测磁盘分区如果不喜欢可以选择 Ctrl+c 结束掉。
+<img src="../../images/check_disk.png" alt="Check Disk"></p>
+<p>最后来到Ubuntu的欢迎界面，这里选择 Try Ubuntu
+<img src="../../images/welcome_ubuntu.png" alt="Welcome Come Ubuntu"></p>
+<h3 id="配置ssh">配置SSH</h3>
+<p>首先右键桌面打开终端：</p>
+<p><img src="../../images/open_terminal.png" alt="Open Terminal"></p>
+<p>输入 <code>sudo -i</code> 提升为<code>root</code>用户</p>
+<p><img src="../../images/sudo.png" alt="sudo"></p>
+<blockquote>
+<p>配置密码</p>
+</blockquote>
+<p>为了能够正常连接到这个livdcd环境还需要给这个livecd配置一个密码</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">passwd ubuntu <span class="c1"># 输入密码没有回显，不是你没有输入</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="../../images/change_password.png" alt="Change Password"></p>
+<blockquote>
+<p>配置<code>openssh-server</code></p>
+</blockquote>
+<p>除此之外还需要配置<code>openssh-server</code>来让我的另外一台电脑可以通过ssh进行链接</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">apt-get update <span class="o">&amp;&amp;</span> apt-get install openssh-server -y <span class="o">&amp;&amp;</span> systemctl start sshd <span class="o">&amp;&amp;</span> systemctl status sshd
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="../../images/setup_openssh_server.png" alt="Setup Openssh Server">
+如上图所示可以看到<code>openssh-server</code>已经运行了，接下来我们需要验证一下是否可以正常链接。</p>
+<p>使用<code>ip</code>命令查看当前主机分配到的ip</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">ip addr show
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="../../images/show_ip.png" alt="Show IP"></p>
+<p>这里的<code>enp1s0</code>就是物理网卡<code>192.168.122.230</code>就是我们livecd获取到的地址我们可以通过这个ip来进行链接。</p>
+<h3 id="连接到livecd">连接到livecd</h3>
+<p>使用<code>ssh</code>命令来连接到livecd</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">ssh ubuntu@192.168.122.230
+</code></pre></td></tr></table>
+</div>
+</div><p>ubuntu用户就是我们设置过密码的管理员账户</p>
+<p>192.168.122.230就是livecd通过DHCP获取到的地址</p>
+<p><img src="../../images/connect_to_livecd.png" alt="Connect to livecd"></p>
+<h2 id="安装gentoo">安装Gentoo</h2>
+<p>在能够正常连接到livecd之后我们就可以开始安装Gentoo了</p>
+<h3 id="分区">分区</h3>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Yafa Xena</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-01-18
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/linux/">Linux</a>
+          <a href="/tags/gentoo/">Gentoo</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/my-first-posts/">
+            <span class="next-text nav-default">My First Posts</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="https://yafa-xena.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>Yafa Xena</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

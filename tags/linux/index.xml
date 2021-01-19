@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Yafa Xena&#39;s Blog</title>
-    <link>https://yafa-xena.github.io/</link>
-    <description>Recent content on Yafa Xena&#39;s Blog</description>
+    <title>Linux on Yafa Xena&#39;s Blog</title>
+    <link>https://yafa-xena.github.io/tags/linux/</link>
+    <description>Recent content in Linux on Yafa Xena&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 18 Jan 2021 19:41:36 -0500</lastBuildDate><atom:link href="https://yafa-xena.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 18 Jan 2021 19:41:36 -0500</lastBuildDate><atom:link href="https://yafa-xena.github.io/tags/linux/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>在Mac上安装Gentoo Linux</title>
       <link>https://yafa-xena.github.io/post/install-gentoo-on-mac/</link>
@@ -27,17 +27,6 @@
  下载ISO文件
  1  wget -c https://mirrors.aliyun.com/ubuntu-releases/20.10/ubuntu-20.10-desktop-amd64.iso    制作USB启动盘
  将U盘插入这台老的Dell机器然后使用dd刻录安装介质</description>
-    </item>
-    
-    <item>
-      <title>My First Posts</title>
-      <link>https://yafa-xena.github.io/post/my-first-posts/</link>
-      <pubDate>Mon, 18 Jan 2021 07:01:50 -0500</pubDate>
-      
-      <guid>https://yafa-xena.github.io/post/my-first-posts/</guid>
-      <description>Hello, World!
-I&amp;rsquo;m Yafa Xena. This is My First hugo posts.
-Welcome to my blog</description>
     </item>
     
   </channel>
