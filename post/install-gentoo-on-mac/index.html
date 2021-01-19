@@ -88,7 +88,7 @@
  将U盘插入这台老的Dell机器然后使用dd刻录安装介质">
 <meta itemprop="datePublished" content="2021-01-18T19:41:36-05:00" />
 <meta itemprop="dateModified" content="2021-01-18T19:41:36-05:00" />
-<meta itemprop="wordCount" content="1161">
+<meta itemprop="wordCount" content="1726">
 
 
 
@@ -212,9 +212,13 @@
         <li><a href="#安装gentoo安装文件">安装Gentoo安装文件</a></li>
         <li><a href="#chroot">Chroot</a></li>
         <li><a href="#安装和更新portage-tree">安装和更新Portage Tree</a></li>
-        <li><a href="#更新系统">更新系统</a></li>
+        <li><a href="#设置基本的配置文件">设置基本的配置文件</a></li>
+        <li><a href="#设置时区和语言环境">设置时区和语言环境</a></li>
+        <li><a href="#通知portage使用特定的cpu功能">通知Portage使用特定的CPU功能</a></li>
+        <li><a href="#gentoo-bootstrap-从stage1到stage2">Gentoo Bootstrap: 从Stage1到Stage2</a></li>
         <li><a href="#安装内核">安装内核</a></li>
         <li><a href="#安装bootload">安装bootload</a></li>
+        <li><a href="#更新tty字体">更新tty字体</a></li>
         <li><a href="#安装系统推荐组件">安装系统推荐组件</a></li>
         <li><a href="#安装桌面">安装桌面</a></li>
       </ul>
@@ -633,7 +637,7 @@ wget -c http://mirrors.aliyun.com/gentoo/releases/amd64/autobuilds/current-stage
 <pre class="chroma"><code class="language-sh" data-lang="sh">tar xpvf stage3-*.tar.xz --xattrs-include<span class="o">=</span><span class="s1">&#39;*.*&#39;</span> --numeric-owner
 </code></pre></td></tr></table>
 </div>
-</div><p>请确保使用的是这个解压命令（因为我们使用的不是官方的Livecd）</p>
+</div><p>请确保使用的是这个解压命令（保持权限还是压缩之前的状态）</p>
 <h4 id="portage-文件说明">Portage 文件说明</h4>
 <p>在开始配置Portage之前我们先对Portage有哪些文件先做一下说明</p>
 <table>
@@ -1148,9 +1152,518 @@ mount -v --make-rslave /mnt/gentoo/dev
 <p>我们设置了一个<code>PS1</code>这个方便区分我们当前是在什么环境</p>
 </blockquote>
 <h3 id="安装和更新portage-tree">安装和更新Portage Tree</h3>
-<h3 id="更新系统">更新系统</h3>
-<h3 id="安装内核">安装内核</h3>
+<p>在这里我们要安装Portage树的快照，通知Portage可以安装哪些文件，可用的配置文件等等。</p>
+<p>为了安全起见，我们需要更新必要的公共密钥，然后下载并验证最新的快照，运行以下命令即可：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">emaint sync --auto
+</code></pre></td></tr></table>
+</div>
+</div><p>现在我们有了基本的portage树，我们可以切换到rsync协议，使其保持更新的状态：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">nano -w /etc/portage/repos.conf/gentoo.conf
+</code></pre></td></tr></table>
+</div>
+</div><p>将<code>sync-type</code>改为<code>rsync</code>注销掉原来的那行 <code>webrsync</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh"><span class="c1">#sync-type = webrsync</span>
+sync-type <span class="o">=</span> rsync
+</code></pre></td></tr></table>
+</div>
+</div><p>再次同步</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">emaint sync --auto
+</code></pre></td></tr></table>
+</div>
+</div><p>有的时候会遇到源不可用的情况，这里再补充一种利用git同步Portage tree的配置。
+在完成了第一次同步之后安装git包</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">emerge --ask  dev-vcs/git
+</code></pre></td></tr></table>
+</div>
+</div><p>再去修改配置文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">nano -w /etc/portage/repos.conf/gentoo.conf
+</code></pre></td></tr></table>
+</div>
+</div><p>内容更改如下</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh"><span class="o">[</span>DEFAULT<span class="o">]</span>
+main-repo <span class="o">=</span> gentoo
+
+<span class="o">[</span>gentoo<span class="o">]</span>
+<span class="nv">location</span> <span class="o">=</span> /var/db/repos/gentoo
+sync-type <span class="o">=</span> git
+sync-uri <span class="o">=</span> https://github.com/gentoo-mirror/gentoo.git
+auto-sync <span class="o">=</span> yes
+</code></pre></td></tr></table>
+</div>
+</div><p>保存退出后我们需要将原来的目录删除</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">rm -rf /var/db/repos/gentoo
+</code></pre></td></tr></table>
+</div>
+</div><p>再次进行同步</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">emaint sync --auto
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="设置基本的配置文件">设置基本的配置文件</h3>
+<p>像是之前所说到的Gentoo使用配置文件来设置特定的架构和使用场景。配置文件还限制了可以安装的可以安装软件包的版本，默认的USE之类的，这个基本的profile是由Gentoo开发者来维护的。</p>
+<p>这里我们检查一下是否在17.1 amd64配置文件即可，</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">eselect profile list
+Available profile symlink targets:
+  <span class="o">[</span>1<span class="o">]</span>   default/linux/amd64/17.1 <span class="o">(</span>stable<span class="o">)</span> *
+  <span class="o">[</span>2<span class="o">]</span>   default/linux/amd64/17.1/selinux <span class="o">(</span>stable<span class="o">)</span>
+  <span class="o">[</span>3<span class="o">]</span>   default/linux/amd64/17.1/hardened <span class="o">(</span>stable<span class="o">)</span>
+  <span class="o">[</span>4<span class="o">]</span>   default/linux/amd64/17.1/hardened/selinux <span class="o">(</span>stable<span class="o">)</span>
+  <span class="o">[</span>5<span class="o">]</span>   default/linux/amd64/17.1/desktop <span class="o">(</span>stable<span class="o">)</span>
+  <span class="o">[</span>6<span class="o">]</span>   default/linux/amd64/17.1/desktop/gnome <span class="o">(</span>stable<span class="o">)</span>
+  <span class="o">[</span>7<span class="o">]</span>   default/linux/amd64/17.1/desktop/gnome/systemd <span class="o">(</span>stable<span class="o">)</span>
+  <span class="o">[</span>8<span class="o">]</span>   default/linux/amd64/17.1/desktop/plasma <span class="o">(</span>stable<span class="o">)</span>
+  <span class="o">[</span>9<span class="o">]</span>   default/linux/amd64/17.1/desktop/plasma/systemd <span class="o">(</span>stable<span class="o">)</span>
+  <span class="o">[</span>10<span class="o">]</span>  default/linux/amd64/17.1/desktop/systemd <span class="o">(</span>dev<span class="o">)</span>
+  <span class="o">[</span>11<span class="o">]</span>  default/linux/amd64/17.1/developer <span class="o">(</span>stable<span class="o">)</span>
+  <span class="o">[</span>12<span class="o">]</span>  default/linux/amd64/17.1/no-multilib <span class="o">(</span>stable<span class="o">)</span>
+  <span class="o">[</span>13<span class="o">]</span>  default/linux/amd64/17.1/no-multilib/hardened <span class="o">(</span>stable<span class="o">)</span>
+  <span class="o">[</span>14<span class="o">]</span>  default/linux/amd64/17.1/no-multilib/hardened/selinux <span class="o">(</span>stable<span class="o">)</span>
+  <span class="o">[</span>15<span class="o">]</span>  default/linux/amd64/17.1/systemd <span class="o">(</span>stable<span class="o">)</span>
+  <span class="o">[</span>16<span class="o">]</span>  default/linux/amd64/17.0 <span class="o">(</span>dev<span class="o">)</span>
+  <span class="o">[</span>17<span class="o">]</span>  default/linux/amd64/17.0/selinux <span class="o">(</span>dev<span class="o">)</span>
+  <span class="o">[</span>18<span class="o">]</span>  default/linux/amd64/17.0/hardened <span class="o">(</span>dev<span class="o">)</span>
+  <span class="o">[</span>19<span class="o">]</span>  default/linux/amd64/17.0/hardened/selinux <span class="o">(</span>dev<span class="o">)</span>
+  <span class="o">[</span>20<span class="o">]</span>  default/linux/amd64/17.0/desktop <span class="o">(</span>dev<span class="o">)</span>
+  <span class="o">[</span>21<span class="o">]</span>  default/linux/amd64/17.0/desktop/gnome <span class="o">(</span>dev<span class="o">)</span>
+  <span class="o">[</span>22<span class="o">]</span>  default/linux/amd64/17.0/desktop/gnome/systemd <span class="o">(</span>dev<span class="o">)</span>
+  <span class="o">[</span>23<span class="o">]</span>  default/linux/amd64/17.0/desktop/plasma <span class="o">(</span>dev<span class="o">)</span>
+  <span class="o">[</span>24<span class="o">]</span>  default/linux/amd64/17.0/desktop/plasma/systemd <span class="o">(</span>dev<span class="o">)</span>
+  <span class="o">[</span>25<span class="o">]</span>  default/linux/amd64/17.0/developer <span class="o">(</span>dev<span class="o">)</span>
+  <span class="o">[</span>26<span class="o">]</span>  default/linux/amd64/17.0/no-multilib <span class="o">(</span>dev<span class="o">)</span>
+  <span class="o">[</span>27<span class="o">]</span>  default/linux/amd64/17.0/no-multilib/hardened <span class="o">(</span>dev<span class="o">)</span>
+  <span class="o">[</span>28<span class="o">]</span>  default/linux/amd64/17.0/no-multilib/hardened/selinux <span class="o">(</span>dev<span class="o">)</span>
+  <span class="o">[</span>29<span class="o">]</span>  default/linux/amd64/17.0/systemd <span class="o">(</span>dev<span class="o">)</span>
+  <span class="o">[</span>30<span class="o">]</span>  default/linux/amd64/17.0/x32 <span class="o">(</span>dev<span class="o">)</span>
+  <span class="o">[</span>31<span class="o">]</span>  default/linux/amd64/17.0/musl <span class="o">(</span>exp<span class="o">)</span>
+  <span class="o">[</span>32<span class="o">]</span>  default/linux/amd64/17.0/musl/hardened <span class="o">(</span>exp<span class="o">)</span>
+  <span class="o">[</span>33<span class="o">]</span>  default/linux/amd64/17.0/musl/hardened/selinux <span class="o">(</span>exp<span class="o">)</span>
+  <span class="o">[</span>34<span class="o">]</span>  default/linux/amd64/17.0/uclibc <span class="o">(</span>exp<span class="o">)</span>
+  <span class="o">[</span>35<span class="o">]</span>  default/linux/amd64/17.0/uclibc/hardened <span class="o">(</span>exp<span class="o">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>在这里我们的默认配置文件已经在这个profile文件，如果你想要手动选一下可以使用<code>eselect</code>工具来设置配置文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">eselect profile <span class="nb">set</span> <span class="s2">&#34;default/linux/amd64/17.1&#34;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>你可以通过这条命令来查看配置文件<code>make.conf</code>环境，这个在提交bug的时候最好也附加上去</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">emerge --info
+</code></pre></td></tr></table>
+</div>
+</div><p>如果你对USE标志的含义不是很理解可以通过下面这条命令去查找其含义（比如说<code>useflag</code>）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">grep -i useflag /var/db/repos/gentoo/profiles/use.desc
+</code></pre></td></tr></table>
+</div>
+</div><p>或者是<a href="https://packages.gentoo.org/useflags/search">在线查询</a></p>
+<h4 id="确保更新了portage">确保更新了Portage</h4>
+<p>在完成了更新portage tree的时候portage提示Portage有可用的更新了，可以通过这条命令来更新Portage</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">emerge --ask --verbose --oneshot portage
+</code></pre></td></tr></table>
+</div>
+</div><p><code>--oneshot</code>选项是通知Portage不要把自己记录在<code>world</code>文件
+<code>--ask-verbose</code>选项是emerge在对系统进行任何更改之前通知你，并产生详细的输出（可以简写为 <code>-av</code>）。
+按回车进行更新</p>
+<p>更新Portage树的同时也会带来一些新闻条目，这些发布的新闻条目最好是阅读一下，这些是很重要的，这些通常是Gentoo开发者对用户发布的简单公告，如果想要查看当前的新闻条目可以运行：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">eselect news list
+</code></pre></td></tr></table>
+</div>
+</div><p>你会注意到有新闻的编号，假如你想要阅读新闻N，可以输入：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">eselect news <span class="nb">read</span> N
+</code></pre></td></tr></table>
+</div>
+</div><p>如果你已经看完了所有的新闻，你可以运行这条命令来清除已经阅读过的新闻</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">eselect news purge
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="设置时区和语言环境">设置时区和语言环境</h3>
+<p>我们还没有设置时区和语言环境，我们现在来设置这些。</p>
+<p>首先是时区设置。你可以在<code>/usr/share/zoneinfo/</code>下面找到你所在位置的对应时区（这里比如说亚洲上海时区）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">echo</span> <span class="s2">&#34;Asia/Shanghai&#34;</span> &gt; /etc/timezone
+</code></pre></td></tr></table>
+</div>
+</div><p>现在我们需要重新配置<code>sys-libs/timezone-data</code>包，重建这个包将会从<code>/etc/timezone</code>中取值，并在<code>/etc/localtime</code>中反应正确的值。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">emerge -v --config sys-libs/timezone-data
+</code></pre></td></tr></table>
+</div>
+</div><p>其次我们必须设置合适的语言环境，我们必须要在<code>/etc/locale.gen</code>中指定要使用的语言环境。编辑这个文件，并添加以下内容</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">nano -w /etc/locale.gent
+</code></pre></td></tr></table>
+</div>
+</div><p>这里我们以英文和中文为例子：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">en_US.UTF-8 UTF-8
+zh_CN.UTF-8 UTF-8
+</code></pre></td></tr></table>
+</div>
+</div><p>保存并退出文件。</p>
+<p>接下来我们必须要基于<code>/etc/locale.gen</code>文件中的配置，运行<code>locale.gen</code>来创建语言环境：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">locale-gen
+</code></pre></td></tr></table>
+</div>
+</div><p>在运行成功之后，我们还需要指定以后默认使用的语言环境，使用下面这条命令来查找当前的系统有的语言环境</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">eselect locale list
+Available targets <span class="k">for</span> the LANG variable:
+  <span class="o">[</span>1<span class="o">]</span>   C
+  <span class="o">[</span>2<span class="o">]</span>   C.utf8
+  <span class="o">[</span>3<span class="o">]</span>   POSIX
+  <span class="o">[</span>4<span class="o">]</span>   en_US.utf8
+  <span class="o">[</span>5<span class="o">]</span>   zh_CN.utf8
+  <span class="o">[</span>6<span class="o">]</span>   C.UTF8 *
+  <span class="o">[</span> <span class="o">]</span>   <span class="o">(</span>free form<span class="o">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>我们现在先保持为C环境，后面再修改成实际的语言环境</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">eselect locale <span class="nb">set</span> <span class="s2">&#34;C&#34;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>现在重新载入环境</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">env-update <span class="o">&amp;&amp;</span> <span class="nb">source</span> /etc/profile <span class="o">&amp;&amp;</span> <span class="nb">export</span> <span class="nv">PS1</span><span class="o">=</span><span class="s2">&#34;(chroot) </span><span class="nv">$PS1</span><span class="s2">&#34;</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="通知portage使用特定的cpu功能">通知Portage使用特定的CPU功能</h3>
+<p>在之前配置<code>/etc/portage/make.conf</code>中我们把<code>CPU_FLAGS_X86</code>设置成默认的值<code>mmx mmxext sse sse2</code>，在这里我们将会用到<code> app-portage/cpuid2cpuflags</code>这个工具来设置对应的变量</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">emerge --verbose --oneshot app-portage/cpuid2cpuflags
+</code></pre></td></tr></table>
+</div>
+</div><p>安装完成之后，运行这个工具并且记录下输出（你运行的输出可能和我的不太一样，这个输出取自我这台Mac）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">cpuid2cpuflags
+CPU_FLAGS_X86: aes avx avx2 f16c fma3 mmx mmxext pclmul popcnt rdrand sse sse2 sse3 sse4_1 sse4_2 ssse3
+</code></pre></td></tr></table>
+</div>
+</div><p>然后修改<code>/etc/portage/make.conf</code>文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">nano -w /etc/portage/make.conf
+</code></pre></td></tr></table>
+</div>
+</div><p>内容如下</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nv">CPU_FLAGS_X86</span><span class="o">=</span><span class="s2">&#34;aes avx avx2 f16c fma3 mmx mmxext pclmul popcnt rdrand sse sse2 sse3 sse4_1 sse4_2 ssse3&#34;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>保存并退出。</p>
+<h3 id="gentoo-bootstrap-从stage1到stage2">Gentoo Bootstrap: 从Stage1到Stage2</h3>
+<p>首先我们要构建自己的工具链！
+Gentoo Portage Tree里面提供了一个<code>bootstrap.sh</code>脚本。
+现在我们切换到脚本存在的目录：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">cd</span> /var/db/repos/gentoo/scripts
+</code></pre></td></tr></table>
+</div>
+</div><p>然后运行</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">./bootstrap.sh --pretend
+Gentoo Linux<span class="p">;</span> http://www.gentoo.org/
+Copyright 1999-2020 Gentoo Authors<span class="p">;</span> Distributed under the GPLv2
+-------------------------------------------------------------------------------
+  <span class="o">[[</span> <span class="o">(</span>0/3<span class="o">)</span> Locating packages <span class="o">]]</span>
+ * Using baselayout : &gt;<span class="o">=</span>sys-apps/baselayout-2
+ * Using portage    : sys-apps/portage
+ * Using os-headers : &gt;<span class="o">=</span>sys-kernel/linux-headers-5.4-r1
+ * Using binutils   : sys-devel/binutils
+ * Using gcc        : sys-devel/gcc
+ * Using gettext    : sys-devel/gettext
+ * Using libc       : sys-libs/glibc:2.2
+ * Using texinfo    : sys-apps/texinfo
+ * Using zlib       : sys-libs/zlib
+ * Using ncurses    : sys-libs/ncurses
+-------------------------------------------------------------------------------
+  <span class="o">[[</span> <span class="o">(</span>1/3<span class="o">)</span> Configuring environment <span class="o">]]</span>
+-------------------------------------------------------------------------------
+  <span class="o">[[</span> <span class="o">(</span>2/3<span class="o">)</span> Updating portage <span class="o">]]</span>
+!!! CONFIG_PROTECT is empty
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>注意这里输出的版本可能和你的不一样</p>
+</blockquote>
+<p>Gentoo FAQ建议是先查看这个并编辑，接下来我们也会这么做，这里面也存在几个问题：</p>
+<ol>
+<li>对于现代的GCC，我们需要添加一个<code>openmp</code>的USE。</li>
+<li><code>CONFIG_PROTECT</code>为空表示在这个<code>bootstrap</code>过程中配置文件将会被覆盖。</li>
+</ol>
+<blockquote>
+<ol>
+<li>修复GCC的USE问题</li>
+</ol>
+</blockquote>
+<p>使用nano打开<code>/var/db/repos/gentoo/scripts/bootstrap.sh</code>文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">nano -w /var/db/repos/gentoo/scripts/bootstrap.sh
+</code></pre></td></tr></table>
+</div>
+</div><p>按Ctrl+w输入<code>export USE=&quot;-</code>按Enter进行搜索</p>
+<p>修改这行内容如下</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">export</span> <span class="nv">USE</span><span class="o">=</span><span class="s2">&#34;-* bootstrap </span><span class="si">${</span><span class="nv">ALLOWED_USE</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">BOOTSTRAP_USE</span><span class="si">}</span><span class="s2"> openmp&#34;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>保存并退出</p>
+<blockquote>
+<ol start="2">
+<li>做配置文件备份</li>
+</ol>
+</blockquote>
+<p>我们可以使用<code>qfile</code>来查询我们已经修改过的文件属于那个程序，以及这次重构是否会影响到，如果影响到我们就耀进行备份。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">qfile /etc/locale.gen
+sys-libs/glibc: /etc/locale.gen
+</code></pre></td></tr></table>
+</div>
+</div><p>这里我们的重构会影响到这个glibc，所以我们要对更改的文件做一个备份。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">cp -v /etc/locale.gen<span class="o">{</span>,.bak<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>现在一切就绪，让我们开始真正的<code>bootstrap</code>程序吧</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">./bootstrap.sh
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="安装内核">安装内核</h3>
 <h3 id="安装bootload">安装bootload</h3>
+<h3 id="更新tty字体">更新tty字体</h3>
 <h3 id="安装系统推荐组件">安装系统推荐组件</h3>
 <h3 id="安装桌面">安装桌面</h3>
 <h2 id="参考文档">参考文档</h2>
