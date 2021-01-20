@@ -88,7 +88,7 @@
  将U盘插入这台老的Dell机器然后使用dd刻录安装介质">
 <meta itemprop="datePublished" content="2021-01-18T19:41:36-05:00" />
 <meta itemprop="dateModified" content="2021-01-18T19:41:36-05:00" />
-<meta itemprop="wordCount" content="2194">
+<meta itemprop="wordCount" content="2378">
 
 
 
@@ -1139,6 +1139,21 @@ mount -v --make-rslave /mnt/gentoo/sys
 mount -v --make-rslave /mnt/gentoo/dev
 </code></pre></td></tr></table>
 </div>
+</div><blockquote>
+<p>Tips： 在非Gentoo官方的Livecd中 <code>/dev/shm</code>可能被连接到了<code>/run/shm</code>还需要运行以下命令</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">test</span> -L /dev/shm <span class="o">&amp;&amp;</span> rm /dev/shm <span class="o">&amp;&amp;</span> mkdir /dev/shm
+mount --types tmpfs --options nosuid,nodev,noexec shm /dev/shm
+chmod <span class="m">1777</span> /dev/shm
+</code></pre></td></tr></table>
+</div>
 </div><h4 id="进入chroot">进入chroot</h4>
 <p>这里进入chroot的准备工作就完成了，我们现在就可以进入chroot了</p>
 <div class="highlight"><div class="chroma">
@@ -2120,7 +2135,76 @@ locale-gen
 <pre class="chroma"><code class="language-sh" data-lang="sh">make defconfig
 </code></pre></td></tr></table>
 </div>
-</div><p>然后再去一项一项过</p>
+</div><p>在配置内核之前我们需要查看当前的硬件配置：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">lspci
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>如果没有<code>lspci</code>命令可以安装这个包</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">emerge -av sys-apps/pciutils
+</code></pre></td></tr></table>
+</div>
+</div><p>当然还有一种方法不让这个<code>pciutils</code>在这个<code>@world</code>集合里面我们可以自己创造一个集合
+创建<code>/etc/portage/sets</code>文件夹</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">mkdir -pv /etc/portage/sets
+</code></pre></td></tr></table>
+</div>
+</div><p>创建并编辑<code>/etc/portage/set/yafa</code>文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">nano -w /etc/portage/sets/yafa
+</code></pre></td></tr></table>
+</div>
+</div><p>内容如下</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh"><span class="c1"># mandatory!</span>
+sys-apps/pciutils
+</code></pre></td></tr></table>
+</div>
+</div><p>告诉Portage安装<code>@yafa</code>这个集合中的包并且自动安装其依赖</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">emerge --ask --noreplace @yafa
+</code></pre></td></tr></table>
+</div>
+</div><p>查看当前的硬件和使用的内核模块</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">lspci -nnk
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="../../images/lspci.png" alt="lspci">
+然后再去一项一项过</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
@@ -2161,75 +2245,118 @@ locale-gen
 </tr>
 <tr>
 <td>Binary Emulations</td>
-<td></td>
+<td>二进制仿真</td>
 </tr>
 <tr>
 <td>Firmware Drivers</td>
-<td></td>
+<td>固件驱动</td>
 </tr>
 <tr>
 <td>Virtualization</td>
-<td></td>
+<td>虚拟化</td>
 </tr>
 <tr>
 <td>General architecture-dependent options</td>
-<td></td>
+<td>通用架构相关的选项</td>
 </tr>
 <tr>
 <td>Enable loadable module</td>
-<td></td>
+<td>启用可加载模块</td>
 </tr>
 <tr>
 <td>Enable the block layer</td>
-<td></td>
+<td>启用块层</td>
 </tr>
 <tr>
 <td>IO Schedulers</td>
-<td></td>
+<td>IO调度器</td>
 </tr>
 <tr>
 <td>Executable file formats</td>
-<td></td>
+<td>可执行文件格式</td>
 </tr>
 <tr>
 <td>Memory Managemanet options</td>
-<td></td>
+<td>内存管理选项</td>
 </tr>
 <tr>
 <td>Networking support</td>
-<td></td>
+<td>网络支持</td>
 </tr>
 <tr>
 <td>Device Drivers</td>
-<td></td>
+<td>设备驱动程序</td>
 </tr>
 <tr>
 <td>File systems</td>
-<td></td>
+<td>文件系统</td>
 </tr>
 <tr>
 <td>Security options</td>
-<td></td>
+<td>安全选项</td>
 </tr>
 <tr>
 <td>Cryptographic API</td>
-<td></td>
+<td>加密API</td>
 </tr>
 <tr>
 <td>Library routines</td>
-<td></td>
+<td>库的例行程序</td>
 </tr>
 <tr>
 <td>Kernel hacking</td>
-<td></td>
+<td>内核Hack</td>
 </tr>
 <tr>
 <td>Gentoo Linux</td>
-<td></td>
+<td>Gentoo Linux的特色选项</td>
 </tr>
 </tbody>
 </table>
 <p>因为文章的篇幅有限，我这里就不一项一项的过每一个的意义了，主要描述我改了哪些东西这些选项的意义以及为什么。(后续可能会更新一版完整的内核配置文档。)</p>
+<p>我们先说一下 <code>menuconfig</code>的基本操作
+上下就是选择上一个下一个item，enter可以进入某个子级菜单。按esc可以回到上一层。
+按空格就是可以打开选项或者是关掉选项，这些选项有几种不同的状态这个也会导致构建内核的动作不一样</p>
+<ul>
+<li><code>*</code> 这个就是build in 这个状态将会所设置的选项构建入内核中</li>
+<li><code>M</code> 这个将会将所选的设置设置为模块的形式，想要使用对应的功能的时候就需要载入模块</li>
+<li><code> </code> 留空代表不启用这个选项</li>
+</ul>
+<h4 id="general-setup">General Setup</h4>
+<p>首先是General Setup的部分我们需要配置一下内容</p>
+<blockquote>
+<p>内核压缩模式</p>
+</blockquote>
+<p>选中<code>Kernel compression mode</code> 并设置其为XZ的压缩格式
+同时我们要去掉除了XZ的压缩格式其他对initial的ramfs支持</p>
+<p><img src="../../images/compression_mode.png" alt="compression mode"></p>
+<blockquote>
+<p>内核 <code>.config</code>支持</p>
+</blockquote>
+<p>就像是上图所示的:</p>
+<p><code>Kernel .config support</code> 和 <code>Enable access to .config through /proc/config.gz</code> 这两个选项选择构建入内核</p>
+<p>这两个选项对于后面再去配置内核有帮助，可以基于这次配置的内核再次精简。</p>
+<h4 id="64-bit-kernel">64-bit kernel</h4>
+<h4 id="processor-type-and-features">Processor type and features</h4>
+<h4 id="power-management-and-acpi-options">Power Management and ACPI options</h4>
+<h4 id="bus-options-pci-etc">Bus options (PCI etc.)</h4>
+<h4 id="binary-emulations">Binary Emulations</h4>
+<h4 id="firmware-drivers">Firmware Drivers</h4>
+<h4 id="virtualization">Virtualization</h4>
+<h4 id="general-architecture-dependent-options">General architecture-dependent options</h4>
+<h4 id="enable-loadable-module">Enable loadable module</h4>
+<h4 id="enable-the-block-layer">Enable the block layer</h4>
+<h4 id="io-schedulers">IO Schedulers</h4>
+<h4 id="executable-file-formats">Executable file formats</h4>
+<h4 id="memory-managemanet-options">Memory Managemanet options</h4>
+<h4 id="networking-support">Networking support</h4>
+<h4 id="device-drivers">Device Drivers</h4>
+<h4 id="file-systems">File systems</h4>
+<h4 id="security-options">Security options</h4>
+<h4 id="cryptographic-api">Cryptographic API</h4>
+<h4 id="library-routines">Library routines</h4>
+<h4 id="kernel-hacking">Kernel hacking</h4>
+<h4 id="gentoo-linux">Gentoo Linux</h4>
 <h3 id="生成initramfs">生成initramfs</h3>
 <h3 id="安装bootload">安装bootload</h3>
 <p>这里使用的bootload是GRUB</p>
@@ -2260,6 +2387,14 @@ locale-gen
 <h2 id="安装和配置桌面">安装和配置桌面</h2>
 <h2 id="最后的话">最后的话</h2>
 <h2 id="参考文档">参考文档</h2>
+<ul>
+<li><a href="https://wiki.gentoo.org/wiki/Kernel/Overview">Kernel Overview</a></li>
+<li><a href="http://www.jinbuguo.com/kernel/longterm-linux-kernel-options.html">金步国内核配置文档</a></li>
+<li><a href="https://wiki.gentoo.org/wiki/Special:MyLanguage/Handbook:AMD64/Installation">Gentoo AMD64 Handbook</a></li>
+<li><a href="https://blog.yangmame.org/Gentoo%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B.html">YangMame Gentoo安装教程</a></li>
+<li><a href="https://wiki.gentoo.org/wiki/User:Sakaki/Sakaki%27s_EFI_Install_Guide">Sakaki&rsquo;s EFI Install Guide</a></li>
+<li><a href="https://www.kernel.org/doc/html/latest/">The Linux Kernel Documentation</a></li>
+</ul>
 
     </div>
 
