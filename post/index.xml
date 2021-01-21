@@ -13,7 +13,8 @@
       <pubDate>Mon, 18 Jan 2021 19:41:36 -0500</pubDate>
       
       <guid>https://yafa-xena.github.io/post/install-gentoo-on-mac/</guid>
-      <description>缘起 我是一个非常贫苦刚刚步入社会的学生。
+      <description>前言 这不是一份简短的Gentoo Linux安装手册，我想在这篇文章中向你展示更多Gentoo Linux的魅力。
+缘起 我是一个非常贫苦刚刚步入社会的学生。
 今年毕业之后因为疫情的影响好不容易进了一家公司，但是日常的开销不足以让我更换掉现在的机器（只有单个核心的年迈机器。）。
 前些日子在和一位帅气的学长 温柔的学姐在茶会上聊起了工作的一些事情可能是听到了我的抱怨了吧哈哈哈，当时说要送我一台笔记本，当时还在想不会吧？这两天收到了发现是一台Macbook Pro 2015年的15寸版本，还有一个yubico。
 配置大概是这样子的
@@ -25,8 +26,7 @@
 制作安装介质 之前一直有听说Gentoo安装比较麻烦，看了一些关于Gentoo安装的文档，我认为难点在于内核的配置上，其他应该问题不大（😂）。
 为了能够最大程度少去配置内核我这里选择了Ubuntu Desktop Livecd，将会以这个内核配置为基础进行自己的内核配置
  下载ISO文件
- 1  wget -c https://mirrors.aliyun.com/ubuntu-releases/20.10/ubuntu-20.10-desktop-amd64.iso    制作USB启动盘
- 将U盘插入这台老的Dell机器然后使用dd刻录安装介质</description>
+ 1  wget -c https://mirrors.aliyun.com/ubuntu-releases/20.10/ubuntu-20.10-desktop-amd64.iso    制作USB启动盘</description>
     </item>
     
     <item>
