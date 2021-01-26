@@ -17,26 +17,17 @@
 
 
 <meta name="author" content="Yafa Xena" /><meta name="description" content="前言 这不是一份简短的Gentoo Linux安装手册，我想在这篇文章中向你展示更多Gentoo Linux的魅力。
-缘起 我是一个非常贫苦刚刚步入社会的学生。
+这次安装Gentoo打算使用这样的组合：
+   类别 包或包组 说明     基础系统 @world 基础系统   X Windows Xorg Server 使用Xorg作为X Windows的后端服务   桌面 kde 本次安装将会使用KDE桌面   输入法 fcitx-rime 使用fcitx作为输入法框架，使用rime输入法作为日常使用   浏览器 chromium &#43; firefox 多来几个浏览器方便debug   邮箱客户端 thunderbird 雷鸟邮件客户端   密码管理器 keepassxc &#43; pass 一个为gui的一个为命令行的密码管理器   截图软件 flameshot 很棒的截图软件    缘起 我是一个非常贫苦刚刚步入社会的学生。
 今年毕业之后因为疫情的影响好不容易进了一家公司，但是日常的开销不足以让我更换掉现在的机器（只有单个核心的年迈机器。）。
-前些日子在和一位帅气的学长 温柔的学姐在茶会上聊起了工作的一些事情可能是听到了我的抱怨了吧哈哈哈，当时说要送我一台笔记本，当时还在想不会吧？这两天收到了发现是一台Macbook Pro 2015年的15寸版本，还有一个yubico。
-配置大概是这样子的
-   型号 CPU 内存 硬盘     Macbook Pro 2015 15inch I7 4770HQ 16G 2TB    在此之前一直都有想要试试看Gentoo的想法，但是奈何手上的笔记本只有可怜的单核2G内存，因为日常还需要使用的缘故结果自然也是不了了之。
-这次就有机会尝试一下了。
-环境准备 先来说明一下安装Gentoo的环境准备。
-我这里是准备了以下：
- Macbook Pro * 1 （安装机器） Dell 老机器 * 1 （我将会在这个节点进行操作） U盘 * 1 （安装介质）  拓扑图如下：
-制作安装介质 之前一直有听说Gentoo安装比较麻烦，看了一些关于Gentoo安装的文档，我认为难点在于内核的配置上，其他应该问题不大（😂）。
-为了能够最大程度少去配置内核我这里选择了Ubuntu Desktop Livecd，将会以这个内核配置为基础进行自己的内核配置
- 下载ISO文件
- 1  wget -c https://mirrors.aliyun.com/ubuntu-releases/20.10/ubuntu-20.10-desktop-amd64.iso    制作USB启动盘" /><meta name="keywords" content="Linux, Emacs, Python, Golang, Devops, Zabbix" />
+前些日子在和一位帅气的学长 温柔的学姐在茶会上聊起了工作的一些事情可能是听到了我的抱怨了吧哈哈哈，当时说要送我一台笔记本，当时还在想不会吧？这两天收到了发现是一台Macbook Pro 2015年的15寸版本，还有一个yubico。" /><meta name="keywords" content="Linux, Emacs, Python, Golang, Devops, Zabbix" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.80.0 with theme even" />
+<meta name="generator" content="Hugo 0.78.1 with theme even" />
 
 
 <link rel="canonical" href="https://yafa-xena.github.io/post/install-gentoo-on-mac/" />
@@ -54,41 +45,23 @@
 
 <meta property="og:title" content="在Mac上安装Gentoo Linux" />
 <meta property="og:description" content="前言 这不是一份简短的Gentoo Linux安装手册，我想在这篇文章中向你展示更多Gentoo Linux的魅力。
-缘起 我是一个非常贫苦刚刚步入社会的学生。
+这次安装Gentoo打算使用这样的组合：
+   类别 包或包组 说明     基础系统 @world 基础系统   X Windows Xorg Server 使用Xorg作为X Windows的后端服务   桌面 kde 本次安装将会使用KDE桌面   输入法 fcitx-rime 使用fcitx作为输入法框架，使用rime输入法作为日常使用   浏览器 chromium &#43; firefox 多来几个浏览器方便debug   邮箱客户端 thunderbird 雷鸟邮件客户端   密码管理器 keepassxc &#43; pass 一个为gui的一个为命令行的密码管理器   截图软件 flameshot 很棒的截图软件    缘起 我是一个非常贫苦刚刚步入社会的学生。
 今年毕业之后因为疫情的影响好不容易进了一家公司，但是日常的开销不足以让我更换掉现在的机器（只有单个核心的年迈机器。）。
-前些日子在和一位帅气的学长 温柔的学姐在茶会上聊起了工作的一些事情可能是听到了我的抱怨了吧哈哈哈，当时说要送我一台笔记本，当时还在想不会吧？这两天收到了发现是一台Macbook Pro 2015年的15寸版本，还有一个yubico。
-配置大概是这样子的
-   型号 CPU 内存 硬盘     Macbook Pro 2015 15inch I7 4770HQ 16G 2TB    在此之前一直都有想要试试看Gentoo的想法，但是奈何手上的笔记本只有可怜的单核2G内存，因为日常还需要使用的缘故结果自然也是不了了之。
-这次就有机会尝试一下了。
-环境准备 先来说明一下安装Gentoo的环境准备。
-我这里是准备了以下：
- Macbook Pro * 1 （安装机器） Dell 老机器 * 1 （我将会在这个节点进行操作） U盘 * 1 （安装介质）  拓扑图如下：
-制作安装介质 之前一直有听说Gentoo安装比较麻烦，看了一些关于Gentoo安装的文档，我认为难点在于内核的配置上，其他应该问题不大（😂）。
-为了能够最大程度少去配置内核我这里选择了Ubuntu Desktop Livecd，将会以这个内核配置为基础进行自己的内核配置
- 下载ISO文件
- 1  wget -c https://mirrors.aliyun.com/ubuntu-releases/20.10/ubuntu-20.10-desktop-amd64.iso    制作USB启动盘" />
+前些日子在和一位帅气的学长 温柔的学姐在茶会上聊起了工作的一些事情可能是听到了我的抱怨了吧哈哈哈，当时说要送我一台笔记本，当时还在想不会吧？这两天收到了发现是一台Macbook Pro 2015年的15寸版本，还有一个yubico。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://yafa-xena.github.io/post/install-gentoo-on-mac/" />
 <meta property="article:published_time" content="2021-01-18T19:41:36-05:00" />
 <meta property="article:modified_time" content="2021-01-18T19:41:36-05:00" />
 <meta itemprop="name" content="在Mac上安装Gentoo Linux">
 <meta itemprop="description" content="前言 这不是一份简短的Gentoo Linux安装手册，我想在这篇文章中向你展示更多Gentoo Linux的魅力。
-缘起 我是一个非常贫苦刚刚步入社会的学生。
+这次安装Gentoo打算使用这样的组合：
+   类别 包或包组 说明     基础系统 @world 基础系统   X Windows Xorg Server 使用Xorg作为X Windows的后端服务   桌面 kde 本次安装将会使用KDE桌面   输入法 fcitx-rime 使用fcitx作为输入法框架，使用rime输入法作为日常使用   浏览器 chromium &#43; firefox 多来几个浏览器方便debug   邮箱客户端 thunderbird 雷鸟邮件客户端   密码管理器 keepassxc &#43; pass 一个为gui的一个为命令行的密码管理器   截图软件 flameshot 很棒的截图软件    缘起 我是一个非常贫苦刚刚步入社会的学生。
 今年毕业之后因为疫情的影响好不容易进了一家公司，但是日常的开销不足以让我更换掉现在的机器（只有单个核心的年迈机器。）。
-前些日子在和一位帅气的学长 温柔的学姐在茶会上聊起了工作的一些事情可能是听到了我的抱怨了吧哈哈哈，当时说要送我一台笔记本，当时还在想不会吧？这两天收到了发现是一台Macbook Pro 2015年的15寸版本，还有一个yubico。
-配置大概是这样子的
-   型号 CPU 内存 硬盘     Macbook Pro 2015 15inch I7 4770HQ 16G 2TB    在此之前一直都有想要试试看Gentoo的想法，但是奈何手上的笔记本只有可怜的单核2G内存，因为日常还需要使用的缘故结果自然也是不了了之。
-这次就有机会尝试一下了。
-环境准备 先来说明一下安装Gentoo的环境准备。
-我这里是准备了以下：
- Macbook Pro * 1 （安装机器） Dell 老机器 * 1 （我将会在这个节点进行操作） U盘 * 1 （安装介质）  拓扑图如下：
-制作安装介质 之前一直有听说Gentoo安装比较麻烦，看了一些关于Gentoo安装的文档，我认为难点在于内核的配置上，其他应该问题不大（😂）。
-为了能够最大程度少去配置内核我这里选择了Ubuntu Desktop Livecd，将会以这个内核配置为基础进行自己的内核配置
- 下载ISO文件
- 1  wget -c https://mirrors.aliyun.com/ubuntu-releases/20.10/ubuntu-20.10-desktop-amd64.iso    制作USB启动盘">
+前些日子在和一位帅气的学长 温柔的学姐在茶会上聊起了工作的一些事情可能是听到了我的抱怨了吧哈哈哈，当时说要送我一台笔记本，当时还在想不会吧？这两天收到了发现是一台Macbook Pro 2015年的15寸版本，还有一个yubico。">
 <meta itemprop="datePublished" content="2021-01-18T19:41:36-05:00" />
 <meta itemprop="dateModified" content="2021-01-18T19:41:36-05:00" />
-<meta itemprop="wordCount" content="3293">
+<meta itemprop="wordCount" content="3434">
 
 
 
@@ -96,19 +69,10 @@
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="在Mac上安装Gentoo Linux"/>
 <meta name="twitter:description" content="前言 这不是一份简短的Gentoo Linux安装手册，我想在这篇文章中向你展示更多Gentoo Linux的魅力。
-缘起 我是一个非常贫苦刚刚步入社会的学生。
+这次安装Gentoo打算使用这样的组合：
+   类别 包或包组 说明     基础系统 @world 基础系统   X Windows Xorg Server 使用Xorg作为X Windows的后端服务   桌面 kde 本次安装将会使用KDE桌面   输入法 fcitx-rime 使用fcitx作为输入法框架，使用rime输入法作为日常使用   浏览器 chromium &#43; firefox 多来几个浏览器方便debug   邮箱客户端 thunderbird 雷鸟邮件客户端   密码管理器 keepassxc &#43; pass 一个为gui的一个为命令行的密码管理器   截图软件 flameshot 很棒的截图软件    缘起 我是一个非常贫苦刚刚步入社会的学生。
 今年毕业之后因为疫情的影响好不容易进了一家公司，但是日常的开销不足以让我更换掉现在的机器（只有单个核心的年迈机器。）。
-前些日子在和一位帅气的学长 温柔的学姐在茶会上聊起了工作的一些事情可能是听到了我的抱怨了吧哈哈哈，当时说要送我一台笔记本，当时还在想不会吧？这两天收到了发现是一台Macbook Pro 2015年的15寸版本，还有一个yubico。
-配置大概是这样子的
-   型号 CPU 内存 硬盘     Macbook Pro 2015 15inch I7 4770HQ 16G 2TB    在此之前一直都有想要试试看Gentoo的想法，但是奈何手上的笔记本只有可怜的单核2G内存，因为日常还需要使用的缘故结果自然也是不了了之。
-这次就有机会尝试一下了。
-环境准备 先来说明一下安装Gentoo的环境准备。
-我这里是准备了以下：
- Macbook Pro * 1 （安装机器） Dell 老机器 * 1 （我将会在这个节点进行操作） U盘 * 1 （安装介质）  拓扑图如下：
-制作安装介质 之前一直有听说Gentoo安装比较麻烦，看了一些关于Gentoo安装的文档，我认为难点在于内核的配置上，其他应该问题不大（😂）。
-为了能够最大程度少去配置内核我这里选择了Ubuntu Desktop Livecd，将会以这个内核配置为基础进行自己的内核配置
- 下载ISO文件
- 1  wget -c https://mirrors.aliyun.com/ubuntu-releases/20.10/ubuntu-20.10-desktop-amd64.iso    制作USB启动盘"/>
+前些日子在和一位帅气的学长 温柔的学姐在茶会上聊起了工作的一些事情可能是听到了我的抱怨了吧哈哈哈，当时说要送我一台笔记本，当时还在想不会吧？这两天收到了发现是一台Macbook Pro 2015年的15寸版本，还有一个yubico。"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -240,7 +204,13 @@
       </ul>
     </li>
     <li><a href="#重启">重启</a></li>
-    <li><a href="#安装和配置桌面">安装和配置桌面</a></li>
+    <li><a href="#故障排除">故障排除</a></li>
+    <li><a href="#安装和配置桌面">安装和配置桌面</a>
+      <ul>
+        <li><a href="#安装kde桌面及应用">安装KDE桌面及应用</a></li>
+        <li><a href="#配置kde启动">配置KDE启动</a></li>
+      </ul>
+    </li>
     <li><a href="#最后的话">最后的话</a></li>
     <li><a href="#参考文档">参考文档</a></li>
   </ul>
@@ -250,6 +220,58 @@
     <div class="post-content">
       <h2 id="前言">前言</h2>
 <p>这不是一份简短的Gentoo Linux安装手册，我想在这篇文章中向你展示更多Gentoo Linux的魅力。</p>
+<p>这次安装Gentoo打算使用这样的组合：</p>
+<table>
+<thead>
+<tr>
+<th>类别</th>
+<th>包或包组</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>基础系统</td>
+<td><code>@world</code></td>
+<td>基础系统</td>
+</tr>
+<tr>
+<td>X Windows</td>
+<td>Xorg Server</td>
+<td>使用Xorg作为X Windows的后端服务</td>
+</tr>
+<tr>
+<td>桌面</td>
+<td>kde</td>
+<td>本次安装将会使用KDE桌面</td>
+</tr>
+<tr>
+<td>输入法</td>
+<td>fcitx-rime</td>
+<td>使用fcitx作为输入法框架，使用rime输入法作为日常使用</td>
+</tr>
+<tr>
+<td>浏览器</td>
+<td>chromium + firefox</td>
+<td>多来几个浏览器方便debug</td>
+</tr>
+<tr>
+<td>邮箱客户端</td>
+<td>thunderbird</td>
+<td>雷鸟邮件客户端</td>
+</tr>
+<tr>
+<td>密码管理器</td>
+<td>keepassxc + pass</td>
+<td>一个为gui的一个为命令行的密码管理器</td>
+</tr>
+<tr>
+<td>截图软件</td>
+<td>flameshot</td>
+<td>很棒的截图软件</td>
+</tr>
+</tbody>
+</table>
 <h2 id="缘起">缘起</h2>
 <p>我是一个非常贫苦刚刚步入社会的学生。</p>
 <p>今年毕业之后因为疫情的影响好不容易进了一家公司，但是日常的开销不足以让我更换掉现在的机器（只有单个核心的年迈机器。）。</p>
@@ -274,7 +296,7 @@
 </tbody>
 </table>
 <p>在此之前一直都有想要试试看Gentoo的想法，但是奈何手上的笔记本只有可怜的单核2G内存，因为日常还需要使用的缘故结果自然也是不了了之。</p>
-<p>这次就有机会尝试一下了。</p>
+<p>这次就有机会尝试一下了，并且将其作为主力系统进行使用。</p>
 <h2 id="环境准备">环境准备</h2>
 <p>先来说明一下安装Gentoo的环境准备。</p>
 <p>我这里是准备了以下：</p>
@@ -282,8 +304,9 @@
 <li>Macbook Pro * 1 （安装机器）</li>
 <li>Dell 老机器 * 1 （我将会在这个节点进行操作）</li>
 <li>U盘 * 1 （安装介质）</li>
+<li>USB千兆网卡 （因为发现在Gentoo下面无线有问题，信道支持有限，在Ubuntu Livecd下工作正常，正在尝试解决这个问题。）
+拓扑图如下：</li>
 </ol>
-<p>拓扑图如下：</p>
 <p><img src="../../images/network_arch.png" alt="Network_Arch"></p>
 <h3 id="制作安装介质">制作安装介质</h3>
 <p>之前一直有听说Gentoo安装比较麻烦，看了一些关于Gentoo安装的文档，我认为难点在于内核的配置上，其他应该问题不大（😂）。</p>
@@ -896,7 +919,7 @@ nano是一个很简单的编辑器：用方向键可以上下左右移动，像�
 <span class="nv">FEATURES</span><span class="o">=</span><span class="s2">&#34;split-elog buildpkg&#34;</span>
 
 <span class="c1"># Settings for X11</span>
-<span class="nv">VIDEO_CARDS</span><span class="o">=</span><span class="s2">&#34;intel i965 fbdev vesa&#34;</span>
+<span class="nv">VIDEO_CARDS</span><span class="o">=</span><span class="s2">&#34;intel i965&#34;</span>
 <span class="nv">INPUT_DEVICES</span><span class="o">=</span><span class="s2">&#34;libinput wacom synaptics&#34;</span>
 </code></pre></td></tr></table>
 </div>
@@ -1039,8 +1062,8 @@ nano是一个很简单的编辑器：用方向键可以上下左右移动，像�
 <td>VIDEO_CARDS</td>
 <td>USE_EXPAND</td>
 <td>comprehensive list of video cards set by profile</td>
-<td>intel i965 fbdev vesa</td>
-<td>这个变量就是告诉各种程序在你的系统里面是什么显卡。我在这里制定了 intel i965 fbdev vesa 这么几个驱动（这个也是在Mac上测试通过可以正常启动X的情况）</td>
+<td>intel i965</td>
+<td>这个变量就是告诉各种程序在你的系统里面是什么显卡。我在这里制定了 intel i965这么几个驱动（这个也是在Mac上测试通过可以正常启动X的情况）</td>
 </tr>
 <tr>
 <td>INPUT_DEVICES</td>
@@ -1227,8 +1250,10 @@ sync-type <span class="o">=</span> rsync
 <pre class="chroma"><code class="language-sh" data-lang="sh">emaint sync --auto
 </code></pre></td></tr></table>
 </div>
-</div><p>有的时候会遇到源不可用的情况，这里再补充一种利用git同步Portage tree的配置。
-在完成了第一次同步之后安装git包</p>
+</div><blockquote>
+<p>有的时候会遇到源不可用的情况，这里再补充一种利用git同步Portage tree的配置。</p>
+</blockquote>
+<p>在完成了第一次<code>webrsync</code>同步之后安装git包</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
@@ -1839,7 +1864,7 @@ locale-gen
 </tbody>
 </table>
 <blockquote>
-<p>Tips: 这个操作将会持续相当长的时间，建议使用回话管理的工具来去保存构建工作
+<p>Tips: 这个操作将会持续相当长的时间，建议使用会话管理的工具来去保存构建工作
 推荐使用<code>screen</code>或者是<code>tmux</code></p>
 </blockquote>
 <blockquote>
@@ -1854,7 +1879,7 @@ locale-gen
 <pre class="chroma"><code class="language-sh" data-lang="sh">emerge --ask --verbose --oneshot app-misc/screen
 </code></pre></td></tr></table>
 </div>
-</div><p>安装完成之后，我们要创建一个回话来保存我们的构建工作</p>
+</div><p>安装完成之后，我们要创建一个会话来保存我们的构建工作</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
@@ -1929,7 +1954,7 @@ locale-gen
 <pre class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-sh" data-lang="sh">emerge --depclen
+<pre class="chroma"><code class="language-sh" data-lang="sh">emerge --depclean
 </code></pre></td></tr></table>
 </div>
 </div><p>或者想要再来一次可以执行</p>
@@ -3617,8 +3642,110 @@ cp -v /tmp/workdir/genkernel.conf /root/dotfiles
 </div>
 </div><p>在重启过grub的时候会提示让输入LUKS卷的密码输入之后就应该可以正常引导系统了！
 但是现在只是基础的系统，距离我们想要用的桌面还还差一点。</p>
+<h2 id="故障排除">故障排除</h2>
+<p>有的时候会遇到一些错误，这里记录一下可能遇到的错误以及如何处理。</p>
 <h2 id="安装和配置桌面">安装和配置桌面</h2>
+<p>这里安装的桌面为KDE桌面，为了方便安装我们首先要切换一下系统的配置文件：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">eselect  profile  <span class="nb">set</span> <span class="s2">&#34;default/linux/amd64/17.1/desktop/plasma&#34;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>更新系统</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">emerge --ask --verbose --deep --with-bdeps<span class="o">=</span>y --newuse --update @world
+</code></pre></td></tr></table>
+</div>
+</div><p>在更新完成之后我们来安装桌面和必要的包</p>
+<h3 id="安装kde桌面及应用">安装KDE桌面及应用</h3>
+<blockquote>
+<p>KDE
+这里安装的是整个KDE+完整的应用：</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">emerge --ask kde-plasma/plasma-meta kde-apps/kde-apps-meta
+</code></pre></td></tr></table>
+</div>
+</div><p>除了KDE之外我们还需要安装日常使用的一些包，如下表：</p>
+<p>| 包名 | 描述 |
+|  | |</p>
+<h3 id="配置kde启动">配置KDE启动</h3>
+<p>这次启动我不打算用DM去管理改用<code>startx</code>的方式。</p>
+<p>创建并编辑<code>~/.xinitrc</code>文件:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">nano -w ~/.xinitrc
+</code></pre></td></tr></table>
+</div>
+</div><p>内容如下</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh"><span class="cp">#!/bin/bash
+</span><span class="cp"></span>
+<span class="nb">eval</span> <span class="s2">&#34;</span><span class="k">$(</span>dbus-launch --sh-syntax --exit-with-session<span class="k">)</span><span class="s2">&#34;</span>
+<span class="o">[</span> -f <span class="s2">&#34;</span><span class="nv">$HOME</span><span class="s2">/.xprofile&#34;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> . ~/.xprofile
+<span class="nb">exec</span> dbus-launch --exit-with-session startplasma-x11
+</code></pre></td></tr></table>
+</div>
+</div><p>接下来我们还要创建一个<code>~/.xprofile</code>文件：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">nano -w ~/.xprofile
+</code></pre></td></tr></table>
+</div>
+</div><p>内容如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh"><span class="cp">#!/bin/sh
+</span><span class="cp"></span><span class="c1"># Fcitx</span>
+<span class="nb">export</span> <span class="nv">GTK_IM_MODULE</span><span class="o">=</span>fcitx
+<span class="nb">export</span> <span class="nv">QT_IM_MODULE</span><span class="o">=</span>fcitx
+<span class="nb">export</span> <span class="nv">XMODIFIERS</span><span class="o">=</span>@im<span class="o">=</span>fcitx
+<span class="nb">export</span> GTK_IM_MODULE <span class="nv">DEFAULT</span><span class="o">=</span>xim
+<span class="nb">export</span> QT_IM_MODULE  <span class="nv">DEFAULT</span><span class="o">=</span>xim
+</code></pre></td></tr></table>
+</div>
+</div><p>保存退出。
+现在输入<code>startx</code>之后就可以启动桌面了。</p>
+<p>现在我们已经算是安装完成了ww。</p>
 <h2 id="最后的话">最后的话</h2>
+<p>这次历时4天的安装体验让我学到了很多，像是Linux的启动流程，Initramfs，内核配置，桌面配置等等。
+感受了Gentoo Linux的魅力，虽然这篇文章到这里就结束了，但是这也是我使用Gentoo Linux的开始。
+感谢学姐送的Mac，同时也感谢Telegram Gentoo-zh群组热心大神的支持！
+是时候回到工作了！</p>
 <h2 id="参考文档">参考文档</h2>
 <ul>
 <li><a href="https://wiki.gentoo.org/wiki/Kernel/Overview">Kernel Overview</a></li>
@@ -3628,6 +3755,9 @@ cp -v /tmp/workdir/genkernel.conf /root/dotfiles
 <li><a href="https://wiki.gentoo.org/wiki/User:Sakaki/Sakaki%27s_EFI_Install_Guide">Sakaki&rsquo;s EFI Install Guide</a></li>
 <li><a href="https://www.kernel.org/doc/html/latest/">The Linux Kernel Documentation</a></li>
 <li><a href="https://wiki.gentoo.org/wiki/Genkernel">Genkernel</a></li>
+<li><a href="https://wiki.archlinux.org/index.php/HiDPI">Archlinux Wiki HiDIP</a></li>
+<li><a href="https://wiki.gentoo.org/wiki/Dracut">Gentoo Dracut</a></li>
+<li><a href="https://wiki.gentoo.org/wiki/KDE">Gentoo KDE</a></li>
 </ul>
 
     </div>
