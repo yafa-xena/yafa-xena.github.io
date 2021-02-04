@@ -18,7 +18,7 @@
 
 <meta name="author" content="Yafa Xena" /><meta name="description" content="前言 这不是一份简短的Gentoo Linux安装手册，我想在这篇文章中向你展示更多Gentoo Linux的魅力。
 这次安装Gentoo打算使用这样的组合：
-   类别 包或包组 说明     基础系统 @world 基础系统   X Windows Xorg Server 使用Xorg作为X Windows的后端服务   桌面 kde 本次安装将会使用KDE桌面   输入法 fcitx-rime 使用fcitx作为输入法框架，使用rime输入法作为日常使用   浏览器 chromium &#43; firefox 多来几个浏览器方便debug   邮箱客户端 thunderbird 雷鸟邮件客户端   密码管理器 keepassxc &#43; pass 一个为gui的一个为命令行的密码管理器   截图软件 flameshot 很棒的截图软件    缘起 我是一个非常贫苦刚刚步入社会的学生。
+   类别 包或包组 说明     基础系统 @system 基础系统   X Windows Xorg Server 使用Xorg作为X Windows的后端服务   桌面 kde 本次安装将会使用KDE桌面   输入法 fcitx-rime 使用fcitx作为输入法框架，使用rime输入法作为日常使用   浏览器 chromium &#43; firefox 多来几个浏览器方便debug   邮箱客户端 thunderbird 雷鸟邮件客户端   密码管理器 keepassxc &#43; pass 一个为gui的一个为命令行的密码管理器   截图软件 flameshot 很棒的截图软件    缘起 我是一个非常贫苦刚刚步入社会的学生。
 今年毕业之后因为疫情的影响好不容易进了一家公司，但是日常的开销不足以让我更换掉现在的机器（只有单个核心的年迈机器。）。
 前些日子在和一位帅气的学长 温柔的学姐在茶会上聊起了工作的一些事情可能是听到了我的抱怨了吧哈哈哈，当时说要送我一台笔记本，当时还在想不会吧？这两天收到了发现是一台Macbook Pro 2015年的15寸版本，还有一个yubico。" /><meta name="keywords" content="Linux, Emacs, Python, Golang, Devops, Zabbix" />
 
@@ -46,7 +46,7 @@
 <meta property="og:title" content="在Mac上安装Gentoo Linux" />
 <meta property="og:description" content="前言 这不是一份简短的Gentoo Linux安装手册，我想在这篇文章中向你展示更多Gentoo Linux的魅力。
 这次安装Gentoo打算使用这样的组合：
-   类别 包或包组 说明     基础系统 @world 基础系统   X Windows Xorg Server 使用Xorg作为X Windows的后端服务   桌面 kde 本次安装将会使用KDE桌面   输入法 fcitx-rime 使用fcitx作为输入法框架，使用rime输入法作为日常使用   浏览器 chromium &#43; firefox 多来几个浏览器方便debug   邮箱客户端 thunderbird 雷鸟邮件客户端   密码管理器 keepassxc &#43; pass 一个为gui的一个为命令行的密码管理器   截图软件 flameshot 很棒的截图软件    缘起 我是一个非常贫苦刚刚步入社会的学生。
+   类别 包或包组 说明     基础系统 @system 基础系统   X Windows Xorg Server 使用Xorg作为X Windows的后端服务   桌面 kde 本次安装将会使用KDE桌面   输入法 fcitx-rime 使用fcitx作为输入法框架，使用rime输入法作为日常使用   浏览器 chromium &#43; firefox 多来几个浏览器方便debug   邮箱客户端 thunderbird 雷鸟邮件客户端   密码管理器 keepassxc &#43; pass 一个为gui的一个为命令行的密码管理器   截图软件 flameshot 很棒的截图软件    缘起 我是一个非常贫苦刚刚步入社会的学生。
 今年毕业之后因为疫情的影响好不容易进了一家公司，但是日常的开销不足以让我更换掉现在的机器（只有单个核心的年迈机器。）。
 前些日子在和一位帅气的学长 温柔的学姐在茶会上聊起了工作的一些事情可能是听到了我的抱怨了吧哈哈哈，当时说要送我一台笔记本，当时还在想不会吧？这两天收到了发现是一台Macbook Pro 2015年的15寸版本，还有一个yubico。" />
 <meta property="og:type" content="article" />
@@ -56,7 +56,7 @@
 <meta itemprop="name" content="在Mac上安装Gentoo Linux">
 <meta itemprop="description" content="前言 这不是一份简短的Gentoo Linux安装手册，我想在这篇文章中向你展示更多Gentoo Linux的魅力。
 这次安装Gentoo打算使用这样的组合：
-   类别 包或包组 说明     基础系统 @world 基础系统   X Windows Xorg Server 使用Xorg作为X Windows的后端服务   桌面 kde 本次安装将会使用KDE桌面   输入法 fcitx-rime 使用fcitx作为输入法框架，使用rime输入法作为日常使用   浏览器 chromium &#43; firefox 多来几个浏览器方便debug   邮箱客户端 thunderbird 雷鸟邮件客户端   密码管理器 keepassxc &#43; pass 一个为gui的一个为命令行的密码管理器   截图软件 flameshot 很棒的截图软件    缘起 我是一个非常贫苦刚刚步入社会的学生。
+   类别 包或包组 说明     基础系统 @system 基础系统   X Windows Xorg Server 使用Xorg作为X Windows的后端服务   桌面 kde 本次安装将会使用KDE桌面   输入法 fcitx-rime 使用fcitx作为输入法框架，使用rime输入法作为日常使用   浏览器 chromium &#43; firefox 多来几个浏览器方便debug   邮箱客户端 thunderbird 雷鸟邮件客户端   密码管理器 keepassxc &#43; pass 一个为gui的一个为命令行的密码管理器   截图软件 flameshot 很棒的截图软件    缘起 我是一个非常贫苦刚刚步入社会的学生。
 今年毕业之后因为疫情的影响好不容易进了一家公司，但是日常的开销不足以让我更换掉现在的机器（只有单个核心的年迈机器。）。
 前些日子在和一位帅气的学长 温柔的学姐在茶会上聊起了工作的一些事情可能是听到了我的抱怨了吧哈哈哈，当时说要送我一台笔记本，当时还在想不会吧？这两天收到了发现是一台Macbook Pro 2015年的15寸版本，还有一个yubico。">
 <meta itemprop="datePublished" content="2021-01-18T19:41:36-05:00" />
@@ -70,7 +70,7 @@
 <meta name="twitter:title" content="在Mac上安装Gentoo Linux"/>
 <meta name="twitter:description" content="前言 这不是一份简短的Gentoo Linux安装手册，我想在这篇文章中向你展示更多Gentoo Linux的魅力。
 这次安装Gentoo打算使用这样的组合：
-   类别 包或包组 说明     基础系统 @world 基础系统   X Windows Xorg Server 使用Xorg作为X Windows的后端服务   桌面 kde 本次安装将会使用KDE桌面   输入法 fcitx-rime 使用fcitx作为输入法框架，使用rime输入法作为日常使用   浏览器 chromium &#43; firefox 多来几个浏览器方便debug   邮箱客户端 thunderbird 雷鸟邮件客户端   密码管理器 keepassxc &#43; pass 一个为gui的一个为命令行的密码管理器   截图软件 flameshot 很棒的截图软件    缘起 我是一个非常贫苦刚刚步入社会的学生。
+   类别 包或包组 说明     基础系统 @system 基础系统   X Windows Xorg Server 使用Xorg作为X Windows的后端服务   桌面 kde 本次安装将会使用KDE桌面   输入法 fcitx-rime 使用fcitx作为输入法框架，使用rime输入法作为日常使用   浏览器 chromium &#43; firefox 多来几个浏览器方便debug   邮箱客户端 thunderbird 雷鸟邮件客户端   密码管理器 keepassxc &#43; pass 一个为gui的一个为命令行的密码管理器   截图软件 flameshot 很棒的截图软件    缘起 我是一个非常贫苦刚刚步入社会的学生。
 今年毕业之后因为疫情的影响好不容易进了一家公司，但是日常的开销不足以让我更换掉现在的机器（只有单个核心的年迈机器。）。
 前些日子在和一位帅气的学长 温柔的学姐在茶会上聊起了工作的一些事情可能是听到了我的抱怨了吧哈哈哈，当时说要送我一台笔记本，当时还在想不会吧？这两天收到了发现是一台Macbook Pro 2015年的15寸版本，还有一个yubico。"/>
 
@@ -232,7 +232,7 @@
 <tbody>
 <tr>
 <td>基础系统</td>
-<td><code>@world</code></td>
+<td><code>@system</code></td>
 <td>基础系统</td>
 </tr>
 <tr>
