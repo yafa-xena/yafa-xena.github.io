@@ -1,2 +1,2 @@
 User-agent: *
-Sitemap: https://yafa-xena.github.io/sitemap.xml
+Sitemap: https://www.yafa.moe/sitemap.xml

@@ -1,57 +1,57 @@
-<?xml-stylesheet type="text/xsl" href="https://yafa-xena.github.io/sitemap.xsl"?>
+<?xml-stylesheet type="text/xsl" href="https://www.yafa.moe/sitemap.xsl"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://yafa-xena.github.io/tags/gentoo/</loc>
+    <loc>https://www.yafa.moe/tags/gentoo/</loc>
     <lastmod>2021-01-18T19:41:36-05:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://yafa-xena.github.io/tags/linux/</loc>
+    <loc>https://www.yafa.moe/tags/linux/</loc>
     <lastmod>2021-01-18T19:41:36-05:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://yafa-xena.github.io/post/</loc>
+    <loc>https://www.yafa.moe/post/</loc>
     <lastmod>2021-01-18T19:41:36-05:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://yafa-xena.github.io/tags/</loc>
+    <loc>https://www.yafa.moe/tags/</loc>
     <lastmod>2021-01-18T19:41:36-05:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://yafa-xena.github.io/</loc>
+    <loc>https://www.yafa.moe/</loc>
     <lastmod>2021-01-18T19:41:36-05:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://yafa-xena.github.io/post/install-gentoo-on-mac/</loc>
+    <loc>https://www.yafa.moe/post/install-gentoo-on-mac/</loc>
     <lastmod>2021-01-18T19:41:36-05:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://yafa-xena.github.io/post/my-first-posts/</loc>
+    <loc>https://www.yafa.moe/post/my-first-posts/</loc>
     <lastmod>2021-01-18T07:01:50-05:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://yafa-xena.github.io/categories/</loc>
+    <loc>https://www.yafa.moe/categories/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>

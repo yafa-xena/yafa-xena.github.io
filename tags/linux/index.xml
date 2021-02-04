@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Linux on Yafa Xena&#39;s Blog</title>
-    <link>https://yafa-xena.github.io/tags/linux/</link>
+    <link>https://www.yafa.moe/tags/linux/</link>
     <description>Recent content in Linux on Yafa Xena&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 18 Jan 2021 19:41:36 -0500</lastBuildDate><atom:link href="https://yafa-xena.github.io/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 18 Jan 2021 19:41:36 -0500</lastBuildDate><atom:link href="https://www.yafa.moe/tags/linux/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>在Mac上安装Gentoo Linux</title>
-      <link>https://yafa-xena.github.io/post/install-gentoo-on-mac/</link>
+      <link>https://www.yafa.moe/post/install-gentoo-on-mac/</link>
       <pubDate>Mon, 18 Jan 2021 19:41:36 -0500</pubDate>
       
-      <guid>https://yafa-xena.github.io/post/install-gentoo-on-mac/</guid>
+      <guid>https://www.yafa.moe/post/install-gentoo-on-mac/</guid>
       <description>前言 这不是一份简短的Gentoo Linux安装手册，我想在这篇文章中向你展示更多Gentoo Linux的魅力。
 这次安装Gentoo打算使用这样的组合：
    类别 包或包组 说明     基础系统 @world 基础系统   X Windows Xorg Server 使用Xorg作为X Windows的后端服务   桌面 kde 本次安装将会使用KDE桌面   输入法 fcitx-rime 使用fcitx作为输入法框架，使用rime输入法作为日常使用   浏览器 chromium + firefox 多来几个浏览器方便debug   邮箱客户端 thunderbird 雷鸟邮件客户端   密码管理器 keepassxc + pass 一个为gui的一个为命令行的密码管理器   截图软件 flameshot 很棒的截图软件    缘起 我是一个非常贫苦刚刚步入社会的学生。
