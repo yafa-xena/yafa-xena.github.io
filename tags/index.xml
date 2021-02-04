@@ -6,11 +6,20 @@
     <description>Recent content in Tags on Yafa Xena&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 18 Jan 2021 19:41:36 -0500</lastBuildDate><atom:link href="https://www.yafa.moe/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 04 Feb 2021 15:37:52 +0800</lastBuildDate><atom:link href="https://www.yafa.moe/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>about</title>
+      <link>https://www.yafa.moe/tags/about/</link>
+      <pubDate>Thu, 04 Feb 2021 15:37:52 +0800</pubDate>
+      
+      <guid>https://www.yafa.moe/tags/about/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>Gentoo</title>
       <link>https://www.yafa.moe/tags/gentoo/</link>
-      <pubDate>Mon, 18 Jan 2021 19:41:36 -0500</pubDate>
+      <pubDate>Sat, 23 Jan 2021 14:30:17 +0800</pubDate>
       
       <guid>https://www.yafa.moe/tags/gentoo/</guid>
       <description></description>
@@ -19,7 +28,7 @@
     <item>
       <title>Linux</title>
       <link>https://www.yafa.moe/tags/linux/</link>
-      <pubDate>Mon, 18 Jan 2021 19:41:36 -0500</pubDate>
+      <pubDate>Sat, 23 Jan 2021 14:30:17 +0800</pubDate>
       
       <guid>https://www.yafa.moe/tags/linux/</guid>
       <description></description>
