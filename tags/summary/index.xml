@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Yafa Xena&#39;s Blog</title>
-    <link>https://www.yafa.moe/</link>
-    <description>Recent content on Yafa Xena&#39;s Blog</description>
+    <title>summary on Yafa Xena&#39;s Blog</title>
+    <link>https://www.yafa.moe/tags/summary/</link>
+    <description>Recent content in summary on Yafa Xena&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 10 Feb 2021 18:32:13 +0800</lastBuildDate><atom:link href="https://www.yafa.moe/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 10 Feb 2021 18:32:13 +0800</lastBuildDate><atom:link href="https://www.yafa.moe/tags/summary/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>2020年终总结</title>
       <link>https://www.yafa.moe/post/2020-summary/</link>
@@ -31,57 +31,6 @@
 第三个习惯是关于每天写日记，最近学姐给我推荐了一本《晨间笔记的奇迹》这本书中提到的一个观点就是在早上记笔记。通过几天的尝试感觉确实有点不一样，对于写日记没有了抗拒的感觉，早上起来跑完步的时候自然而然或者是在跑步的途中就开始思考昨天的一些事情以及今天要做那些事情（随身带一个小本子随时收集）将这些记录下来，就像是在一堆服务器中找到了你按了提示灯的那台一样。我希望我可以保持这个习惯。
 在学习这个方向上我希望我能够逐渐消除的一些习惯：
  拖延  我在学习上有很严重的拖延症，假设我想要完成一门课程，距离测试可能可能只剩下2天了我是那种会拖延到截止提交的最后2小时，然后满分通过的（不用想了肯定是很差）。 当像是这样的事情次数多了之后开始有一种对学习的厌倦感，我非常想要改变这种行为模式。现在开始做一些尝试，类似于找到一个合适的时间段，排除掉所有可能干扰到学习的因素，像是手机电脑之类的，然后专心学习。</description>
-    </item>
-    
-    <item>
-      <title>关于我</title>
-      <link>https://www.yafa.moe/about/</link>
-      <pubDate>Thu, 04 Feb 2021 15:37:52 +0800</pubDate>
-      
-      <guid>https://www.yafa.moe/about/</guid>
-      <description>我是谁？ 你可以叫我Yafa，是一个步入社会没有几年的“学生”。
-目前是运维工程师（全职）。
-比较喜欢Gentoo，极简主义，阅读，写作，最喜欢的是学姐！！！
-这个博客主要是记录一些技术相关的分享，和一些日常。
-联系方式  Github [GPG]0xC6964DEDF01A4DA0  </description>
-    </item>
-    
-    <item>
-      <title>设置我的实验环境</title>
-      <link>https://www.yafa.moe/post/setup-my-lab/</link>
-      <pubDate>Sat, 23 Jan 2021 14:30:17 +0800</pubDate>
-      
-      <guid>https://www.yafa.moe/post/setup-my-lab/</guid>
-      <description>前言 在结束安装Gentoo后，下一步就是要初始化我的实验环境了，我这里使用比较多的实验环境主要是在本机上创建虚拟机然后运行不同的软件和不同的环境。我常用的虚拟化软件如下:
-   虚拟化类型 软件包     软件虚拟化 app-emulation/virtualbox   全虚拟化 app-emulation/qemu   半虚拟化 app-emulation/xen   container app-emulation/docker    这几种虚拟化各有优点，我平时是使用virtualbox做测试环境，QEMU就更加贴近生产环境，半虚拟化是做Qubes On Gentoo的准备，容器是想要快速测试东西的时候使用的，后续也会作为基础了解一下K8S之类的。
-这些直接使用可能有点不是很舒服为此我还需要以下工具来方便去管理虚拟机:
-   软件包 描述     app-emulation/vagrant 管理Virtualbox   app-emulation/libvirt 管理QEMU虚拟机   app-admin/terraform 使用libvirt的provider来管理QEMU虚拟机   app-admin/ansible 批量管理虚拟机   app-admin/salt 批量管理虚拟机    安装和配置Virtualbox环境 Virtualbox主要是放一些Whonix或者是测试的简单环境
- 安装Virtualbox
- 1  emerge --ask --verbose app-emulation/virtualbox app-emulation/virtualbox-additions app-emulation/virtualbox-extpack-oracle   为了普通用户可以正常使用Virtualbox还需要将用户添加到vboxusers组中</description>
-    </item>
-    
-    <item>
-      <title>在Mac上安装Gentoo Linux</title>
-      <link>https://www.yafa.moe/post/install-gentoo-on-mac/</link>
-      <pubDate>Mon, 18 Jan 2021 19:41:36 -0500</pubDate>
-      
-      <guid>https://www.yafa.moe/post/install-gentoo-on-mac/</guid>
-      <description>前言 这不是一份简短的Gentoo Linux安装手册，我想在这篇文章中向你展示更多Gentoo Linux的魅力。
-这次安装Gentoo打算使用这样的组合：
-   类别 包或包组 说明     基础系统 @system 基础系统   X Windows Xorg Server 使用Xorg作为X Windows的后端服务   桌面 kde 本次安装将会使用KDE桌面   输入法 fcitx-rime 使用fcitx作为输入法框架，使用rime输入法作为日常使用   浏览器 chromium + firefox 多来几个浏览器方便debug   邮箱客户端 thunderbird 雷鸟邮件客户端   密码管理器 keepassxc + pass 一个为gui的一个为命令行的密码管理器   截图软件 flameshot 很棒的截图软件    缘起 我是一个非常贫苦刚刚步入社会的学生。
-今年毕业之后因为疫情的影响好不容易进了一家公司，但是日常的开销不足以让我更换掉现在的机器（只有单个核心的年迈机器。）。
-前些日子在和一位帅气的学长 温柔的学姐在茶会上聊起了工作的一些事情可能是听到了我的抱怨了吧哈哈哈，当时说要送我一台笔记本，当时还在想不会吧？这两天收到了发现是一台Macbook Pro 2015年的15寸版本，还有一个yubico。</description>
-    </item>
-    
-    <item>
-      <title>My First Posts</title>
-      <link>https://www.yafa.moe/post/my-first-posts/</link>
-      <pubDate>Mon, 18 Jan 2021 07:01:50 -0500</pubDate>
-      
-      <guid>https://www.yafa.moe/post/my-first-posts/</guid>
-      <description>Hello, World!
-I&amp;rsquo;m Yafa Xena. This is My First hugo posts.
-Welcome to my blog</description>
     </item>
     
   </channel>

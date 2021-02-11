@@ -2,21 +2,49 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://www.yafa.moe/tags/about/</loc>
-    <lastmod>2021-02-04T15:37:52+08:00</lastmod>
+    <loc>https://www.yafa.moe/tags/2020/</loc>
+    <lastmod>2021-02-10T18:32:13+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.yafa.moe/post/2020-summary/</loc>
+    <lastmod>2021-02-10T18:32:13+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.yafa.moe/post/</loc>
+    <lastmod>2021-02-10T18:32:13+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.yafa.moe/tags/summary/</loc>
+    <lastmod>2021-02-10T18:32:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://www.yafa.moe/tags/</loc>
-    <lastmod>2021-02-04T15:37:52+08:00</lastmod>
+    <lastmod>2021-02-10T18:32:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://www.yafa.moe/</loc>
+    <lastmod>2021-02-10T18:32:13+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.yafa.moe/tags/about/</loc>
     <lastmod>2021-02-04T15:37:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -38,13 +66,6 @@
   
   <url>
     <loc>https://www.yafa.moe/tags/linux/</loc>
-    <lastmod>2021-01-23T14:30:17+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://www.yafa.moe/post/</loc>
     <lastmod>2021-01-23T14:30:17+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>

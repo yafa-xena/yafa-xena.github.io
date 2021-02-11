@@ -494,25 +494,25 @@ app-emulation/qemu qemu_user_targets_x86_64
 <tbody>
 <tr>
 <td>test</td>
-<td>172.11.0.0/24</td>
+<td>172.11.0.0/22</td>
 <td>测试网络</td>
 <td>NAT</td>
 </tr>
 <tr>
 <td>dev</td>
-<td>172.12.0.0/24</td>
+<td>172.12.0.0/22</td>
 <td>开发网络</td>
 <td>NAT</td>
 </tr>
 <tr>
 <td>oncall</td>
-<td>172.21.0.0/24</td>
+<td>172.21.0.0/22</td>
 <td>线上网络</td>
 <td>NAT</td>
 </tr>
 <tr>
 <td>data</td>
-<td>10.12.11.0/24</td>
+<td>10.12.8.0/22</td>
 <td>数据网络</td>
 <td>Isolated</td>
 </tr>
@@ -613,9 +613,9 @@ app-emulation/qemu qemu_user_targets_x86_64
     &lt;/nat&gt;
   &lt;/forward&gt;
   &lt;bridge <span class="nv">name</span><span class="o">=</span><span class="s1">&#39;virbr1&#39;</span> <span class="nv">stp</span><span class="o">=</span><span class="s1">&#39;on&#39;</span> <span class="nv">delay</span><span class="o">=</span><span class="s1">&#39;0&#39;</span>/&gt;
-  &lt;ip <span class="nv">address</span><span class="o">=</span><span class="s1">&#39;172.11.0.1&#39;</span> <span class="nv">netmask</span><span class="o">=</span><span class="s1">&#39;255.255.255.0&#39;</span>&gt;
+  &lt;ip <span class="nv">address</span><span class="o">=</span><span class="s1">&#39;172.11.0.1&#39;</span> <span class="nv">netmask</span><span class="o">=</span><span class="s1">&#39;255.255.252.0&#39;</span>&gt;
     &lt;dhcp&gt;
-      &lt;range <span class="nv">start</span><span class="o">=</span><span class="s1">&#39;172.11.0.2&#39;</span> <span class="nv">end</span><span class="o">=</span><span class="s1">&#39;172.11.0.254&#39;</span>/&gt;
+      &lt;range <span class="nv">start</span><span class="o">=</span><span class="s1">&#39;172.11.0.2&#39;</span> <span class="nv">end</span><span class="o">=</span><span class="s1">&#39;172.11.3.254&#39;</span>/&gt;
     &lt;/dhcp&gt;
   &lt;/ip&gt;
 &lt;/network&gt;
@@ -706,9 +706,9 @@ app-emulation/qemu qemu_user_targets_x86_64
     &lt;/nat&gt;
   &lt;/forward&gt;
   &lt;bridge <span class="nv">name</span><span class="o">=</span><span class="s1">&#39;virbr2&#39;</span> <span class="nv">stp</span><span class="o">=</span><span class="s1">&#39;on&#39;</span> <span class="nv">delay</span><span class="o">=</span><span class="s1">&#39;0&#39;</span>/&gt;
-  &lt;ip <span class="nv">address</span><span class="o">=</span><span class="s1">&#39;172.12.0.1&#39;</span> <span class="nv">netmask</span><span class="o">=</span><span class="s1">&#39;255.255.255.0&#39;</span>&gt;
+  &lt;ip <span class="nv">address</span><span class="o">=</span><span class="s1">&#39;172.12.0.1&#39;</span> <span class="nv">netmask</span><span class="o">=</span><span class="s1">&#39;255.255.252.0&#39;</span>&gt;
     &lt;dhcp&gt;
-      &lt;range <span class="nv">start</span><span class="o">=</span><span class="s1">&#39;172.12.0.2&#39;</span> <span class="nv">end</span><span class="o">=</span><span class="s1">&#39;172.12.0.254&#39;</span>/&gt;
+      &lt;range <span class="nv">start</span><span class="o">=</span><span class="s1">&#39;172.12.0.2&#39;</span> <span class="nv">end</span><span class="o">=</span><span class="s1">&#39;172.12.3.254&#39;</span>/&gt;
     &lt;/dhcp&gt;
   &lt;/ip&gt;
 &lt;/network&gt;
@@ -780,9 +780,9 @@ app-emulation/qemu qemu_user_targets_x86_64
     &lt;/nat&gt;
   &lt;/forward&gt;
   &lt;bridge <span class="nv">name</span><span class="o">=</span><span class="s1">&#39;virbr3&#39;</span> <span class="nv">stp</span><span class="o">=</span><span class="s1">&#39;on&#39;</span> <span class="nv">delay</span><span class="o">=</span><span class="s1">&#39;0&#39;</span>/&gt;
-  &lt;ip <span class="nv">address</span><span class="o">=</span><span class="s1">&#39;172.21.0.1&#39;</span> <span class="nv">netmask</span><span class="o">=</span><span class="s1">&#39;255.255.255.0&#39;</span>&gt;
+  &lt;ip <span class="nv">address</span><span class="o">=</span><span class="s1">&#39;172.21.0.1&#39;</span> <span class="nv">netmask</span><span class="o">=</span><span class="s1">&#39;255.255.252.0&#39;</span>&gt;
     &lt;dhcp&gt;
-      &lt;range <span class="nv">start</span><span class="o">=</span><span class="s1">&#39;172.21.0.2&#39;</span> <span class="nv">end</span><span class="o">=</span><span class="s1">&#39;172.21.0.254&#39;</span>/&gt;
+      &lt;range <span class="nv">start</span><span class="o">=</span><span class="s1">&#39;172.21.0.2&#39;</span> <span class="nv">end</span><span class="o">=</span><span class="s1">&#39;172.21.3.254&#39;</span>/&gt;
     &lt;/dhcp&gt;
   &lt;/ip&gt;
 &lt;/network&gt;
@@ -836,9 +836,9 @@ app-emulation/qemu qemu_user_targets_x86_64
 <pre class="chroma"><code class="language-sh" data-lang="sh">&lt;network&gt;
   &lt;name&gt;data&lt;/name&gt;
   &lt;bridge <span class="nv">name</span><span class="o">=</span><span class="s1">&#39;virbr4&#39;</span> <span class="nv">stp</span><span class="o">=</span><span class="s1">&#39;on&#39;</span> <span class="nv">delay</span><span class="o">=</span><span class="s1">&#39;0&#39;</span>/&gt;
-  &lt;ip <span class="nv">address</span><span class="o">=</span><span class="s1">&#39;10.12.11.1&#39;</span> <span class="nv">netmask</span><span class="o">=</span><span class="s1">&#39;255.255.255.0&#39;</span>&gt;
+  &lt;ip <span class="nv">address</span><span class="o">=</span><span class="s1">&#39;10.12.8.1&#39;</span> <span class="nv">netmask</span><span class="o">=</span><span class="s1">&#39;255.255.252.0&#39;</span>&gt;
     &lt;dhcp&gt;
-      &lt;range <span class="nv">start</span><span class="o">=</span><span class="s1">&#39;10.12.11.2&#39;</span> <span class="nv">end</span><span class="o">=</span><span class="s1">&#39;10.12.11.254&#39;</span>/&gt;
+      &lt;range <span class="nv">start</span><span class="o">=</span><span class="s1">&#39;10.12.8.2&#39;</span> <span class="nv">end</span><span class="o">=</span><span class="s1">&#39;10.12.11.254&#39;</span>/&gt;
     &lt;/dhcp&gt;
   &lt;/ip&gt;
 &lt;/network&gt;
@@ -1848,7 +1848,11 @@ xena	<span class="nv">ALL</span><span class="o">=(</span>ALL<span class="o">)</s
           <a href="/tags/gentoo/">Gentoo</a>
           </div>
       <nav class="post-nav">
-        
+        <a class="prev" href="/post/2020-summary/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">2020年终总结</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
         <a class="next" href="/post/install-gentoo-on-mac/">
             <span class="next-text nav-default">在Mac上安装Gentoo Linux</span>
             <span class="next-text nav-mobile">Next</span>
