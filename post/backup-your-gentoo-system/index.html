@@ -64,7 +64,7 @@
 1 2 3 4 5 6 7 8 9 10 11  fdisk -l Disk /dev/sda: 232.9 GiB, 250055122432 bytes, 488388911 sectors Disk model: 00AAJS-00B4A0 Units: sectors of 1 * 512 = 512 bytes Sector size (logical/physical): 512 bytes / 512 bytes I/O size (minimum/optimal): 512 bytes / 512 bytes Disklabel type: dos Disk identifier: 0x80f01a9c Device Boot Start End Sectors Size Id Type /dev/sda1 2048 488388910 488386863 232.">
 <meta itemprop="datePublished" content="2021-02-13T17:11:42+08:00" />
 <meta itemprop="dateModified" content="2021-02-13T17:11:42+08:00" />
-<meta itemprop="wordCount" content="334">
+<meta itemprop="wordCount" content="333">
 
 
 
@@ -375,7 +375,7 @@ Enter passphrase <span class="k">for</span> /dev/sda1:
 <pre class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-sh" data-lang="sh">sudo rsync -aAXv --exclude<span class="o">={</span><span class="s2">&#34;/dev/*&#34;</span>,<span class="s2">&#34;/proc/*&#34;</span>,<span class="s2">&#34;/sys/*&#34;</span>,<span class="s2">&#34;/tmp/*&#34;</span>,<span class="s2">&#34;/run/*&#34;</span>,<span class="s2">&#34;/mnt/*&#34;</span>,<span class="s2">&#34;/media/*&#34;</span>,<span class="s2">&#34;/lost+found&#34;</span>, <span class="s2">&#34;/backup&#34;</span><span class="o">}</span> / /backup
+<pre class="chroma"><code class="language-sh" data-lang="sh">sudo rsync -aAXv --exclude<span class="o">={</span><span class="s2">&#34;/dev/*&#34;</span>,<span class="s2">&#34;/proc/*&#34;</span>,<span class="s2">&#34;/sys/*&#34;</span>,<span class="s2">&#34;/tmp/*&#34;</span>,<span class="s2">&#34;/run/*&#34;</span>,<span class="s2">&#34;/mnt/*&#34;</span>,<span class="s2">&#34;/media/*&#34;</span>,<span class="s2">&#34;/lost+found&#34;</span>,<span class="s2">&#34;/backup/*&#34;</span>,<span class="s2">&#34;/swapfile&#34;</span><span class="o">}</span> / /backup
 </code></pre></td></tr></table>
 </div>
 </div><p>这里使用的<code>-aAXv</code>选项的意思是：文件将会以归档模式传输，保留符号设备，文件权限，修改时间，ACL和扩展属性，并且将备份的过程打印在屏幕上。</p>
