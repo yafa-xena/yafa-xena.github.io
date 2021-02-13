@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Backup on Yafa Xena&#39;s Blog</title>
+    <link>https://www.yafa.moe/tags/backup/</link>
+    <description>Recent content in Backup on Yafa Xena&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 13 Feb 2021 17:11:42 +0800</lastBuildDate><atom:link href="https://www.yafa.moe/tags/backup/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>备份你的Gentoo系统</title>
+      <link>https://www.yafa.moe/post/backup-your-gentoo-system/</link>
+      <pubDate>Sat, 13 Feb 2021 17:11:42 +0800</pubDate>
+      
+      <guid>https://www.yafa.moe/post/backup-your-gentoo-system/</guid>
+      <description>前言 在前一篇的在Mac上安装Gentoo Linux完成后，我其实还想要折腾一下其他的文件系统比如说ZFS，BTRFS，XFS之类的，虽然说可以在虚拟机里面做实验但是还是想要整个机器切过去，但是重新安装的话耗费的时间太长了，我想备份一下系统然后重新分区之后将原来的系统恢复一下再更新一下fstab bootload之类的就可以正常使用了。
+这篇文章就是讲述如何备份你的Gentoo Linux(离线备份)
+准备  250G硬盘*1 （我当前的数据量在200G左右250G的硬盘能够满足一次备份，后续如果要做周期性备份的话就需要换一个更大的了）  备份 初始化硬盘 这里的初始化硬盘是为了将原来的数据全部清除并且重新建立LUKS和文件系统。出于安全的考虑，备份不应该直接在硬盘上分区创建文件系统后备份在上面，应该做一层加密再去创建文件系统和备份。
+将硬盘插入需要备份的电脑上
+查看新增的设备
+1 2 3 4 5 6 7 8 9 10 11  fdisk -l Disk /dev/sda: 232.9 GiB, 250055122432 bytes, 488388911 sectors Disk model: 00AAJS-00B4A0 Units: sectors of 1 * 512 = 512 bytes Sector size (logical/physical): 512 bytes / 512 bytes I/O size (minimum/optimal): 512 bytes / 512 bytes Disklabel type: dos Disk identifier: 0x80f01a9c Device Boot Start End Sectors Size Id Type /dev/sda1 2048 488388910 488386863 232.</description>
+    </item>
+    
+  </channel>
+</rss>

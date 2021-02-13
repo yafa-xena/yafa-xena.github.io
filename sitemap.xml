@@ -2,6 +2,48 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://www.yafa.moe/tags/backup/</loc>
+    <lastmod>2021-02-13T17:11:42+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.yafa.moe/tags/gentoo/</loc>
+    <lastmod>2021-02-13T17:11:42+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.yafa.moe/post/</loc>
+    <lastmod>2021-02-13T17:11:42+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.yafa.moe/tags/</loc>
+    <lastmod>2021-02-13T17:11:42+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.yafa.moe/</loc>
+    <lastmod>2021-02-13T17:11:42+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.yafa.moe/post/backup-your-gentoo-system/</loc>
+    <lastmod>2021-02-13T17:11:42+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://www.yafa.moe/tags/2020/</loc>
     <lastmod>2021-02-10T18:32:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -16,28 +58,7 @@
   </url>
   
   <url>
-    <loc>https://www.yafa.moe/post/</loc>
-    <lastmod>2021-02-10T18:32:13+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://www.yafa.moe/tags/summary/</loc>
-    <lastmod>2021-02-10T18:32:13+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://www.yafa.moe/tags/</loc>
-    <lastmod>2021-02-10T18:32:13+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://www.yafa.moe/</loc>
     <lastmod>2021-02-10T18:32:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -60,13 +81,6 @@
   <url>
     <loc>https://www.yafa.moe/about/</loc>
     <lastmod>2021-02-04T15:37:52+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://www.yafa.moe/tags/gentoo/</loc>
-    <lastmod>2021-01-23T14:30:17+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
