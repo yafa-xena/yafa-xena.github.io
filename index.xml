@@ -6,7 +6,17 @@
     <description>Recent content on Yafa Xena&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 14 Feb 2021 10:58:06 +0800</lastBuildDate><atom:link href="https://www.yafa.moe/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 14 Feb 2021 13:40:37 +0800</lastBuildDate><atom:link href="https://www.yafa.moe/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Yandex Email</title>
+      <link>https://www.yafa.moe/post/yandex-email/</link>
+      <pubDate>Sun, 14 Feb 2021 13:40:37 +0800</pubDate>
+      
+      <guid>https://www.yafa.moe/post/yandex-email/</guid>
+      <description>&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;
+&lt;p&gt;前几天买了一个域名就是现在的&lt;code&gt;yafa.moe&lt;/code&gt;，看着自己丑啦吧唧的邮箱地址，想到可以自己折腾一个邮箱来着。建立域名邮箱有很多种方法，可以选择自建或者是选择一些免费的邮箱，为了功能和防垃圾邮件也可以选择付费的一些邮箱。毕竟我穷，最后在Zoho和Yandex中选择了Yandex。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>在Gentoo上优雅的吃ZFS</title>
       <link>https://www.yafa.moe/post/gentoo-on-zfs/</link>
@@ -70,7 +80,7 @@ Lakey Inspired</description>
 目前是运维工程师（全职）。
 比较喜欢Gentoo，极简主义，阅读，写作，最喜欢的是学姐！！！
 这个博客主要是记录一些技术相关的分享，和一些日常。
-联系方式  Github [GPG]0xC6964DEDF01A4DA0  </description>
+联系方式  Github GPG: 0xC6964DEDF01A4DA0 Email: aUB5YWZhLm1vZQ== (base64)  </description>
     </item>
     
     <item>

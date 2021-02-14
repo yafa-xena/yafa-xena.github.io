@@ -2,28 +2,49 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://www.yafa.moe/tags/gentoo/</loc>
-    <lastmod>2021-02-14T10:58:06+08:00</lastmod>
+    <loc>https://www.yafa.moe/tags/domain/</loc>
+    <lastmod>2021-02-14T13:40:37+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.yafa.moe/tags/email/</loc>
+    <lastmod>2021-02-14T13:40:37+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://www.yafa.moe/post/</loc>
-    <lastmod>2021-02-14T10:58:06+08:00</lastmod>
+    <lastmod>2021-02-14T13:40:37+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://www.yafa.moe/tags/</loc>
-    <lastmod>2021-02-14T10:58:06+08:00</lastmod>
+    <lastmod>2021-02-14T13:40:37+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://www.yafa.moe/</loc>
+    <lastmod>2021-02-14T13:40:37+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.yafa.moe/post/yandex-email/</loc>
+    <lastmod>2021-02-14T13:40:37+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.yafa.moe/tags/gentoo/</loc>
     <lastmod>2021-02-14T10:58:06+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
