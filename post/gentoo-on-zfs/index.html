@@ -58,7 +58,7 @@
 因为当前用的这个Mac已经有了系统并且正常使用了一段时间，为了保持数据不丢失我先备份了一下系统。关于如何备份系统可以参考我这篇文章备份你的Gentoo系统。">
 <meta itemprop="datePublished" content="2021-02-14T10:58:06+08:00" />
 <meta itemprop="dateModified" content="2021-02-14T10:58:06+08:00" />
-<meta itemprop="wordCount" content="1170">
+<meta itemprop="wordCount" content="1171">
 
 
 
@@ -871,7 +871,7 @@ file /etc/hostid
 </code></pre></td></tr></table>
 </div>
 </div><h2 id="故障排除">故障排除</h2>
-<p>进入到livecd之后，打开dataset</p>
+<p>进入到livecd之后，打开zpool</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
@@ -880,7 +880,7 @@ file /etc/hostid
 <pre class="chroma"><code class="language-sh" data-lang="sh">zpool import -f rock
 </code></pre></td></tr></table>
 </div>
-</div><p>设置挂载分区</p>
+</div><p>设置<code>rootfs</code>的挂载点</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
@@ -889,7 +889,7 @@ file /etc/hostid
 <pre class="chroma"><code class="language-sh" data-lang="sh">zfs <span class="nb">set</span> <span class="nv">mountpoint</span><span class="o">=</span>/mnt/gentoo rock/os/gentoo
 </code></pre></td></tr></table>
 </div>
-</div><p>打开<code>rock/os/gentoo</code>分区</p>
+</div><p>打开<code>rock/os/gentoo</code> <code>dataset</code></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
@@ -898,7 +898,7 @@ file /etc/hostid
 <pre class="chroma"><code class="language-sh" data-lang="sh">zfs mount -l -a
 </code></pre></td></tr></table>
 </div>
-</div><p>挂载<code>\boot</code>分区</p>
+</div><p>挂载<code>/boot</code>分区</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
@@ -970,7 +970,7 @@ chmod <span class="m">1777</span> /dev/shm
 <pre class="chroma"><code class="language-sh" data-lang="sh">umount -R /mnt/gentoo
 </code></pre></td></tr></table>
 </div>
-</div><p>将rootfs的挂载点改回来</p>
+</div><p>将<code>rootfs</code>的挂载点改回来</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
