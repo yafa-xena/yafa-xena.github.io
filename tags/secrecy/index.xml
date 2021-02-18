@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>secrecy on Yafa Xena&#39;s Blog</title>
+    <link>https://www.yafa.moe/tags/secrecy/</link>
+    <description>Recent content in secrecy on Yafa Xena&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 18 Feb 2021 19:13:37 +0800</lastBuildDate><atom:link href="https://www.yafa.moe/tags/secrecy/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用命令行移除照片的EXIF元数据</title>
+      <link>https://www.yafa.moe/post/removing_exif_data_use_commandline/</link>
+      <pubDate>Thu, 18 Feb 2021 19:13:37 +0800</pubDate>
+      
+      <guid>https://www.yafa.moe/post/removing_exif_data_use_commandline/</guid>
+      <description>前言 在我们将日常的生活照发到网上的时候，为了隐私我们要对发到网上的这些图片提前做一些处理，比如说移除掉“EXIF”信息。 EXIF信息就是在拍照的时候采集到的信息，比如说时间、位置、设备信息等等。
+我在准备写一篇关于我的第一步智能手机的文章，其中涉及到现实的一些拍照，我不想让这些信息泄露出去，这里记录以下我是如何处理这些信息的。
+使用 这里使用到的是一个exiftool的工具，这个工具可以读取和写入EXIF信息。
+ 安装
+ 1  emerge -av exiftool    使用
+ 查看图片的EXIF信息
+1  exiftool foo.png # 你的图片名称   删除图片的EXIF信息
+1  exiftool -all= * foo.png   后记 图片能够暴露的信息不止这么些，像是图片的背景，有哪些物品之类的也可能暴露出很多的信息，当想要把这些图片发布到网上之前应该给自己过一道流程。
+我真的要发吗？发出去之后会给我带来那些影响呢？</description>
+    </item>
+    
+  </channel>
+</rss>
