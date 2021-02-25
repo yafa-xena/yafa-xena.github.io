@@ -58,7 +58,7 @@
 因为当前用的这个Mac已经有了系统并且正常使用了一段时间，为了保持数据不丢失我先备份了一下系统。关于如何备份系统可以参考我这篇文章备份你的Gentoo系统。">
 <meta itemprop="datePublished" content="2021-02-14T10:58:06+08:00" />
 <meta itemprop="dateModified" content="2021-02-14T10:58:06+08:00" />
-<meta itemprop="wordCount" content="1171">
+<meta itemprop="wordCount" content="1186">
 
 
 
@@ -150,7 +150,7 @@
       <div class="post-meta">
         <span class="post-time"> 2021-02-14 </span>
         
-          <span class="more-meta"> 1171 words </span>
+          <span class="more-meta"> 1186 words </span>
           <span class="more-meta"> 6 mins read </span>
         
       </div>
@@ -190,6 +190,7 @@
       </ul>
     </li>
     <li><a href="#问题">问题</a></li>
+    <li><a href="#参考链接">参考链接</a></li>
     <li><a href="#结束语">结束语</a></li>
   </ul>
 </nav>
@@ -201,6 +202,9 @@
 <p>如果你有了解过一定的文件系统的知识你可能会想为啥不选择<a href="https://en.wikipedia.org/wiki/Btrfs">Btrfs</a>呢？而且btrfs的话内核是可以直接支持的（需要比较新的内核），这个问题也是一个好问题。因为在我之后的规划里面，我打算自建一个机房。出于成本的考虑采取的方案是存算分离，存储的部分就是打算用ZFS。对于存储来说，连续性检查自动修复，RAID就显得尤为重要，这里也是为了这个计划做一个铺垫。也许你还会说这些btrfs都有啊！为啥还要用ZFS呢？由于我现在的水品还是十分有限，现阶段更多的是调研和测试，后续真正决定要用哪个文件系统或者是组合还是要看最终的测试结果。</p>
 <p>因为当前用的这个Mac已经有了系统并且正常使用了一段时间，为了保持数据不丢失我先备份了一下系统。关于如何备份系统可以参考我这篇文章<a href="https://www.yafa.moe/post/backup-your-gentoo-system/">备份你的Gentoo系统</a>。</p>
 <p>同时也趁着机会对之前的分区大小做一些调整:</p>
+<blockquote>
+<p>Tips: 这里需要注意的是swap要单独做分区，不要在zfs里面创建swapfile，需要单独创建一个swapfile</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -217,6 +221,11 @@
 </tr>
 <tr>
 <td>/dev/nvme0n1p2</td>
+<td>swap</td>
+<td>32G</td>
+</tr>
+<tr>
+<td>/dev/nvme0n1p3</td>
 <td>zfs</td>
 <td>All</td>
 </tr>
@@ -1022,6 +1031,11 @@ chmod <span class="m">1777</span> /dev/shm
 </code></pre></td></tr></table>
 </div>
 </div><p>完成这次操作之后，之后在重启或者是开机就像是之前使用LUKS加密那样子直接在<code>initramfs</code>阶段提示输入密码，然后就可以进入系统了！</p>
+<h2 id="参考链接">参考链接</h2>
+<ul>
+<li><a href="https://wiki.gentoo.org/wiki/User:Ali3nx/Installing_Gentoo_Linux_EFISTUB_On_ZFS">User:Ali3nx/Installing Gentoo Linux EFISTUB On ZFS</a></li>
+<li><a href="https://wiki.gentoo.org/wiki/ZFS">Gentoo Wiki ZFS</a></li>
+</ul>
 <h2 id="结束语">结束语</h2>
 <p>在这次的迁移当中学到了很多关于文件系统的概念，单单从数据上来说首先体验到的一个好处就是文件压缩的功能，在之前的文件系统上是有200G左右的数据，迁移到ZFS之后在140G左右非常的明显。</p>
 <p>ZFS感觉是功能很强大，有很多的功能还是没有用上，后期研究研究如何将一些特性应用到实际的场景当中。</p>

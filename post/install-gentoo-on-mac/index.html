@@ -17,10 +17,9 @@
 
 
 <meta name="author" content="Yafa Xena" /><meta name="description" content="前言 这不是一份简短的Gentoo Linux安装手册，我想在这篇文章中向你展示更多Gentoo Linux的魅力。
-这次安装Gentoo打算使用这样的组合：
-   类别 包或包组 说明     基础系统 @system 基础系统   X Windows Xorg Server 使用Xorg作为X Windows的后端服务   桌面 kde 本次安装将会使用KDE桌面   输入法 fcitx-rime 使用fcitx作为输入法框架，使用rime输入法作为日常使用   浏览器 chromium &#43; firefox 多来几个浏览器方便debug   邮箱客户端 thunderbird 雷鸟邮件客户端   密码管理器 keepassxc &#43; pass 一个为gui的一个为命令行的密码管理器   截图软件 flameshot 很棒的截图软件    缘起 我是一个非常贫苦刚刚步入社会的学生。
-今年毕业之后因为疫情的影响好不容易进了一家公司，但是日常的开销不足以让我更换掉现在的机器（只有单个核心的年迈机器。）。
-前些日子在和一位帅气的学长 温柔的学姐在茶会上聊起了工作的一些事情可能是听到了我的抱怨了吧哈哈哈，当时说要送我一台笔记本，当时还在想不会吧？这两天收到了发现是一台Macbook Pro 2015年的15寸版本，还有一个yubico。" /><meta name="keywords" content="Linux, Emacs, Python, Golang, Devops, Zabbix" />
+ 为什么选择Gentoo？
+ Gentoo 是一个基于源码的滚动发行版。 Gentoo的基础包和软件都是由源码来构建的并且有Portage的USE标记来开启或者是关闭软件的特性。Gentoo提供了一个类似于ports的系统（Portage）所以Gentoo更适合于系统的定制化。
+" /><meta name="keywords" content="Linux, Emacs, Python, Golang, Devops, Zabbix" />
 
 
 
@@ -44,35 +43,38 @@
 
 
 <meta property="og:title" content="在Mac上安装Gentoo Linux" />
-<meta property="og:description" content="前言 这不是一份简短的Gentoo Linux安装手册，我想在这篇文章中向你展示更多Gentoo Linux的魅力。
-这次安装Gentoo打算使用这样的组合：
-   类别 包或包组 说明     基础系统 @system 基础系统   X Windows Xorg Server 使用Xorg作为X Windows的后端服务   桌面 kde 本次安装将会使用KDE桌面   输入法 fcitx-rime 使用fcitx作为输入法框架，使用rime输入法作为日常使用   浏览器 chromium &#43; firefox 多来几个浏览器方便debug   邮箱客户端 thunderbird 雷鸟邮件客户端   密码管理器 keepassxc &#43; pass 一个为gui的一个为命令行的密码管理器   截图软件 flameshot 很棒的截图软件    缘起 我是一个非常贫苦刚刚步入社会的学生。
-今年毕业之后因为疫情的影响好不容易进了一家公司，但是日常的开销不足以让我更换掉现在的机器（只有单个核心的年迈机器。）。
-前些日子在和一位帅气的学长 温柔的学姐在茶会上聊起了工作的一些事情可能是听到了我的抱怨了吧哈哈哈，当时说要送我一台笔记本，当时还在想不会吧？这两天收到了发现是一台Macbook Pro 2015年的15寸版本，还有一个yubico。" />
+<meta property="og:description" content="前言
+这不是一份简短的Gentoo Linux安装手册，我想在这篇文章中向你展示更多Gentoo Linux的魅力。
+
+为什么选择Gentoo？
+
+Gentoo 是一个基于源码的滚动发行版。 Gentoo的基础包和软件都是由源码来构建的并且有Portage的USE标记来开启或者是关闭软件的特性。Gentoo提供了一个类似于ports的系统（Portage）所以Gentoo更适合于系统的定制化。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://www.yafa.moe/post/install-gentoo-on-mac/" />
 <meta property="article:published_time" content="2021-01-18T19:41:36-05:00" />
 <meta property="article:modified_time" content="2021-01-18T19:41:36-05:00" />
 <meta itemprop="name" content="在Mac上安装Gentoo Linux">
-<meta itemprop="description" content="前言 这不是一份简短的Gentoo Linux安装手册，我想在这篇文章中向你展示更多Gentoo Linux的魅力。
-这次安装Gentoo打算使用这样的组合：
-   类别 包或包组 说明     基础系统 @system 基础系统   X Windows Xorg Server 使用Xorg作为X Windows的后端服务   桌面 kde 本次安装将会使用KDE桌面   输入法 fcitx-rime 使用fcitx作为输入法框架，使用rime输入法作为日常使用   浏览器 chromium &#43; firefox 多来几个浏览器方便debug   邮箱客户端 thunderbird 雷鸟邮件客户端   密码管理器 keepassxc &#43; pass 一个为gui的一个为命令行的密码管理器   截图软件 flameshot 很棒的截图软件    缘起 我是一个非常贫苦刚刚步入社会的学生。
-今年毕业之后因为疫情的影响好不容易进了一家公司，但是日常的开销不足以让我更换掉现在的机器（只有单个核心的年迈机器。）。
-前些日子在和一位帅气的学长 温柔的学姐在茶会上聊起了工作的一些事情可能是听到了我的抱怨了吧哈哈哈，当时说要送我一台笔记本，当时还在想不会吧？这两天收到了发现是一台Macbook Pro 2015年的15寸版本，还有一个yubico。">
+<meta itemprop="description" content="前言
+这不是一份简短的Gentoo Linux安装手册，我想在这篇文章中向你展示更多Gentoo Linux的魅力。
+
+为什么选择Gentoo？
+
+Gentoo 是一个基于源码的滚动发行版。 Gentoo的基础包和软件都是由源码来构建的并且有Portage的USE标记来开启或者是关闭软件的特性。Gentoo提供了一个类似于ports的系统（Portage）所以Gentoo更适合于系统的定制化。">
 <meta itemprop="datePublished" content="2021-01-18T19:41:36-05:00" />
 <meta itemprop="dateModified" content="2021-01-18T19:41:36-05:00" />
-<meta itemprop="wordCount" content="3434">
+<meta itemprop="wordCount" content="3466">
 
 
 
 <meta itemprop="keywords" content="Linux,Gentoo," />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="在Mac上安装Gentoo Linux"/>
-<meta name="twitter:description" content="前言 这不是一份简短的Gentoo Linux安装手册，我想在这篇文章中向你展示更多Gentoo Linux的魅力。
-这次安装Gentoo打算使用这样的组合：
-   类别 包或包组 说明     基础系统 @system 基础系统   X Windows Xorg Server 使用Xorg作为X Windows的后端服务   桌面 kde 本次安装将会使用KDE桌面   输入法 fcitx-rime 使用fcitx作为输入法框架，使用rime输入法作为日常使用   浏览器 chromium &#43; firefox 多来几个浏览器方便debug   邮箱客户端 thunderbird 雷鸟邮件客户端   密码管理器 keepassxc &#43; pass 一个为gui的一个为命令行的密码管理器   截图软件 flameshot 很棒的截图软件    缘起 我是一个非常贫苦刚刚步入社会的学生。
-今年毕业之后因为疫情的影响好不容易进了一家公司，但是日常的开销不足以让我更换掉现在的机器（只有单个核心的年迈机器。）。
-前些日子在和一位帅气的学长 温柔的学姐在茶会上聊起了工作的一些事情可能是听到了我的抱怨了吧哈哈哈，当时说要送我一台笔记本，当时还在想不会吧？这两天收到了发现是一台Macbook Pro 2015年的15寸版本，还有一个yubico。"/>
+<meta name="twitter:description" content="前言
+这不是一份简短的Gentoo Linux安装手册，我想在这篇文章中向你展示更多Gentoo Linux的魅力。
+
+为什么选择Gentoo？
+
+Gentoo 是一个基于源码的滚动发行版。 Gentoo的基础包和软件都是由源码来构建的并且有Portage的USE标记来开启或者是关闭软件的特性。Gentoo提供了一个类似于ports的系统（Portage）所以Gentoo更适合于系统的定制化。"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -154,7 +156,7 @@
       <div class="post-meta">
         <span class="post-time"> 2021-01-18 </span>
         
-          <span class="more-meta"> 3434 words </span>
+          <span class="more-meta"> 3466 words </span>
           <span class="more-meta"> 17 mins read </span>
         
       </div>
@@ -226,6 +228,43 @@
     <div class="post-content">
       <h2 id="前言">前言</h2>
 <p>这不是一份简短的Gentoo Linux安装手册，我想在这篇文章中向你展示更多Gentoo Linux的魅力。</p>
+<blockquote>
+<p>为什么选择Gentoo？</p>
+</blockquote>
+<p>Gentoo 是一个基于源码的滚动发行版。 Gentoo的基础包和软件都是由源码来构建的并且有Portage的USE标记来开启或者是关闭软件的特性。Gentoo提供了一个类似于ports的系统（Portage）所以Gentoo更适合于系统的定制化。</p>
+<p>如果你有使用其他的Linux经验也可能会问为什么不用Archlinux，也是滚动发行版包管理器也比portage快。</p>
+<p>你是对的，Portage的包管理工具比Arch或者是其他发行版的包管理更加复杂和强大，但是这是由于设计哲学上的问题：</p>
+<p>Gentoo的目标是努力创建近乎理想的工具，可以满足许多不同目标用户的工具。</p>
+<p>Arch的哲学就是： Keep It Simple, Stupid. 在简单的安装了一台虚拟机之后也确实感觉到了这一点。</p>
+<p>但是我还是更喜欢Gentoo的设计一点，有一种整个系统尽在掌握的感觉。</p>
+<blockquote>
+<p>less is more, but more is also less.</p>
+</blockquote>
+<h2 id="缘起">缘起</h2>
+<p>我是一个非常贫苦刚刚步入社会的学生。</p>
+<p>今年毕业之后因为疫情的影响好不容易进了一家公司，但是日常的开销不足以让我更换掉现在的机器（只有单个核心的年迈机器。）。</p>
+<p>前些日子在和一位<del>帅气的学长</del> 温柔的学姐在茶会上聊起了工作的一些事情可能是听到了我的抱怨了吧哈哈哈，当时说要送我一台笔记本，当时还在想不会吧？这两天收到了发现是一台Macbook Pro 2015年的15寸版本，还有一个yubico。</p>
+<p>配置大概是这样子的</p>
+<table>
+<thead>
+<tr>
+<th>型号</th>
+<th>CPU</th>
+<th>内存</th>
+<th>硬盘</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Macbook Pro 2015 15inch</td>
+<td>I7 4770HQ</td>
+<td>16G</td>
+<td>2TB</td>
+</tr>
+</tbody>
+</table>
+<p>在此之前一直都有想要试试看Gentoo的想法，但是奈何手上的笔记本只有可怜的单核2G内存，因为日常还需要使用的缘故结果自然也是不了了之。</p>
+<p>这次就有机会尝试一下了，并且将其作为主力系统进行使用。</p>
 <p>这次安装Gentoo打算使用这样的组合：</p>
 <table>
 <thead>
@@ -278,31 +317,6 @@
 </tr>
 </tbody>
 </table>
-<h2 id="缘起">缘起</h2>
-<p>我是一个非常贫苦刚刚步入社会的学生。</p>
-<p>今年毕业之后因为疫情的影响好不容易进了一家公司，但是日常的开销不足以让我更换掉现在的机器（只有单个核心的年迈机器。）。</p>
-<p>前些日子在和一位<del>帅气的学长</del> 温柔的学姐在茶会上聊起了工作的一些事情可能是听到了我的抱怨了吧哈哈哈，当时说要送我一台笔记本，当时还在想不会吧？这两天收到了发现是一台Macbook Pro 2015年的15寸版本，还有一个yubico。</p>
-<p>配置大概是这样子的</p>
-<table>
-<thead>
-<tr>
-<th>型号</th>
-<th>CPU</th>
-<th>内存</th>
-<th>硬盘</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Macbook Pro 2015 15inch</td>
-<td>I7 4770HQ</td>
-<td>16G</td>
-<td>2TB</td>
-</tr>
-</tbody>
-</table>
-<p>在此之前一直都有想要试试看Gentoo的想法，但是奈何手上的笔记本只有可怜的单核2G内存，因为日常还需要使用的缘故结果自然也是不了了之。</p>
-<p>这次就有机会尝试一下了，并且将其作为主力系统进行使用。</p>
 <h2 id="环境准备">环境准备</h2>
 <p>先来说明一下安装Gentoo的环境准备。</p>
 <p>我这里是准备了以下：</p>
@@ -3764,8 +3778,10 @@ cp -v /tmp/workdir/genkernel.conf /root/dotfiles
 <li><a href="https://wiki.archlinux.org/index.php/HiDPI">Archlinux Wiki HiDIP</a></li>
 <li><a href="https://wiki.gentoo.org/wiki/Dracut">Gentoo Dracut</a></li>
 <li><a href="https://wiki.gentoo.org/wiki/KDE">Gentoo KDE</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Comparison_of_operating_systems">Comparison of operating systems</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Comparison_of_Linux_distributions">Comparison of Linux distributions</a></li>
+<li><a href="https://wiki.archlinux.org/index.php/Arch_Linux">Archlinux wiki</a></li>
 </ul>
-
     </div>
 
     <div class="post-copyright">

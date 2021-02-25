@@ -53,11 +53,12 @@
       <pubDate>Mon, 18 Jan 2021 19:41:36 -0500</pubDate>
       
       <guid>https://www.yafa.moe/post/install-gentoo-on-mac/</guid>
-      <description>前言 这不是一份简短的Gentoo Linux安装手册，我想在这篇文章中向你展示更多Gentoo Linux的魅力。
-这次安装Gentoo打算使用这样的组合：
-   类别 包或包组 说明     基础系统 @system 基础系统   X Windows Xorg Server 使用Xorg作为X Windows的后端服务   桌面 kde 本次安装将会使用KDE桌面   输入法 fcitx-rime 使用fcitx作为输入法框架，使用rime输入法作为日常使用   浏览器 chromium + firefox 多来几个浏览器方便debug   邮箱客户端 thunderbird 雷鸟邮件客户端   密码管理器 keepassxc + pass 一个为gui的一个为命令行的密码管理器   截图软件 flameshot 很棒的截图软件    缘起 我是一个非常贫苦刚刚步入社会的学生。
-今年毕业之后因为疫情的影响好不容易进了一家公司，但是日常的开销不足以让我更换掉现在的机器（只有单个核心的年迈机器。）。
-前些日子在和一位帅气的学长 温柔的学姐在茶会上聊起了工作的一些事情可能是听到了我的抱怨了吧哈哈哈，当时说要送我一台笔记本，当时还在想不会吧？这两天收到了发现是一台Macbook Pro 2015年的15寸版本，还有一个yubico。</description>
+      <description>&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;
+&lt;p&gt;这不是一份简短的Gentoo Linux安装手册，我想在这篇文章中向你展示更多Gentoo Linux的魅力。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;为什么选择Gentoo？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Gentoo 是一个基于源码的滚动发行版。 Gentoo的基础包和软件都是由源码来构建的并且有Portage的USE标记来开启或者是关闭软件的特性。Gentoo提供了一个类似于ports的系统（Portage）所以Gentoo更适合于系统的定制化。&lt;/p&gt;</description>
     </item>
     
   </channel>
