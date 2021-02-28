@@ -181,7 +181,7 @@
 </div>
     <div class="post-content">
       <h2 id="前言">前言</h2>
-<p>在之前的如何在Gentoo上优雅的吃ZFS这篇文章中我们上了ZFS，但是没有给swap单独的一个分区，后来在使用中确实遇到了内存不够的情况。直接在系统里面丢swapfile是不合理的，最好是有个单独的分区给swap，所以还是要再来一次分区备份和恢复系统：）</p>
+<p>在之前的如何在<a href="https://www.yafa.moe/post/gentoo-on-zfs/">Gentoo上优雅的吃ZFS</a>这篇文章中我们上了ZFS，但是没有给swap单独的一个分区，后来在使用中确实遇到了内存不够的情况。直接在系统里面丢swapfile是不合理的，最好是有个单独的分区给swap，所以还是要再来一次分区备份和恢复系统：）</p>
 <p>我这里的思路是这样子：</p>
 <ol>
 <li>创建ZFS池（建立在扩展的USB上）</li>
@@ -445,7 +445,7 @@ rock/os/gentoo@2021-02-27-0000-01-install  Sat Feb <span class="m">27</span> 14:
 </code></pre></td></tr></table>
 </div>
 </div><h2 id="发送快照">发送快照</h2>
-<p>我们需要打开原来的<code>rock/os/gentoo``dataset</code></p>
+<p>我们需要打开原来的<code>rock/os/gentoo</code>数据集</p>
 <p>但是首先要设置一下挂载点：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -455,7 +455,7 @@ rock/os/gentoo@2021-02-27-0000-01-install  Sat Feb <span class="m">27</span> 14:
 <pre class="chroma"><code class="language-shell" data-lang="shell">zfs <span class="nb">set</span> <span class="nv">mountpoint</span><span class="o">=</span>/mnt/gentoo rock/os/gentoo
 </code></pre></td></tr></table>
 </div>
-</div><p>打开<code>rock/os/gentoo``dataset</code></p>
+</div><p>打开<code>rock/os/gentoo</code>数据集</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
