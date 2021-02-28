@@ -6,7 +6,17 @@
     <description>Recent content in Gentoo on Yafa Xena&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 14 Feb 2021 10:58:06 +0800</lastBuildDate><atom:link href="https://www.yafa.moe/tags/gentoo/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 27 Feb 2021 21:03:54 +0800</lastBuildDate><atom:link href="https://www.yafa.moe/tags/gentoo/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用ZFS备份系统</title>
+      <link>https://www.yafa.moe/post/use-zfs-backup-system/</link>
+      <pubDate>Sat, 27 Feb 2021 21:03:54 +0800</pubDate>
+      
+      <guid>https://www.yafa.moe/post/use-zfs-backup-system/</guid>
+      <description>&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;
+&lt;p&gt;在之前的如何在Gentoo上优雅的吃ZFS这篇文章中我们上了ZFS，但是没有给swap单独的一个分区，后来在使用中确实遇到了内存不够的情况。直接在系统里面丢swapfile是不合理的，最好是有个单独的分区给swap，所以还是要再来一次分区备份和恢复系统：）&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>在Gentoo上优雅的吃ZFS</title>
       <link>https://www.yafa.moe/post/gentoo-on-zfs/</link>

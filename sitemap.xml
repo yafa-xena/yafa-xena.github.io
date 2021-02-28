@@ -2,6 +2,55 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://www.yafa.moe/tags/backup/</loc>
+    <lastmod>2021-02-27T21:03:54+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.yafa.moe/tags/gentoo/</loc>
+    <lastmod>2021-02-27T21:03:54+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.yafa.moe/post/</loc>
+    <lastmod>2021-02-27T21:03:54+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.yafa.moe/tags/</loc>
+    <lastmod>2021-02-27T21:03:54+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.yafa.moe/</loc>
+    <lastmod>2021-02-27T21:03:54+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.yafa.moe/tags/zfs/</loc>
+    <lastmod>2021-02-27T21:03:54+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.yafa.moe/post/use-zfs-backup-system/</loc>
+    <lastmod>2021-02-27T21:03:54+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://www.yafa.moe/tags/book/</loc>
     <lastmod>2021-02-20T09:02:15+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -17,27 +66,6 @@
   
   <url>
     <loc>https://www.yafa.moe/tags/investment/</loc>
-    <lastmod>2021-02-20T09:02:15+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://www.yafa.moe/post/</loc>
-    <lastmod>2021-02-20T09:02:15+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://www.yafa.moe/tags/</loc>
-    <lastmod>2021-02-20T09:02:15+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://www.yafa.moe/</loc>
     <lastmod>2021-02-20T09:02:15+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -114,29 +142,8 @@
   </url>
   
   <url>
-    <loc>https://www.yafa.moe/tags/gentoo/</loc>
-    <lastmod>2021-02-14T10:58:06+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://www.yafa.moe/tags/zfs/</loc>
-    <lastmod>2021-02-14T10:58:06+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://www.yafa.moe/post/gentoo-on-zfs/</loc>
     <lastmod>2021-02-14T10:58:06+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://www.yafa.moe/tags/backup/</loc>
-    <lastmod>2021-02-13T17:11:42+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>

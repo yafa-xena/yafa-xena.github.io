@@ -58,7 +58,7 @@
 因为当前用的这个Mac已经有了系统并且正常使用了一段时间，为了保持数据不丢失我先备份了一下系统。关于如何备份系统可以参考我这篇文章备份你的Gentoo系统。">
 <meta itemprop="datePublished" content="2021-02-14T10:58:06+08:00" />
 <meta itemprop="dateModified" content="2021-02-14T10:58:06+08:00" />
-<meta itemprop="wordCount" content="1186">
+<meta itemprop="wordCount" content="1181">
 
 
 
@@ -150,7 +150,7 @@
       <div class="post-meta">
         <span class="post-time"> 2021-02-14 </span>
         
-          <span class="more-meta"> 1186 words </span>
+          <span class="more-meta"> 1181 words </span>
           <span class="more-meta"> 6 mins read </span>
         
       </div>
@@ -202,9 +202,6 @@
 <p>如果你有了解过一定的文件系统的知识你可能会想为啥不选择<a href="https://en.wikipedia.org/wiki/Btrfs">Btrfs</a>呢？而且btrfs的话内核是可以直接支持的（需要比较新的内核），这个问题也是一个好问题。因为在我之后的规划里面，我打算自建一个机房。出于成本的考虑采取的方案是存算分离，存储的部分就是打算用ZFS。对于存储来说，连续性检查自动修复，RAID就显得尤为重要，这里也是为了这个计划做一个铺垫。也许你还会说这些btrfs都有啊！为啥还要用ZFS呢？由于我现在的水品还是十分有限，现阶段更多的是调研和测试，后续真正决定要用哪个文件系统或者是组合还是要看最终的测试结果。</p>
 <p>因为当前用的这个Mac已经有了系统并且正常使用了一段时间，为了保持数据不丢失我先备份了一下系统。关于如何备份系统可以参考我这篇文章<a href="https://www.yafa.moe/post/backup-your-gentoo-system/">备份你的Gentoo系统</a>。</p>
 <p>同时也趁着机会对之前的分区大小做一些调整:</p>
-<blockquote>
-<p>Tips: 这里需要注意的是swap要单独做分区，不要在zfs里面创建swapfile，需要单独创建一个swapfile</p>
-</blockquote>
 <table>
 <thead>
 <tr>
@@ -221,11 +218,6 @@
 </tr>
 <tr>
 <td>/dev/nvme0n1p2</td>
-<td>swap</td>
-<td>32G</td>
-</tr>
-<tr>
-<td>/dev/nvme0n1p3</td>
 <td>zfs</td>
 <td>All</td>
 </tr>

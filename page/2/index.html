@@ -45,7 +45,7 @@
 <meta property="og:description" content="Yafa Xena&#39;s Blog." />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://www.yafa.moe/" />
-<meta property="og:updated_time" content="2021-02-20T09:02:15+08:00" />
+<meta property="og:updated_time" content="2021-02-27T21:03:54+08:00" />
 <meta itemprop="name" content="Yafa Xena&#39;s Blog">
 <meta itemprop="description" content="Yafa Xena&#39;s Blog.">
 <meta name="twitter:card" content="summary"/>
@@ -125,6 +125,30 @@
       <div class="content-wrapper">
         <div id="content" class="content">
           <section id="posts" class="posts">
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/gentoo-on-zfs/">在Gentoo上优雅的吃ZFS</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2021-02-14 </span>
+      
+        <span class="more-meta"> 1181 words </span>
+        <span class="more-meta"> 6 mins read </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <h2 id="前言">前言</h2>
+<p>在之前的<a href="https://www.yafa.moe/post/install-gentoo-on-mac/">在Mac上安装Gentoo Linux</a>这篇文章里面我成功的给现在手中的Mac安装上了Gentoo Linux，但是最近在看一些文件系统的资料看到了<a href="https://en.wikipedia.org/wiki/ZFS">ZFS</a>其中的特性很是让我心动，虽然没有在虚拟机上面做一些尝试但是呢其中的快照、写时复制、数据压缩的特性很让我心动。</p>
+<p>如果你有了解过一定的文件系统的知识你可能会想为啥不选择<a href="https://en.wikipedia.org/wiki/Btrfs">Btrfs</a>呢？而且btrfs的话内核是可以直接支持的（需要比较新的内核），这个问题也是一个好问题。因为在我之后的规划里面，我打算自建一个机房。出于成本的考虑采取的方案是存算分离，存储的部分就是打算用ZFS。对于存储来说，连续性检查自动修复，RAID就显得尤为重要，这里也是为了这个计划做一个铺垫。也许你还会说这些btrfs都有啊！为啥还要用ZFS呢？由于我现在的水品还是十分有限，现阶段更多的是调研和测试，后续真正决定要用哪个文件系统或者是组合还是要看最终的测试结果。</p>
+<p>因为当前用的这个Mac已经有了系统并且正常使用了一段时间，为了保持数据不丢失我先备份了一下系统。关于如何备份系统可以参考我这篇文章<a href="https://www.yafa.moe/post/backup-your-gentoo-system/">备份你的Gentoo系统</a>。</p>
+    </div>
+    <div class="read-more">
+      <a href="/post/gentoo-on-zfs/" class="read-more-link">Read more...</a>
+    </div>
+  </div>
+</article>
+
     <article class="post">
   <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/backup-your-gentoo-system/">备份你的Gentoo系统</a></h1>
@@ -230,29 +254,6 @@
   </div>
 </article>
 
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/my-first-posts/">My First Posts</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2021-01-18 </span>
-      
-        <span class="more-meta"> 15 words </span>
-        <span class="more-meta"> 1 min read </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      Hello, World!
-I&rsquo;m Yafa Xena. This is My First hugo posts.
-Welcome to my blog
-    </div>
-    <div class="read-more">
-      <a href="/post/my-first-posts/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
     </section>
   
   <nav class="pagination">
@@ -260,7 +261,10 @@ Welcome to my blog
         <i class="iconfont icon-left"></i>
         <span class="prev-text">Prev</span>
       </a>
-    
+    <a class="next" href="/page/3/">
+        <span class="next-text">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
   </nav>
         </div>
         
