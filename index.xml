@@ -1,177 +1,50 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Yafa Xena&#39;s Blog</title>
-    <link>https://www.yafa.moe/</link>
-    <description>Recent content on Yafa Xena&#39;s Blog</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Sat, 27 Feb 2021 21:03:54 +0800</lastBuildDate><atom:link href="https://www.yafa.moe/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>使用ZFS备份系统</title>
-      <link>https://www.yafa.moe/post/use-zfs-backup-system/</link>
-      <pubDate>Sat, 27 Feb 2021 21:03:54 +0800</pubDate>
-      
-      <guid>https://www.yafa.moe/post/use-zfs-backup-system/</guid>
-      <description>&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;
-&lt;p&gt;在之前的如何在&lt;a href=&#34;https://www.yafa.moe/post/gentoo-on-zfs/&#34;&gt;Gentoo上优雅的吃ZFS&lt;/a&gt;这篇文章中我们上了ZFS，但是没有给swap单独的一个分区，后来在使用中确实遇到了内存不够的情况。直接在系统里面丢swapfile是不合理的，最好是有个单独的分区给swap，所以还是要再来一次分区备份和恢复系统：）&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>第一次自我投资</title>
-      <link>https://www.yafa.moe/post/the_first_investment_by_myself/</link>
-      <pubDate>Sat, 20 Feb 2021 09:02:15 +0800</pubDate>
-      
-      <guid>https://www.yafa.moe/post/the_first_investment_by_myself/</guid>
-      <description>&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;
-&lt;p&gt;在昨天观看了&lt;a href=&#34;https://www.bilibili.com/video/BV1Uy4y1e7vk&#34;&gt;90后7条无痛攒钱指南！&lt;/a&gt;，我对当前的自我财务状况进行了分析，我现在的财务状况可以说是很糟糕，现金流处于断裂的状态，没有购置资产，负债倒是很多。&lt;/p&gt;
-&lt;p&gt;我想要知道为什么之前会有这种超前消费状态，以及下一步的行动，这篇文章就是记录我是怎么想的以及怎么做的。&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>理财习惯</title>
-      <link>https://www.yafa.moe/post/financial-habits/</link>
-      <pubDate>Fri, 19 Feb 2021 14:17:09 +0800</pubDate>
-      
-      <guid>https://www.yafa.moe/post/financial-habits/</guid>
-      <description>&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;
-&lt;p&gt;这期文章是看&lt;a href=&#34;https://space.bilibili.com/19526512&#34;&gt;TenGuSan&lt;/a&gt;的这期&lt;a href=&#34;https://www.bilibili.com/video/BV1Uy4y1e7vk&#34;&gt;90后7条无痛攒钱指南！&lt;/a&gt;做的笔记。&lt;/p&gt;
-&lt;p&gt;为什么要理财？&lt;/p&gt;
-&lt;p&gt;理财是为了应对计划外和计划内的支出。&lt;/p&gt;
-&lt;p&gt;在步入社会之后确实有这种感觉：对比以前的现金支付移动支付确实让花钱更简单了一些，尤其是现在的商品下沉、消费习惯的改变。最终的结果就是越花钱越没有钱，甚至变成了月欠族（这个月的钱是换上上个月花的钱）。&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>使用命令行移除照片的EXIF元数据</title>
-      <link>https://www.yafa.moe/post/removing_exif_data_use_commandline/</link>
-      <pubDate>Thu, 18 Feb 2021 19:13:37 +0800</pubDate>
-      
-      <guid>https://www.yafa.moe/post/removing_exif_data_use_commandline/</guid>
-      <description>前言 在我们将日常的生活照发到网上的时候，为了隐私我们要对发到网上的这些图片提前做一些处理，比如说移除掉“EXIF”信息。 EXIF信息就是在拍照的时候采集到的信息，比如说时间、位置、设备信息等等。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Yafa Xena's Blog</title><link>https://www.yafa.moe/</link><description>Recent content on Yafa Xena's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 27 Feb 2021 21:03:54 +0800</lastBuildDate><atom:link href="https://www.yafa.moe/index.xml" rel="self" type="application/rss+xml"/><item><title>使用ZFS备份系统</title><link>https://www.yafa.moe/post/use-zfs-backup-system/</link><pubDate>Sat, 27 Feb 2021 21:03:54 +0800</pubDate><guid>https://www.yafa.moe/post/use-zfs-backup-system/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>在之前的如何在&lt;a href="https://www.yafa.moe/post/gentoo-on-zfs/">Gentoo上优雅的吃ZFS&lt;/a>这篇文章中我们上了ZFS，但是没有给swap单独的一个分区，后来在使用中确实遇到了内存不够的情况。直接在系统里面丢swapfile是不合理的，最好是有个单独的分区给swap，所以还是要再来一次分区备份和恢复系统：）&lt;/p></description></item><item><title>第一次自我投资</title><link>https://www.yafa.moe/post/the_first_investment_by_myself/</link><pubDate>Sat, 20 Feb 2021 09:02:15 +0800</pubDate><guid>https://www.yafa.moe/post/the_first_investment_by_myself/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>在昨天观看了&lt;a href="https://www.bilibili.com/video/BV1Uy4y1e7vk">90后7条无痛攒钱指南！&lt;/a>，我对当前的自我财务状况进行了分析，我现在的财务状况可以说是很糟糕，现金流处于断裂的状态，没有购置资产，负债倒是很多。&lt;/p>
+&lt;p>我想要知道为什么之前会有这种超前消费状态，以及下一步的行动，这篇文章就是记录我是怎么想的以及怎么做的。&lt;/p></description></item><item><title>理财习惯</title><link>https://www.yafa.moe/post/financial-habits/</link><pubDate>Fri, 19 Feb 2021 14:17:09 +0800</pubDate><guid>https://www.yafa.moe/post/financial-habits/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>这期文章是看&lt;a href="https://space.bilibili.com/19526512">TenGuSan&lt;/a>的这期&lt;a href="https://www.bilibili.com/video/BV1Uy4y1e7vk">90后7条无痛攒钱指南！&lt;/a>做的笔记。&lt;/p>
+&lt;p>为什么要理财？&lt;/p>
+&lt;p>理财是为了应对计划外和计划内的支出。&lt;/p>
+&lt;p>在步入社会之后确实有这种感觉：对比以前的现金支付移动支付确实让花钱更简单了一些，尤其是现在的商品下沉、消费习惯的改变。最终的结果就是越花钱越没有钱，甚至变成了月欠族（这个月的钱是换上上个月花的钱）。&lt;/p></description></item><item><title>使用命令行移除照片的EXIF元数据</title><link>https://www.yafa.moe/post/removing_exif_data_use_commandline/</link><pubDate>Thu, 18 Feb 2021 19:13:37 +0800</pubDate><guid>https://www.yafa.moe/post/removing_exif_data_use_commandline/</guid><description>前言 在我们将日常的生活照发到网上的时候，为了隐私我们要对发到网上的这些图片提前做一些处理，比如说移除掉“EXIF”信息。 EXIF信息就是在拍照的时候采集到的信息，比如说时间、位置、设备信息等等。
 我在准备写一篇关于我的第一步智能手机的文章，其中涉及到现实的一些拍照，我不想让这些信息泄露出去，这里记录以下我是如何处理这些信息的。
 使用 这里使用到的是一个exiftool的工具，这个工具可以读取和写入EXIF信息。
- 安装
- 1  emerge -av exiftool    使用
- 查看图片的EXIF信息
-1  exiftool foo.png # 你的图片名称   删除图片的EXIF信息
-1  exiftool -all= * foo.png   后记 图片能够暴露的信息不止这么些，像是图片的背景，有哪些物品之类的也可能暴露出很多的信息，当想要把这些图片发布到网上之前应该给自己过一道流程。
-我真的要发吗？发出去之后会给我带来那些影响呢？</description>
-    </item>
-    
-    <item>
-      <title>Yandex Email</title>
-      <link>https://www.yafa.moe/post/yandex-email/</link>
-      <pubDate>Sun, 14 Feb 2021 13:40:37 +0800</pubDate>
-      
-      <guid>https://www.yafa.moe/post/yandex-email/</guid>
-      <description>&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;
-&lt;p&gt;前几天买了一个域名就是现在的&lt;code&gt;yafa.moe&lt;/code&gt;，看着自己丑啦吧唧的邮箱地址，想到可以自己折腾一个邮箱来着。建立域名邮箱有很多种方法，可以选择自建或者是选择一些免费的邮箱，为了功能和防垃圾邮件也可以选择付费的一些邮箱。毕竟我穷，最后在Zoho和Yandex中选择了Yandex。&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>在Gentoo上优雅的吃ZFS</title>
-      <link>https://www.yafa.moe/post/gentoo-on-zfs/</link>
-      <pubDate>Sun, 14 Feb 2021 10:58:06 +0800</pubDate>
-      
-      <guid>https://www.yafa.moe/post/gentoo-on-zfs/</guid>
-      <description>&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;
-&lt;p&gt;在之前的&lt;a href=&#34;https://www.yafa.moe/post/install-gentoo-on-mac/&#34;&gt;在Mac上安装Gentoo Linux&lt;/a&gt;这篇文章里面我成功的给现在手中的Mac安装上了Gentoo Linux，但是最近在看一些文件系统的资料看到了&lt;a href=&#34;https://en.wikipedia.org/wiki/ZFS&#34;&gt;ZFS&lt;/a&gt;其中的特性很是让我心动，虽然没有在虚拟机上面做一些尝试但是呢其中的快照、写时复制、数据压缩的特性很让我心动。&lt;/p&gt;
-&lt;p&gt;如果你有了解过一定的文件系统的知识你可能会想为啥不选择&lt;a href=&#34;https://en.wikipedia.org/wiki/Btrfs&#34;&gt;Btrfs&lt;/a&gt;呢？而且btrfs的话内核是可以直接支持的（需要比较新的内核），这个问题也是一个好问题。因为在我之后的规划里面，我打算自建一个机房。出于成本的考虑采取的方案是存算分离，存储的部分就是打算用ZFS。对于存储来说，连续性检查自动修复，RAID就显得尤为重要，这里也是为了这个计划做一个铺垫。也许你还会说这些btrfs都有啊！为啥还要用ZFS呢？由于我现在的水品还是十分有限，现阶段更多的是调研和测试，后续真正决定要用哪个文件系统或者是组合还是要看最终的测试结果。&lt;/p&gt;
-&lt;p&gt;因为当前用的这个Mac已经有了系统并且正常使用了一段时间，为了保持数据不丢失我先备份了一下系统。关于如何备份系统可以参考我这篇文章&lt;a href=&#34;https://www.yafa.moe/post/backup-your-gentoo-system/&#34;&gt;备份你的Gentoo系统&lt;/a&gt;。&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>备份你的Gentoo系统</title>
-      <link>https://www.yafa.moe/post/backup-your-gentoo-system/</link>
-      <pubDate>Sat, 13 Feb 2021 17:11:42 +0800</pubDate>
-      
-      <guid>https://www.yafa.moe/post/backup-your-gentoo-system/</guid>
-      <description>前言 在前一篇的在Mac上安装Gentoo Linux完成后，我其实还想要折腾一下其他的文件系统比如说ZFS，BTRFS，XFS之类的，虽然说可以在虚拟机里面做实验但是还是想要整个机器切过去，但是重新安装的话耗费的时间太长了，我想备份一下系统然后重新分区之后将原来的系统恢复一下再更新一下fstab bootload之类的就可以正常使用了。
+安装
+1 emerge -av exiftool 使用
+查看图片的EXIF信息
+1 exiftool foo.png # 你的图片名称 删除图片的EXIF信息
+1 exiftool -all= * foo.png 后记 图片能够暴露的信息不止这么些，像是图片的背景，有哪些物品之类的也可能暴露出很多的信息，当想要把这些图片发布到网上之前应该给自己过一道流程。
+我真的要发吗？发出去之后会给我带来那些影响呢？</description></item><item><title>Yandex Email</title><link>https://www.yafa.moe/post/yandex-email/</link><pubDate>Sun, 14 Feb 2021 13:40:37 +0800</pubDate><guid>https://www.yafa.moe/post/yandex-email/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>前几天买了一个域名就是现在的&lt;code>yafa.moe&lt;/code>，看着自己丑啦吧唧的邮箱地址，想到可以自己折腾一个邮箱来着。建立域名邮箱有很多种方法，可以选择自建或者是选择一些免费的邮箱，为了功能和防垃圾邮件也可以选择付费的一些邮箱。毕竟我穷，最后在Zoho和Yandex中选择了Yandex。&lt;/p></description></item><item><title>在Gentoo上优雅的吃ZFS</title><link>https://www.yafa.moe/post/gentoo-on-zfs/</link><pubDate>Sun, 14 Feb 2021 10:58:06 +0800</pubDate><guid>https://www.yafa.moe/post/gentoo-on-zfs/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>在之前的&lt;a href="https://www.yafa.moe/post/install-gentoo-on-mac/">在Mac上安装Gentoo Linux&lt;/a>这篇文章里面我成功的给现在手中的Mac安装上了Gentoo Linux，但是最近在看一些文件系统的资料看到了&lt;a href="https://en.wikipedia.org/wiki/ZFS">ZFS&lt;/a>其中的特性很是让我心动，虽然没有在虚拟机上面做一些尝试但是呢其中的快照、写时复制、数据压缩的特性很让我心动。&lt;/p>
+&lt;p>如果你有了解过一定的文件系统的知识你可能会想为啥不选择&lt;a href="https://en.wikipedia.org/wiki/Btrfs">Btrfs&lt;/a>呢？而且btrfs的话内核是可以直接支持的（需要比较新的内核），这个问题也是一个好问题。因为在我之后的规划里面，我打算自建一个机房。出于成本的考虑采取的方案是存算分离，存储的部分就是打算用ZFS。对于存储来说，连续性检查自动修复，RAID就显得尤为重要，这里也是为了这个计划做一个铺垫。也许你还会说这些btrfs都有啊！为啥还要用ZFS呢？由于我现在的水品还是十分有限，现阶段更多的是调研和测试，后续真正决定要用哪个文件系统或者是组合还是要看最终的测试结果。&lt;/p>
+&lt;p>因为当前用的这个Mac已经有了系统并且正常使用了一段时间，为了保持数据不丢失我先备份了一下系统。关于如何备份系统可以参考我这篇文章&lt;a href="https://www.yafa.moe/post/backup-your-gentoo-system/">备份你的Gentoo系统&lt;/a>。&lt;/p></description></item><item><title>备份你的Gentoo系统</title><link>https://www.yafa.moe/post/backup-your-gentoo-system/</link><pubDate>Sat, 13 Feb 2021 17:11:42 +0800</pubDate><guid>https://www.yafa.moe/post/backup-your-gentoo-system/</guid><description>前言 在前一篇的在Mac上安装Gentoo Linux完成后，我其实还想要折腾一下其他的文件系统比如说ZFS，BTRFS，XFS之类的，虽然说可以在虚拟机里面做实验但是还是想要整个机器切过去，但是重新安装的话耗费的时间太长了，我想备份一下系统然后重新分区之后将原来的系统恢复一下再更新一下fstab bootload之类的就可以正常使用了。
 这篇文章就是讲述如何备份你的Gentoo Linux(离线备份)
-准备  250G硬盘*1 （我当前的数据量在200G左右250G的硬盘能够满足一次备份，后续如果要做周期性备份的话就需要换一个更大的了）  备份 初始化硬盘 这里的初始化硬盘是为了将原来的数据全部清除并且重新建立LUKS和文件系统。出于安全的考虑，备份不应该直接在硬盘上分区创建文件系统后备份在上面，应该做一层加密再去创建文件系统和备份。
+准备 250G硬盘*1 （我当前的数据量在200G左右250G的硬盘能够满足一次备份，后续如果要做周期性备份的话就需要换一个更大的了） 备份 初始化硬盘 这里的初始化硬盘是为了将原来的数据全部清除并且重新建立LUKS和文件系统。出于安全的考虑，备份不应该直接在硬盘上分区创建文件系统后备份在上面，应该做一层加密再去创建文件系统和备份。
 将硬盘插入需要备份的电脑上
 查看新增的设备
-1 2 3 4 5 6 7 8 9 10 11  fdisk -l Disk /dev/sda: 232.9 GiB, 250055122432 bytes, 488388911 sectors Disk model: 00AAJS-00B4A0 Units: sectors of 1 * 512 = 512 bytes Sector size (logical/physical): 512 bytes / 512 bytes I/O size (minimum/optimal): 512 bytes / 512 bytes Disklabel type: dos Disk identifier: 0x80f01a9c Device Boot Start End Sectors Size Id Type /dev/sda1 2048 488388910 488386863 232.</description>
-    </item>
-    
-    <item>
-      <title>2020年终总结</title>
-      <link>https://www.yafa.moe/post/2020-summary/</link>
-      <pubDate>Wed, 10 Feb 2021 18:32:13 +0800</pubDate>
-      
-      <guid>https://www.yafa.moe/post/2020-summary/</guid>
-      <description>&lt;h2 id=&#34;关于过去的2020年&#34;&gt;关于过去的2020年&lt;/h2&gt;
-&lt;p&gt;今天是除夕，正好今天过年的准备也做完了，有时间好好去回顾过去的一年。&lt;/p&gt;
-&lt;p&gt;过去的2020年是魔幻的开端，因为疫情的缘故我能够出去找工作的时间就很靠后。
-虽然是找了一家公司，但是这家公司也让我明白了小说里面的场景有些地方是真实的，就是魔幻现实的映射。&lt;/p&gt;
-&lt;p&gt;在工作上获得的进步不是很大，刚开始接触到这个运维行业很多地方都是在探索和学习，虽然感觉进度有点跟不上自己的计划，但是获奖也是一个小惊喜啦。&lt;/p&gt;
-&lt;p&gt;在生活上也是上当受骗了一把，相信所谓的消费主义深受其害。每个月都是月光的状态，对于未来的风险承受能力很低，只能够祈祷不能把当前的工作给丢掉，留给自己审视的时间是很少的。
-在经历这么几个月的“上流月”最后醒悟了（感谢学姐！），不能这么继续下去了。&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>Links</title>
-      <link>https://www.yafa.moe/links/</link>
-      <pubDate>Thu, 04 Feb 2021 15:40:32 +0800</pubDate>
-      
-      <guid>https://www.yafa.moe/links/</guid>
-      <description>Links 友情链接 最爱的学姐，无论是生活上，职业生涯上还是心理上都给了我很大的帮助，是我人生中的那座灯塔。
+1 2 3 4 5 6 7 8 9 10 11 fdisk -l Disk /dev/sda: 232.9 GiB, 250055122432 bytes, 488388911 sectors Disk model: 00AAJS-00B4A0 Units: sectors of 1 * 512 = 512 bytes Sector size (logical/physical): 512 bytes / 512 bytes I/O size (minimum/optimal): 512 bytes / 512 bytes Disklabel type: dos Disk identifier: 0x80f01a9c Device Boot Start End Sectors Size Id Type /dev/sda1 2048 488388910 488386863 232.</description></item><item><title>2020年终总结</title><link>https://www.yafa.moe/post/2020-summary/</link><pubDate>Wed, 10 Feb 2021 18:32:13 +0800</pubDate><guid>https://www.yafa.moe/post/2020-summary/</guid><description>&lt;h2 id="关于过去的2020年">关于过去的2020年&lt;/h2>
+&lt;p>今天是除夕，正好今天过年的准备也做完了，有时间好好去回顾过去的一年。&lt;/p>
+&lt;p>过去的2020年是魔幻的开端，因为疫情的缘故我能够出去找工作的时间就很靠后。
+虽然是找了一家公司，但是这家公司也让我明白了小说里面的场景有些地方是真实的，就是魔幻现实的映射。&lt;/p>
+&lt;p>在工作上获得的进步不是很大，刚开始接触到这个运维行业很多地方都是在探索和学习，虽然感觉进度有点跟不上自己的计划，但是获奖也是一个小惊喜啦。&lt;/p>
+&lt;p>在生活上也是上当受骗了一把，相信所谓的消费主义深受其害。每个月都是月光的状态，对于未来的风险承受能力很低，只能够祈祷不能把当前的工作给丢掉，留给自己审视的时间是很少的。
+在经历这么几个月的“上流月”最后醒悟了（感谢学姐！），不能这么继续下去了。&lt;/p></description></item><item><title>Links</title><link>https://www.yafa.moe/links/</link><pubDate>Thu, 04 Feb 2021 15:40:32 +0800</pubDate><guid>https://www.yafa.moe/links/</guid><description>Links 友情链接 最爱的学姐，无论是生活上，职业生涯上还是心理上都给了我很大的帮助，是我人生中的那座灯塔。
 学姐
 喜欢的音乐 这是我很喜欢在学习，或者是在写博客时候的听的音乐：
-Lakey Inspired</description>
-    </item>
-    
-    <item>
-      <title>关于我</title>
-      <link>https://www.yafa.moe/about/</link>
-      <pubDate>Thu, 04 Feb 2021 15:37:52 +0800</pubDate>
-      
-      <guid>https://www.yafa.moe/about/</guid>
-      <description>我是谁？ 你可以叫我Yafa，是一个步入社会没有几年的“学生”。
+Lakey Inspired</description></item><item><title>关于我</title><link>https://www.yafa.moe/about/</link><pubDate>Thu, 04 Feb 2021 15:37:52 +0800</pubDate><guid>https://www.yafa.moe/about/</guid><description>我是谁？ 你可以叫我Yafa，是一个步入社会没有几年的“学生”。
 目前是运维工程师（全职）。
 比较喜欢Gentoo，极简主义，阅读，写作，最喜欢的是学姐！！！
 这个博客主要是记录一些技术相关的分享，和一些日常。
-联系方式  Github GPG: 0xC6964DEDF01A4DA0 Email: aUB5YWZhLm1vZQ== (base64)  </description>
-    </item>
-    
-    <item>
-      <title>设置我的实验环境</title>
-      <link>https://www.yafa.moe/post/setup-my-lab/</link>
-      <pubDate>Sat, 23 Jan 2021 14:30:17 +0800</pubDate>
-      
-      <guid>https://www.yafa.moe/post/setup-my-lab/</guid>
-      <description>前言 在结束安装Gentoo后，下一步就是要初始化我的实验环境了，我这里使用比较多的实验环境主要是在本机上创建虚拟机然后运行不同的软件和不同的环境。我常用的虚拟化软件如下:
-   虚拟化类型 软件包     软件虚拟化 app-emulation/virtualbox   全虚拟化 app-emulation/qemu   半虚拟化 app-emulation/xen   container app-emulation/docker    这几种虚拟化各有优点，我平时是使用virtualbox做测试环境，QEMU就更加贴近生产环境，半虚拟化是做Qubes On Gentoo的准备，容器是想要快速测试东西的时候使用的，后续也会作为基础了解一下K8S之类的。
+联系方式 Github GPG: 0xC6964DEDF01A4DA0 Email: aUB5YWZhLm1vZQ== (base64)</description></item><item><title>设置我的实验环境</title><link>https://www.yafa.moe/post/setup-my-lab/</link><pubDate>Sat, 23 Jan 2021 14:30:17 +0800</pubDate><guid>https://www.yafa.moe/post/setup-my-lab/</guid><description>前言 在结束安装Gentoo后，下一步就是要初始化我的实验环境了，我这里使用比较多的实验环境主要是在本机上创建虚拟机然后运行不同的软件和不同的环境。我常用的虚拟化软件如下:
+虚拟化类型 软件包 软件虚拟化 app-emulation/virtualbox 全虚拟化 app-emulation/qemu 半虚拟化 app-emulation/xen container app-emulation/docker 这几种虚拟化各有优点，我平时是使用virtualbox做测试环境，QEMU就更加贴近生产环境，半虚拟化是做Qubes On Gentoo的准备，容器是想要快速测试东西的时候使用的，后续也会作为基础了解一下K8S之类的。
 这些直接使用可能有点不是很舒服为此我还需要以下工具来方便去管理虚拟机:
-   软件包 描述     app-emulation/vagrant 管理Virtualbox   app-emulation/libvirt 管理QEMU虚拟机   app-admin/terraform 使用libvirt的provider来管理QEMU虚拟机   app-admin/ansible 批量管理虚拟机   app-admin/salt 批量管理虚拟机    安装和配置Virtualbox环境 Virtualbox主要是放一些Whonix或者是测试的简单环境
- 安装Virtualbox
- 1  emerge --ask --verbose app-emulation/virtualbox app-emulation/virtualbox-additions app-emulation/virtualbox-extpack-oracle   为了普通用户可以正常使用Virtualbox还需要将用户添加到vboxusers组中</description>
-    </item>
-    
-    <item>
-      <title>在Mac上安装Gentoo Linux</title>
-      <link>https://www.yafa.moe/post/install-gentoo-on-mac/</link>
-      <pubDate>Mon, 18 Jan 2021 19:41:36 -0500</pubDate>
-      
-      <guid>https://www.yafa.moe/post/install-gentoo-on-mac/</guid>
-      <description>&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;
-&lt;p&gt;这不是一份简短的Gentoo Linux安装手册，我想在这篇文章中向你展示更多Gentoo Linux的魅力。&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;为什么选择Gentoo？&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;Gentoo 是一个基于源码的滚动发行版。 Gentoo的基础包和软件都是由源码来构建的并且有Portage的USE标记来开启或者是关闭软件的特性。Gentoo提供了一个类似于ports的系统（Portage）所以Gentoo更适合于系统的定制化。&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>My First Posts</title>
-      <link>https://www.yafa.moe/post/my-first-posts/</link>
-      <pubDate>Mon, 18 Jan 2021 07:01:50 -0500</pubDate>
-      
-      <guid>https://www.yafa.moe/post/my-first-posts/</guid>
-      <description>Hello, World!
+软件包 描述 app-emulation/vagrant 管理Virtualbox app-emulation/libvirt 管理QEMU虚拟机 app-admin/terraform 使用libvirt的provider来管理QEMU虚拟机 app-admin/ansible 批量管理虚拟机 app-admin/salt 批量管理虚拟机 安装和配置Virtualbox环境 Virtualbox主要是放一些Whonix或者是测试的简单环境
+安装Virtualbox
+1 emerge --ask --verbose app-emulation/virtualbox app-emulation/virtualbox-additions app-emulation/virtualbox-extpack-oracle 为了普通用户可以正常使用Virtualbox还需要将用户添加到vboxusers组中</description></item><item><title>在Mac上安装Gentoo Linux</title><link>https://www.yafa.moe/post/install-gentoo-on-mac/</link><pubDate>Mon, 18 Jan 2021 19:41:36 -0500</pubDate><guid>https://www.yafa.moe/post/install-gentoo-on-mac/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>这不是一份简短的Gentoo Linux安装手册，我想在这篇文章中向你展示更多Gentoo Linux的魅力。&lt;/p>
+&lt;blockquote>
+&lt;p>为什么选择Gentoo？&lt;/p>
+&lt;/blockquote>
+&lt;p>Gentoo 是一个基于源码的滚动发行版。 Gentoo的基础包和软件都是由源码来构建的并且有Portage的USE标记来开启或者是关闭软件的特性。Gentoo提供了一个类似于ports的系统（Portage）所以Gentoo更适合于系统的定制化。&lt;/p></description></item><item><title>My First Posts</title><link>https://www.yafa.moe/post/my-first-posts/</link><pubDate>Mon, 18 Jan 2021 07:01:50 -0500</pubDate><guid>https://www.yafa.moe/post/my-first-posts/</guid><description>Hello, World!
 I&amp;rsquo;m Yafa Xena. This is My First hugo posts.
-Welcome to my blog</description>
-    </item>
-    
-  </channel>
-</rss>
+Welcome to my blog</description></item></channel></rss>

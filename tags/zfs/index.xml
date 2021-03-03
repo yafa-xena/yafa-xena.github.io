@@ -1,33 +1,5 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>zfs on Yafa Xena&#39;s Blog</title>
-    <link>https://www.yafa.moe/tags/zfs/</link>
-    <description>Recent content in zfs on Yafa Xena&#39;s Blog</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Sat, 27 Feb 2021 21:03:54 +0800</lastBuildDate><atom:link href="https://www.yafa.moe/tags/zfs/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>使用ZFS备份系统</title>
-      <link>https://www.yafa.moe/post/use-zfs-backup-system/</link>
-      <pubDate>Sat, 27 Feb 2021 21:03:54 +0800</pubDate>
-      
-      <guid>https://www.yafa.moe/post/use-zfs-backup-system/</guid>
-      <description>&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;
-&lt;p&gt;在之前的如何在&lt;a href=&#34;https://www.yafa.moe/post/gentoo-on-zfs/&#34;&gt;Gentoo上优雅的吃ZFS&lt;/a&gt;这篇文章中我们上了ZFS，但是没有给swap单独的一个分区，后来在使用中确实遇到了内存不够的情况。直接在系统里面丢swapfile是不合理的，最好是有个单独的分区给swap，所以还是要再来一次分区备份和恢复系统：）&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>在Gentoo上优雅的吃ZFS</title>
-      <link>https://www.yafa.moe/post/gentoo-on-zfs/</link>
-      <pubDate>Sun, 14 Feb 2021 10:58:06 +0800</pubDate>
-      
-      <guid>https://www.yafa.moe/post/gentoo-on-zfs/</guid>
-      <description>&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;
-&lt;p&gt;在之前的&lt;a href=&#34;https://www.yafa.moe/post/install-gentoo-on-mac/&#34;&gt;在Mac上安装Gentoo Linux&lt;/a&gt;这篇文章里面我成功的给现在手中的Mac安装上了Gentoo Linux，但是最近在看一些文件系统的资料看到了&lt;a href=&#34;https://en.wikipedia.org/wiki/ZFS&#34;&gt;ZFS&lt;/a&gt;其中的特性很是让我心动，虽然没有在虚拟机上面做一些尝试但是呢其中的快照、写时复制、数据压缩的特性很让我心动。&lt;/p&gt;
-&lt;p&gt;如果你有了解过一定的文件系统的知识你可能会想为啥不选择&lt;a href=&#34;https://en.wikipedia.org/wiki/Btrfs&#34;&gt;Btrfs&lt;/a&gt;呢？而且btrfs的话内核是可以直接支持的（需要比较新的内核），这个问题也是一个好问题。因为在我之后的规划里面，我打算自建一个机房。出于成本的考虑采取的方案是存算分离，存储的部分就是打算用ZFS。对于存储来说，连续性检查自动修复，RAID就显得尤为重要，这里也是为了这个计划做一个铺垫。也许你还会说这些btrfs都有啊！为啥还要用ZFS呢？由于我现在的水品还是十分有限，现阶段更多的是调研和测试，后续真正决定要用哪个文件系统或者是组合还是要看最终的测试结果。&lt;/p&gt;
-&lt;p&gt;因为当前用的这个Mac已经有了系统并且正常使用了一段时间，为了保持数据不丢失我先备份了一下系统。关于如何备份系统可以参考我这篇文章&lt;a href=&#34;https://www.yafa.moe/post/backup-your-gentoo-system/&#34;&gt;备份你的Gentoo系统&lt;/a&gt;。&lt;/p&gt;</description>
-    </item>
-    
-  </channel>
-</rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>zfs on Yafa Xena's Blog</title><link>https://www.yafa.moe/tags/zfs/</link><description>Recent content in zfs on Yafa Xena's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 27 Feb 2021 21:03:54 +0800</lastBuildDate><atom:link href="https://www.yafa.moe/tags/zfs/index.xml" rel="self" type="application/rss+xml"/><item><title>使用ZFS备份系统</title><link>https://www.yafa.moe/post/use-zfs-backup-system/</link><pubDate>Sat, 27 Feb 2021 21:03:54 +0800</pubDate><guid>https://www.yafa.moe/post/use-zfs-backup-system/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>在之前的如何在&lt;a href="https://www.yafa.moe/post/gentoo-on-zfs/">Gentoo上优雅的吃ZFS&lt;/a>这篇文章中我们上了ZFS，但是没有给swap单独的一个分区，后来在使用中确实遇到了内存不够的情况。直接在系统里面丢swapfile是不合理的，最好是有个单独的分区给swap，所以还是要再来一次分区备份和恢复系统：）&lt;/p></description></item><item><title>在Gentoo上优雅的吃ZFS</title><link>https://www.yafa.moe/post/gentoo-on-zfs/</link><pubDate>Sun, 14 Feb 2021 10:58:06 +0800</pubDate><guid>https://www.yafa.moe/post/gentoo-on-zfs/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>在之前的&lt;a href="https://www.yafa.moe/post/install-gentoo-on-mac/">在Mac上安装Gentoo Linux&lt;/a>这篇文章里面我成功的给现在手中的Mac安装上了Gentoo Linux，但是最近在看一些文件系统的资料看到了&lt;a href="https://en.wikipedia.org/wiki/ZFS">ZFS&lt;/a>其中的特性很是让我心动，虽然没有在虚拟机上面做一些尝试但是呢其中的快照、写时复制、数据压缩的特性很让我心动。&lt;/p>
+&lt;p>如果你有了解过一定的文件系统的知识你可能会想为啥不选择&lt;a href="https://en.wikipedia.org/wiki/Btrfs">Btrfs&lt;/a>呢？而且btrfs的话内核是可以直接支持的（需要比较新的内核），这个问题也是一个好问题。因为在我之后的规划里面，我打算自建一个机房。出于成本的考虑采取的方案是存算分离，存储的部分就是打算用ZFS。对于存储来说，连续性检查自动修复，RAID就显得尤为重要，这里也是为了这个计划做一个铺垫。也许你还会说这些btrfs都有啊！为啥还要用ZFS呢？由于我现在的水品还是十分有限，现阶段更多的是调研和测试，后续真正决定要用哪个文件系统或者是组合还是要看最终的测试结果。&lt;/p>
+&lt;p>因为当前用的这个Mac已经有了系统并且正常使用了一段时间，为了保持数据不丢失我先备份了一下系统。关于如何备份系统可以参考我这篇文章&lt;a href="https://www.yafa.moe/post/backup-your-gentoo-system/">备份你的Gentoo系统&lt;/a>。&lt;/p></description></item></channel></rss>

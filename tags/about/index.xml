@@ -1,24 +1,5 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>about on Yafa Xena&#39;s Blog</title>
-    <link>https://www.yafa.moe/tags/about/</link>
-    <description>Recent content in about on Yafa Xena&#39;s Blog</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Thu, 04 Feb 2021 15:37:52 +0800</lastBuildDate><atom:link href="https://www.yafa.moe/tags/about/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>关于我</title>
-      <link>https://www.yafa.moe/about/</link>
-      <pubDate>Thu, 04 Feb 2021 15:37:52 +0800</pubDate>
-      
-      <guid>https://www.yafa.moe/about/</guid>
-      <description>我是谁？ 你可以叫我Yafa，是一个步入社会没有几年的“学生”。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>about on Yafa Xena's Blog</title><link>https://www.yafa.moe/tags/about/</link><description>Recent content in about on Yafa Xena's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 04 Feb 2021 15:37:52 +0800</lastBuildDate><atom:link href="https://www.yafa.moe/tags/about/index.xml" rel="self" type="application/rss+xml"/><item><title>关于我</title><link>https://www.yafa.moe/about/</link><pubDate>Thu, 04 Feb 2021 15:37:52 +0800</pubDate><guid>https://www.yafa.moe/about/</guid><description>我是谁？ 你可以叫我Yafa，是一个步入社会没有几年的“学生”。
 目前是运维工程师（全职）。
 比较喜欢Gentoo，极简主义，阅读，写作，最喜欢的是学姐！！！
 这个博客主要是记录一些技术相关的分享，和一些日常。
-联系方式  Github GPG: 0xC6964DEDF01A4DA0 Email: aUB5YWZhLm1vZQ== (base64)  </description>
-    </item>
-    
-  </channel>
-</rss>
+联系方式 Github GPG: 0xC6964DEDF01A4DA0 Email: aUB5YWZhLm1vZQ== (base64)</description></item></channel></rss>
