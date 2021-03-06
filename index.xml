@@ -1,4 +1,12 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Yafa Xena's Blog</title><link>https://www.yafa.moe/</link><description>Recent content on Yafa Xena's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 01 Mar 2021 15:39:10 +0800</lastBuildDate><atom:link href="https://www.yafa.moe/index.xml" rel="self" type="application/rss+xml"/><item><title>Automatic Deployment Blog</title><link>https://www.yafa.moe/post/automatic-deployment-blog/</link><pubDate>Mon, 01 Mar 2021 15:39:10 +0800</pubDate><guid>https://www.yafa.moe/post/automatic-deployment-blog/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Yafa Xena's Blog</title><link>https://www.yafa.moe/</link><description>Recent content on Yafa Xena's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 06 Mar 2021 13:15:58 +0800</lastBuildDate><atom:link href="https://www.yafa.moe/index.xml" rel="self" type="application/rss+xml"/><item><title>Product</title><link>https://www.yafa.moe/product/</link><pubDate>Sat, 06 Mar 2021 13:15:58 +0800</pubDate><guid>https://www.yafa.moe/product/</guid><description>简介 我最近在尝试做一些副业，这里是尝试去做的一些产品。
+如果您有任何关于产品的看法或者是建议欢迎给我发邮件，这里是我的邮件地址 Email: aUB5YWZhLm1vZQ== (base64)。
+编写简历服务（即将到来） 这个服务是为你编写简历，使用LaTeX进行编写，节省你在简历上的耗时，让你更快进入面试阶段。
+这个服务需要你提供以下内容：
+基础信息 项目经历 工作年限 获奖情况 求职意向 将这些内容提交给我之后我将会在 2-3个工作日内将简历以及源代码发送给你，当然有不满意的地方可以按照需求修改。同时我也可以提供一些职业生涯（运维方向）上的建议。
+在完成交易之后我将会销毁我这边的所有相关信息，保证您的隐私安全。
+收费如下表：
+服务名称 描述 单价 备注 编写简历服务 为您量身定制简历 1000￥/次 正在策划中</description></item><item><title>Todo</title><link>https://www.yafa.moe/todo/</link><pubDate>Fri, 05 Mar 2021 22:58:31 +0800</pubDate><guid>https://www.yafa.moe/todo/</guid><description>说明 这里是我当前正在进行的写作或者是阅读以及学习新技能的Todo页面。
+即将到来的文章 Rsyslog server 我的第一台安卓手机 Network boding 博客图片优化 阅读代码之外的生存指南（读后感） 职业生涯之-离职篇 职业生涯之-简历篇 正在学习的课程 Python 3 Arduino Using emacs 正在阅读的书籍 《Atomic Habits》 《The 4-Hour Workweek》 《Show your work!》 《番茄工作法图解》 我的阅读清单 自我成长 《Atomic Habits》 《The 4-Hour Workweek》 《The elements of style》 《Why should anyone be led by you?》 《Write anything》 《Show your work!》 《Deep Thinking》 《How to read a book》 《Getting Things Done》 《Road less traveled》 《ANTIFRAGILE》 《Thnk Again How to Reason and Argue》 《Thinking, fast and slow》 《番茄工作法图解》 心理学 《The Development of Personality》 《Emotional first aid》 语言 《The language instinct》 编程语言 《Rust编程之道》 《C Primer Plus》 《C++ Primer Plus》 《数据结构与算法分析》 《计算机程序的构造和解释》 《编译原理》 《汇编语言》 《QT 5.</description></item><item><title>Automatic Deployment Blog</title><link>https://www.yafa.moe/post/automatic-deployment-blog/</link><pubDate>Mon, 01 Mar 2021 15:39:10 +0800</pubDate><guid>https://www.yafa.moe/post/automatic-deployment-blog/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>最近学习了一点git打开了新世界的大门，git是一个很适合多人协作的工具，就像是当前的这个博客原来我是在本地的，用git可以做版本控制同时可以可以让学姐参与进来一起写博客。&lt;/p>
 &lt;p>用git之后同时也带来了一个问题，就是当分支合并的时候由谁来部署。&lt;/p>
 &lt;p>这篇文章就是关于如何自动化部署博客。&lt;/p></description></item><item><title>使用ZFS备份系统</title><link>https://www.yafa.moe/post/use-zfs-backup-system/</link><pubDate>Sat, 27 Feb 2021 21:03:54 +0800</pubDate><guid>https://www.yafa.moe/post/use-zfs-backup-system/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
@@ -31,13 +39,13 @@
 虽然是找了一家公司，但是这家公司也让我明白了小说里面的场景有些地方是真实的，就是魔幻现实的映射。&lt;/p>
 &lt;p>在工作上获得的进步不是很大，刚开始接触到这个运维行业很多地方都是在探索和学习，虽然感觉进度有点跟不上自己的计划，但是获奖也是一个小惊喜啦。&lt;/p>
 &lt;p>在生活上也是上当受骗了一把，相信所谓的消费主义深受其害。每个月都是月光的状态，对于未来的风险承受能力很低，只能够祈祷不能把当前的工作给丢掉，留给自己审视的时间是很少的。
-在经历这么几个月的“上流月”最后醒悟了（感谢学姐！），不能这么继续下去了。&lt;/p></description></item><item><title>Links</title><link>https://www.yafa.moe/links/</link><pubDate>Thu, 04 Feb 2021 15:40:32 +0800</pubDate><guid>https://www.yafa.moe/links/</guid><description>Links 友情链接 最爱的学姐，无论是生活上，职业生涯上还是心理上都给了我很大的帮助，是我人生中的那座灯塔。
+在经历这么几个月的“上流月”最后醒悟了（感谢学姐！），不能这么继续下去了。&lt;/p></description></item><item><title>Links</title><link>https://www.yafa.moe/links/</link><pubDate>Thu, 04 Feb 2021 15:40:32 +0800</pubDate><guid>https://www.yafa.moe/links/</guid><description>友情链接 最爱的学姐，无论是生活上，职业生涯上还是心理上都给了我很大的帮助，是我人生中的那座灯塔。
 学姐
 喜欢的音乐 这是我很喜欢在学习，或者是在写博客时候的听的音乐：
 Lakey Inspired</description></item><item><title>关于我</title><link>https://www.yafa.moe/about/</link><pubDate>Thu, 04 Feb 2021 15:37:52 +0800</pubDate><guid>https://www.yafa.moe/about/</guid><description>我是谁？ 你可以叫我Yafa，是一个步入社会没有几年的“学生”。
-目前是运维工程师（全职）。
-比较喜欢Gentoo，极简主义，阅读，写作，最喜欢的是学姐！！！
-这个博客主要是记录一些技术相关的分享，和一些日常。
+目前是运维工程师（已离职），这个职业让我深深感受到了自由和责任。
+比较热爱学习，敢于挑战已有的事物。
+这个博客主要是记录一些技术相关的分享，和一些日常。如果您发现我博客中有错误的地方，如果不介意占用您宝贵的时间您可以发送邮件到我的邮箱。内容就是url和文章有错误的部分，非常感谢您的帮助。
 联系方式 Github GPG: 0xC6964DEDF01A4DA0 Email: aUB5YWZhLm1vZQ== (base64)</description></item><item><title>设置我的实验环境</title><link>https://www.yafa.moe/post/setup-my-lab/</link><pubDate>Sat, 23 Jan 2021 14:30:17 +0800</pubDate><guid>https://www.yafa.moe/post/setup-my-lab/</guid><description>前言 在结束安装Gentoo后，下一步就是要初始化我的实验环境了，我这里使用比较多的实验环境主要是在本机上创建虚拟机然后运行不同的软件和不同的环境。我常用的虚拟化软件如下:
 虚拟化类型 软件包 软件虚拟化 app-emulation/virtualbox 全虚拟化 app-emulation/qemu 半虚拟化 app-emulation/xen container app-emulation/docker 这几种虚拟化各有优点，我平时是使用virtualbox做测试环境，QEMU就更加贴近生产环境，半虚拟化是做Qubes On Gentoo的准备，容器是想要快速测试东西的时候使用的，后续也会作为基础了解一下K8S之类的。
 这些直接使用可能有点不是很舒服为此我还需要以下工具来方便去管理虚拟机:
