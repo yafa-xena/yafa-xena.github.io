@@ -1,0 +1,147 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><title>Rsyslog服务器配置和使用 - Yafa Xena's Blog</title><meta name=renderer content="webkit"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><meta http-equiv=cache-control content="no-transform"><meta http-equiv=cache-control content="no-siteapp"><meta name=theme-color content="#f8f5ec"><meta name=msapplication-navbutton-color content="#f8f5ec"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="#f8f5ec"><meta name=author content="Yafa Xena"><meta name=description content="前言 rsyslog是啥？rsyslog服务器是一种集中式处理日志的方法。不用检查的时候连接到每个服务器上，这个虽然不是最为有效的办法但是目前来说对我足够了。这里记录一下如何配置和使用。
+环境说明 这里我准备3个节点用于这次的实验:
+   hostname network ip os     rsyslog-server test 172.11.0.20/22 centos7   rsyslog-node1 test 172.11.0.21/22 centos7   rsyslog-node2 test 172.11.0.22/22 centos7    安装和配置 首先对这些节点进行初始化
+ 更改网络
+ 默认的网络是default的网络这里要改成test的网络。
+首先查看默认的网络
+1 2 3 4  sudo virsh domiflist rsyslog-server Interface Type Source Model MAC ------------------------------------------------------------- vnet0 network default virtio 52:54:00:bd:1b:a6   删除原有的default网络
+1  sudo virsh detach-interface --domain rsyslog-server --type network --mac 52:54:00:bd:1b:a6 --config --live   添加test网络"><meta name=keywords content="Linux,Emacs,Python,Golang,Devops,Zabbix"><meta name=generator content="Hugo 0.79.1 with theme even"><link rel=canonical href=https://www.yafa.moe/post/rsyslog/><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/manifest.json><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link href=/sass/main.min.03cf0bcb43896b5503a036fa924447c2b44d56b1c35cc097d0c7b19fe5b52c84.css rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin=anonymous><meta property="og:title" content="Rsyslog服务器配置和使用"><meta property="og:description" content="前言 rsyslog是啥？rsyslog服务器是一种集中式处理日志的方法。不用检查的时候连接到每个服务器上，这个虽然不是最为有效的办法但是目前来说对我足够了。这里记录一下如何配置和使用。
+环境说明 这里我准备3个节点用于这次的实验:
+   hostname network ip os     rsyslog-server test 172.11.0.20/22 centos7   rsyslog-node1 test 172.11.0.21/22 centos7   rsyslog-node2 test 172.11.0.22/22 centos7    安装和配置 首先对这些节点进行初始化
+ 更改网络
+ 默认的网络是default的网络这里要改成test的网络。
+首先查看默认的网络
+1 2 3 4  sudo virsh domiflist rsyslog-server Interface Type Source Model MAC ------------------------------------------------------------- vnet0 network default virtio 52:54:00:bd:1b:a6   删除原有的default网络
+1  sudo virsh detach-interface --domain rsyslog-server --type network --mac 52:54:00:bd:1b:a6 --config --live   添加test网络"><meta property="og:type" content="article"><meta property="og:url" content="https://www.yafa.moe/post/rsyslog/"><meta property="article:published_time" content="2021-03-08T22:52:29+08:00"><meta property="article:modified_time" content="2021-03-08T22:52:29+08:00"><meta itemprop=name content="Rsyslog服务器配置和使用"><meta itemprop=description content="前言 rsyslog是啥？rsyslog服务器是一种集中式处理日志的方法。不用检查的时候连接到每个服务器上，这个虽然不是最为有效的办法但是目前来说对我足够了。这里记录一下如何配置和使用。
+环境说明 这里我准备3个节点用于这次的实验:
+   hostname network ip os     rsyslog-server test 172.11.0.20/22 centos7   rsyslog-node1 test 172.11.0.21/22 centos7   rsyslog-node2 test 172.11.0.22/22 centos7    安装和配置 首先对这些节点进行初始化
+ 更改网络
+ 默认的网络是default的网络这里要改成test的网络。
+首先查看默认的网络
+1 2 3 4  sudo virsh domiflist rsyslog-server Interface Type Source Model MAC ------------------------------------------------------------- vnet0 network default virtio 52:54:00:bd:1b:a6   删除原有的default网络
+1  sudo virsh detach-interface --domain rsyslog-server --type network --mac 52:54:00:bd:1b:a6 --config --live   添加test网络"><meta itemprop=datePublished content="2021-03-08T22:52:29+08:00"><meta itemprop=dateModified content="2021-03-08T22:52:29+08:00"><meta itemprop=wordCount content="337"><meta itemprop=keywords content="rsyslog,linux,"><meta name=twitter:card content="summary"><meta name=twitter:title content="Rsyslog服务器配置和使用"><meta name=twitter:description content="前言 rsyslog是啥？rsyslog服务器是一种集中式处理日志的方法。不用检查的时候连接到每个服务器上，这个虽然不是最为有效的办法但是目前来说对我足够了。这里记录一下如何配置和使用。
+环境说明 这里我准备3个节点用于这次的实验:
+   hostname network ip os     rsyslog-server test 172.11.0.20/22 centos7   rsyslog-node1 test 172.11.0.21/22 centos7   rsyslog-node2 test 172.11.0.22/22 centos7    安装和配置 首先对这些节点进行初始化
+ 更改网络
+ 默认的网络是default的网络这里要改成test的网络。
+首先查看默认的网络
+1 2 3 4  sudo virsh domiflist rsyslog-server Interface Type Source Model MAC ------------------------------------------------------------- vnet0 network default virtio 52:54:00:bd:1b:a6   删除原有的default网络
+1  sudo virsh detach-interface --domain rsyslog-server --type network --mac 52:54:00:bd:1b:a6 --config --live   添加test网络"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script><script src=https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js></script><![endif]--></head><body><div id=mobile-navbar class=mobile-navbar><div class=mobile-header-logo><a href=/ class=logo>Yafa-Xena</a></div><div class=mobile-navbar-icon><span></span><span></span><span></span></div></div><nav id=mobile-menu class="mobile-menu slideout-menu"><ul class=mobile-menu-list><a href=/><li class=mobile-menu-item>Home</li></a><a href=/post/><li class=mobile-menu-item>Archives</li></a><a href=/tags/><li class=mobile-menu-item>Tags</li></a><a href=/todo><li class=mobile-menu-item>Todo</li></a><a href=/about><li class=mobile-menu-item>About</li></a><a href=/links><li class=mobile-menu-item>Links</li></a><a href=/product><li class=mobile-menu-item>Product</li></a></ul></nav><div class=container id=mobile-panel><header id=header class=header><div class=logo-wrapper><a href=/ class=logo>Yafa-Xena</a></div><nav class=site-navbar><ul id=menu class=menu><li class=menu-item><a class=menu-item-link href=/>Home</a></li><li class=menu-item><a class=menu-item-link href=/post/>Archives</a></li><li class=menu-item><a class=menu-item-link href=/tags/>Tags</a></li><li class=menu-item><a class=menu-item-link href=/todo>Todo</a></li><li class=menu-item><a class=menu-item-link href=/about>About</a></li><li class=menu-item><a class=menu-item-link href=/links>Links</a></li><li class=menu-item><a class=menu-item-link href=/product>Product</a></li></ul></nav></header><main id=main class=main><div class=content-wrapper><div id=content class=content><article class=post><header class=post-header><h1 class=post-title>Rsyslog服务器配置和使用</h1><div class=post-meta><span class=post-time>2021-03-08</span>
+<span class=more-meta>337 words</span>
+<span class=more-meta>2 mins read</span></div></header><div class=post-toc id=post-toc><h2 class=post-toc-title>Contents</h2><div class=post-toc-content><nav id=TableOfContents><ul><li><a href=#前言>前言</a></li><li><a href=#环境说明>环境说明</a></li><li><a href=#安装和配置>安装和配置</a></li><li><a href=#配置rsyslog-server>配置rsyslog-server</a></li><li><a href=#验证>验证</a></li><li><a href=#后记>后记</a></li><li><a href=#参考连接>参考连接</a></li></ul></nav></div></div><div class=post-content><h2 id=前言>前言</h2><p>rsyslog是啥？rsyslog服务器是一种集中式处理日志的方法。不用检查的时候连接到每个服务器上，这个虽然不是最为有效的办法但是目前来说对我足够了。这里记录一下如何配置和使用。</p><h2 id=环境说明>环境说明</h2><p>这里我准备3个节点用于这次的实验:</p><table><thead><tr><th>hostname</th><th>network</th><th>ip</th><th>os</th></tr></thead><tbody><tr><td>rsyslog-server</td><td>test</td><td>172.11.0.20/22</td><td>centos7</td></tr><tr><td>rsyslog-node1</td><td>test</td><td>172.11.0.21/22</td><td>centos7</td></tr><tr><td>rsyslog-node2</td><td>test</td><td>172.11.0.22/22</td><td>centos7</td></tr></tbody></table><h2 id=安装和配置>安装和配置</h2><p>首先对这些节点进行初始化</p><blockquote><p>更改网络</p></blockquote><p>默认的网络是<code>default</code>的网络这里要改成<code>test</code>的网络。</p><p>首先查看默认的网络</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh>sudo virsh domiflist rsyslog-server
+ Interface   Type      Source    Model    MAC
+-------------------------------------------------------------
+ vnet0       network   default   virtio   52:54:00:bd:1b:a6
+</code></pre></td></tr></table></div></div><p>删除原有的default网络</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>sudo virsh detach-interface --domain rsyslog-server --type network --mac 52:54:00:bd:1b:a6 --config --live
+</code></pre></td></tr></table></div></div><p>添加test网络</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell> sudo virsh attach-interface --domain rsyslog-server --type network <span class=se>\
+</span><span class=se></span>--source <span class=nb>test</span> --model virtio --config --live
+</code></pre></td></tr></table></div></div><p>验证</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>sudo virsh domiflist rsyslog-server
+ Interface   Type      Source   Model    MAC
+------------------------------------------------------------
+ vnet3       network   <span class=nb>test</span>     virtio   52:54:00:52:1f:d8
+</code></pre></td></tr></table></div></div><p>修改主机名和ip</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh>sudo virsh console rsyslog-server
+hostnamectl set-hostname rsyslog-server
+nmcli con mod eth0 ipv4.method manual ipv4.addresses <span class=s2>&#34;172.11.0.20/22&#34;</span> ipv4.dns 114.114.114.114 ipv4.gateway 172.11.0.1 connection.autoconnect yes
+nmcli con show
+</code></pre></td></tr></table></div></div><p>其他节点也如法炮制。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>sudo virsh console rsyslog-node1
+hostnamectl set-hostname rsyslog-node2
+nmcli con mod eth0 ipv4.method manual ipv4.addresses <span class=s2>&#34;172.11.0.21/22&#34;</span> ipv4.dns 114.114.114.114 ipv4.gateway 172.11.0.1 connection.autoconnect yes
+nmcli con show
+</code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>sudo virsh console rsyslog-node2
+hostnamectl set-hostname rsyslog-node2
+nmcli con mod eth0 ipv4.method manual ipv4.addresses <span class=s2>&#34;172.11.0.22/22&#34;</span> ipv4.dns 114.114.114.114 ipv4.gateway 172.11.0.1 connection.autoconnect yes
+nmcli con show
+</code></pre></td></tr></table></div></div><h2 id=配置rsyslog-server>配置rsyslog-server</h2><p>配置rsyslog server服务端，将两个节点的日志打到这里。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>yum install rsyslog -y
+</code></pre></td></tr></table></div></div><p>修改配置文件：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>vi /etc/rsyslog.conf
+</code></pre></td></tr></table></div></div><p>取消这部分的注释</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell><span class=nv>$ModLoad</span> imudp
+<span class=nv>$UDPServerRun</span> <span class=m>514</span>
+<span class=nv>$ModLoad</span> imtcp
+<span class=nv>$InputTCPServerRun</span> <span class=m>514</span>
+</code></pre></td></tr></table></div></div><p>添加一个模板</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>vi /etc/rsyslog.d/default.conf
+</code></pre></td></tr></table></div></div><p>内容如下：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell><span class=c1>#### GLOBAL DIRECTIVES ####</span>
+<span class=c1># Use default timestamp format </span>
+<span class=nv>$ActionFileDefaultTemplate</span> RSYSLOG_TraditionalFileFormat
+<span class=nv>$template</span> myFormat,<span class=s2>&#34;%timestamp% %fromhost-ip% %syslogtag% %msg%\n&#34;</span>
+<span class=nv>$ActionFileDefaultTemplate</span> myFormat    
+<span class=nv>$template</span> RemoteLogs,<span class=s2>&#34;/var/log/rsyslog/%fromhost-ip%/%fromhost-ip%_%</span><span class=nv>$YEAR</span><span class=s2>%-%</span><span class=nv>$MONTH</span><span class=s2>%-%</span><span class=nv>$DAY</span><span class=s2>%.log&#34;</span>
+:fromhost-ip, !isequal, <span class=s2>&#34;127.0.0.1&#34;</span> ?RemoteLogs
+<span class=p>&amp;</span> ~
+</code></pre></td></tr></table></div></div><p>我是想要在<code>/var/log/rsyslog/</code>这个目录下按照ip创建一个文件夹然后下面再是日志的方式去存放，还有更多的配置格式你可以参考官网或者是<code>man rsyslog.conf</code></p><p>创建文件夹：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>mkdir -pv /var/log/rsyslog
+</code></pre></td></tr></table></div></div><blockquote><p>设置Selinux</p></blockquote><p>安装selinux工具：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>yum install -y policycoreutils-python setools-console setroubleshoot-server
+</code></pre></td></tr></table></div></div><p>设置selinux：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>semanage fcontext -a -t  var_log_t <span class=s1>&#39;/var/log/rsyslog(/.*)?&#39;</span>
+restorecon -FRv /var/log/rsyslog
+</code></pre></td></tr></table></div></div><p>添加防火墙规则</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>firewall-cmd --permanent --add-port<span class=o>=</span>514/udp
+firewall-cmd --permanent --add-port<span class=o>=</span>514/tcp
+firewall-cmd --reload
+</code></pre></td></tr></table></div></div><p>将<code>rsyslog</code>服务启动并加入到开机启动项：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>systemctl <span class=nb>enable</span> rsyslog
+systemctl start rsyslog
+</code></pre></td></tr></table></div></div><p>查看服务状态：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>systemctl status rsyslog
+</code></pre></td></tr></table></div></div><h2 id=验证>验证</h2><p>我们首先要设置两个客户端，修改<code>rsyslog</code>服务的配置文件：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>vi /etc/rsyslog.conf
+</code></pre></td></tr></table></div></div><p>添加内容如下：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>*.*    @172.11.0.20:514
+</code></pre></td></tr></table></div></div><p><code>@</code>的话是UDP的传输方式如果想要更换成TCP可以换成<code>@@</code></p><p>启动<code>rsyslog</code>服务并加入开机启动项：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>systemctl <span class=nb>enable</span> rsyslog
+systemctl restart rsyslog
+systemctl status rsyslog
+</code></pre></td></tr></table></div></div><p>我们在<code>rsyslog-node1</code>上重启一下<code>NetworkManager</code>服务，对应的在<code>rsyslog-server</code>的<code>/var/log/rsyslog/172.11.0.21/</code>下就可以看到对的日志了。</p><h2 id=后记>后记</h2><p>通过这个rsyslog服务可以将上网行为管理或者是交换机的日志还有系统的日志全部接入进来，相对于ELK之类的比较轻量适用性还比较广。除了落到本地的方式还有其他的方式比如说存储在mysql。不过我这里就不打算配置mysql的方式了期待你的探索。</p><h2 id=参考连接>参考连接</h2><ul><li><a href=https://www.cnblogs.com/xiaozi/p/11794813.html>搭建rsyslog日志服务器</a></li><li><a href=https://www.jianshu.com/p/48034e74dee3>架构01-搭建日志服务器Rsyslog</a></li><li><a href=https://ostechnix.com/setup-centralized-rsyslog-server-centos-7/>Setup Centralized Rsyslog Server On CentOS 7</a></li><li><a href=https://www.rsyslog.com/doc/v8-stable/>rsyslog v8.2102.0 documentation</a></li></ul></div><div class=post-copyright><p class=copyright-item><span class=item-title>Author</span>
+<span class=item-content>Yafa Xena</span></p><p class=copyright-item><span class=item-title>LastMod</span>
+<span class=item-content>2021-03-08</span></p></div><footer class=post-footer><div class=post-tags><a href=/tags/rsyslog/>rsyslog</a>
+<a href=/tags/linux/>linux</a></div><nav class=post-nav><a class=next href=/post/use-networkmanager-setup-bond-inc/><span class="next-text nav-default">使用NetworkManger初始化Bond</span>
+<span class="next-text nav-mobile">Next</span>
+<i class="iconfont icon-right"></i></a></nav></footer></article></div></div></main><footer id=footer class=footer><div class=social-links><a href=https://www.yafa.moe/index.xml type=application/rss+xml class="iconfont icon-rss" title=rss></a></div><div class=copyright><span class=power-by>Powered by <a class=hexo-link href=https://gohugo.io>Hugo</a></span>
+<span class=division>|</span>
+<span class=theme-info>Theme -
+<a class=theme-link href=https://github.com/olOwOlo/hugo-theme-even>Even</a></span>
+<span class=copyright-year>&copy;
+2021<span class=heart><i class="iconfont icon-heart"></i></span><span>Yafa Xena</span></span></div></footer><div class=back-to-top id=back-to-top><i class="iconfont icon-up"></i></div></div><script src=https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin=anonymous></script><script type=text/javascript src=/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js></script><script type=text/javascript>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],tags:'ams',}};</script><script async src=https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin=anonymous></script></body></html>
