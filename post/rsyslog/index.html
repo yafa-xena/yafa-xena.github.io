@@ -112,7 +112,9 @@ systemctl status rsyslog
 </code></pre></td></tr></table></div></div><p>我们在<code>rsyslog-node1</code>上重启一下<code>NetworkManager</code>服务，对应的在<code>rsyslog-server</code>的<code>/var/log/rsyslog/172.11.0.21/</code>下就可以看到对的日志了。</p><h2 id=后记>后记</h2><p>通过这个rsyslog服务可以将上网行为管理或者是交换机的日志还有系统的日志全部接入进来，相对于ELK之类的比较轻量适用性还比较广。除了落到本地的方式还有其他的方式比如说存储在mysql。不过我这里就不打算配置mysql的方式了期待你的探索。</p><h2 id=参考连接>参考连接</h2><ul><li><a href=https://www.cnblogs.com/xiaozi/p/11794813.html>搭建rsyslog日志服务器</a></li><li><a href=https://www.jianshu.com/p/48034e74dee3>架构01-搭建日志服务器Rsyslog</a></li><li><a href=https://ostechnix.com/setup-centralized-rsyslog-server-centos-7/>Setup Centralized Rsyslog Server On CentOS 7</a></li><li><a href=https://www.rsyslog.com/doc/v8-stable/>rsyslog v8.2102.0 documentation</a></li></ul></div><div class=post-copyright><p class=copyright-item><span class=item-title>Author</span>
 <span class=item-content>Yafa Xena</span></p><p class=copyright-item><span class=item-title>LastMod</span>
 <span class=item-content>2021-03-08</span></p></div><footer class=post-footer><div class=post-tags><a href=/tags/rsyslog/>rsyslog</a>
-<a href=/tags/linux/>linux</a></div><nav class=post-nav><a class=next href=/post/use-networkmanager-setup-bond-inc/><span class="next-text nav-default">使用NetworkManger初始化Bond</span>
+<a href=/tags/linux/>linux</a></div><nav class=post-nav><a class=prev href=/post/how-to-use-usb-install-mac/><i class="iconfont icon-left"></i><span class="prev-text nav-default">如何使用USB重装Mac</span>
+<span class="prev-text nav-mobile">Prev</span></a>
+<a class=next href=/post/use-networkmanager-setup-bond-inc/><span class="next-text nav-default">使用NetworkManger初始化Bond</span>
 <span class="next-text nav-mobile">Next</span>
 <i class="iconfont icon-right"></i></a></nav></footer></article></div></div></main><footer id=footer class=footer><div class=social-links><a href=https://www.yafa.moe/index.xml type=application/rss+xml class="iconfont icon-rss" title=rss></a></div><div class=copyright><span class=power-by>Powered by <a class=hexo-link href=https://gohugo.io>Hugo</a></span>
 <span class=division>|</span>
