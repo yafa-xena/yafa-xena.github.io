@@ -1,0 +1,124 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><title>初始化我的Mac - Yafa Xena's Blog</title><meta name=renderer content="webkit"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><meta http-equiv=cache-control content="no-transform"><meta http-equiv=cache-control content="no-siteapp"><meta name=theme-color content="#f8f5ec"><meta name=msapplication-navbutton-color content="#f8f5ec"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="#f8f5ec"><meta name=author content="Yafa Xena"><meta name=description content="前言 在之前的这篇文章中我成功用上了Mac，但是也带来了几个问题比如说像是GPG KEY的丢失和部分数据的丢失。不过今天仔细思考了一下其实我是有备份的，从备份中取出来了GPG KEY和密码数据库。这篇文章是记录我是如何初始化mac的环境的，以及我用哪些软件。"><meta name=keywords content="Linux,Emacs,Python,Golang,Devops,Zabbix"><meta name=generator content="Hugo 0.79.1 with theme even"><link rel=canonical href=https://www.yafa.moe/post/initialize-my-mac-env/><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/manifest.json><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link href=/sass/main.min.03cf0bcb43896b5503a036fa924447c2b44d56b1c35cc097d0c7b19fe5b52c84.css rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin=anonymous><meta property="og:title" content="初始化我的Mac"><meta property="og:description" content="前言
+在之前的这篇文章中我成功用上了Mac，但是也带来了几个问题比如说像是GPG KEY的丢失和部分数据的丢失。不过今天仔细思考了一下其实我是有备份的，从备份中取出来了GPG KEY和密码数据库。这篇文章是记录我是如何初始化mac的环境的，以及我用哪些软件。"><meta property="og:type" content="article"><meta property="og:url" content="https://www.yafa.moe/post/initialize-my-mac-env/"><meta property="article:published_time" content="2021-03-10T14:00:11+08:00"><meta property="article:modified_time" content="2021-03-10T14:00:11+08:00"><meta itemprop=name content="初始化我的Mac"><meta itemprop=description content="前言
+在之前的这篇文章中我成功用上了Mac，但是也带来了几个问题比如说像是GPG KEY的丢失和部分数据的丢失。不过今天仔细思考了一下其实我是有备份的，从备份中取出来了GPG KEY和密码数据库。这篇文章是记录我是如何初始化mac的环境的，以及我用哪些软件。"><meta itemprop=datePublished content="2021-03-10T14:00:11+08:00"><meta itemprop=dateModified content="2021-03-10T14:00:11+08:00"><meta itemprop=wordCount content="449"><meta itemprop=keywords content="gpg,mac,pass,git,"><meta name=twitter:card content="summary"><meta name=twitter:title content="初始化我的Mac"><meta name=twitter:description content="前言
+在之前的这篇文章中我成功用上了Mac，但是也带来了几个问题比如说像是GPG KEY的丢失和部分数据的丢失。不过今天仔细思考了一下其实我是有备份的，从备份中取出来了GPG KEY和密码数据库。这篇文章是记录我是如何初始化mac的环境的，以及我用哪些软件。"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script><script src=https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js></script><![endif]--></head><body><div id=mobile-navbar class=mobile-navbar><div class=mobile-header-logo><a href=/ class=logo>Yafa-Xena</a></div><div class=mobile-navbar-icon><span></span><span></span><span></span></div></div><nav id=mobile-menu class="mobile-menu slideout-menu"><ul class=mobile-menu-list><a href=/><li class=mobile-menu-item>Home</li></a><a href=/post/><li class=mobile-menu-item>Archives</li></a><a href=/tags/><li class=mobile-menu-item>Tags</li></a><a href=/todo><li class=mobile-menu-item>Todo</li></a><a href=/about><li class=mobile-menu-item>About</li></a><a href=/links><li class=mobile-menu-item>Links</li></a><a href=/product><li class=mobile-menu-item>Product</li></a></ul></nav><div class=container id=mobile-panel><header id=header class=header><div class=logo-wrapper><a href=/ class=logo>Yafa-Xena</a></div><nav class=site-navbar><ul id=menu class=menu><li class=menu-item><a class=menu-item-link href=/>Home</a></li><li class=menu-item><a class=menu-item-link href=/post/>Archives</a></li><li class=menu-item><a class=menu-item-link href=/tags/>Tags</a></li><li class=menu-item><a class=menu-item-link href=/todo>Todo</a></li><li class=menu-item><a class=menu-item-link href=/about>About</a></li><li class=menu-item><a class=menu-item-link href=/links>Links</a></li><li class=menu-item><a class=menu-item-link href=/product>Product</a></li></ul></nav></header><main id=main class=main><div class=content-wrapper><div id=content class=content><article class=post><header class=post-header><h1 class=post-title>初始化我的Mac</h1><div class=post-meta><span class=post-time>2021-03-10</span>
+<span class=more-meta>449 words</span>
+<span class=more-meta>3 mins read</span></div></header><div class=post-toc id=post-toc><h2 class=post-toc-title>Contents</h2><div class=post-toc-content><nav id=TableOfContents><ul><li><a href=#前言>前言</a></li><li><a href=#系统设置>系统设置</a><ul><li><a href=#安全设置>安全设置</a></li><li><a href=#快捷键设置>快捷键设置</a></li></ul></li><li><a href=#我的软件列表>我的软件列表</a></li><li><a href=#macports设置>MacPorts设置</a></li><li><a href=#gpg>GPG</a></li><li><a href=#password-store>password store</a></li><li><a href=#git设置>git设置</a></li><li><a href=#emacs>Emacs</a></li><li><a href=#hashicorp软件设置>hashicorp软件设置</a></li><li><a href=#结束语>结束语</a></li><li><a href=#参考资料>参考资料</a></li></ul></nav></div></div><div class=post-content><h2 id=前言>前言</h2><p>在之前的这篇文章中我成功用上了Mac，但是也带来了几个问题比如说像是GPG KEY的丢失和部分数据的丢失。不过今天仔细思考了一下其实我是有备份的，从备份中取出来了GPG KEY和密码数据库。这篇文章是记录我是如何初始化mac的环境的，以及我用哪些软件。</p><h2 id=系统设置>系统设置</h2><h3 id=安全设置>安全设置</h3><p>因为安装的时候没办法直接全盘加密安装，这里出于安全的考虑还需要设置开启全盘加密。</p><p>打开系统的偏好设置，选择<code>Security & Privacy</code>菜单，选择 <code>FileVault</code>，将这个功能打开：</p><p><img src=../../images/filevault_option.png alt="File Vault Options">
+选择打开之后会提示你是否允许你用icloud账户去解锁硬盘，这个看个人偏好，我这里选择允许用icloud账号去解锁硬盘。</p><p>这个加密会耗费相当长的一段时间，建议是安装好系统之后就开启，加密完成之后在<code>disk utility</code>中可以查看状态已经是加密的了：</p><p><img src=../../images/disk_utils_disk_status.png alt="disk status"></p><h3 id=快捷键设置>快捷键设置</h3><p>之前在KDE下面全局设置了按键映射，Mac也可以很方便的设置这个按键映射，有一个叫修饰键的功能可以使用。</p><p>打开系统的偏好设置，选择<code>Keyboard</code>菜单。在这个菜单里面有一个<code>Modifier Keys</code>的选项，我喜欢将<code>caps lock</code>和<code>control</code>按键功能调换一下：</p><p><img src=../../images/modify_key.png alt="modifier key"></p><h2 id=我的软件列表>我的软件列表</h2><p>这里是我用到的软件列表</p><table><thead><tr><th>软件名称</th><th>类别</th><th>说明</th></tr></thead><tbody><tr><td><a href=https://www.mozilla.org/en-US/firefox/new/>firefox</a></td><td>浏览器</td><td>主要的浏览器</td></tr><tr><td><a href=https://www.torproject.org/download/>torbrowser</a></td><td>浏览器</td><td>不信任的内容使用这个浏览器</td></tr><tr><td><a href=https://www.thunderbird.net/en-US/download/>Thunderbird</a></td><td>邮件客户端</td><td>取代系统默认的邮件应用</td></tr><tr><td><a href=https://desktop.telegram.org/>Telegram</a></td><td>社交</td><td>社交工具</td></tr><tr><td><a href=https://www.dingtalk.com>钉钉</a></td><td>社交</td><td>社交工具，每天上班使用到的工具</td></tr><tr><td><a href=https://apps.ankiweb.net/>Anki</a></td><td>学习工具</td><td>卡片记忆工具，目前用来背单词</td></tr><tr><td><a href=https://www.tug.org/mactex/>MacTex</a></td><td>排版工具</td><td>整理一些个人笔记，或者是演讲稿</td></tr><tr><td><a href=https://www.virtualbox.org/wiki/Downloads>Virtualbox</a></td><td>开发工具</td><td>在Mac下我主力的虚拟化工具</td></tr><tr><td><a href=https://www.vagrantup.com/downloads>vagrant</a></td><td>开发工具</td><td>管理Virtualbox虚拟机</td></tr><tr><td><a href=https://www.terraform.io/downloads.html>terraform</a></td><td>开发工具</td><td>管理aws以及测试环境的节点</td></tr><tr><td><a href=https://www.packer.io/downloads>packer</a></td><td>开发工具</td><td>管理虚拟机镜像</td></tr><tr><td><a href=https://www.jetbrains.com/pycharm/download/>pycharm</a></td><td>开发工具</td><td>我的python开发环境</td></tr><tr><td><a href=https://www.anaconda.com/products/individual>anaconda</a></td><td>开发工具</td><td>anaconda发行版有挺多好用的工具</td></tr><tr><td><a href=https://kapeli.com/dash>Dash</a></td><td>开发工具</td><td>有着很多的API文档</td></tr><tr><td><a href=https://www.wireshark.org/>wireshark</a></td><td>开发工具</td><td>用于网络抓包和分析</td></tr><tr><td><a href=https://emacsformacosx.com/>Emacs for mac</a></td><td>编辑器</td><td>主要的编辑器未来也会出有关的文章</td></tr><tr><td><a href=https://www.macports.org/install.php>Macports</a></td><td>包管理</td><td>有点像是Ports，有很灵活的USE，后期考虑做一些文章</td></tr><tr><td><a href=https://docs.docker.com/docker-for-mac/install/>Docker</a></td><td>容器管理工具</td><td>本地的Docke以及管理远程的docker客户端</td></tr><tr><td><a href=https://calibre-ebook.com/download>calibre</a></td><td>图书管理</td><td>本地的图书管理工具</td></tr><tr><td><a href=https://www.gimp.org/downloads/>gimp</a></td><td>图像处理</td><td>主要的图像处理工具</td></tr><tr><td><a href=https://github.com/tmux/tmux/releases>tmux</a></td><td>会话管理</td><td>比较常用的会话管理工具</td></tr><tr><td><a href=https://www.passwordstore.org/>pass</a></td><td>密码管理</td><td>密码管理工具，用这个管理我所有的密码</td></tr><tr><td><a href=https://www.zerotier.com/download/>zerotier</a></td><td>sdwan</td><td>用于链接家里的设备</td></tr><tr><td><a href=https://www.realvnc.com/en/connect/download/viewer/>vnc viewer</a></td><td>vnc管理</td><td>链接部分VNC设备</td></tr><tr><td><a href=http://iihm.imag.fr/blanch/software/osx-presentation/>Présentation.app</a></td><td>放映PPT</td><td>用于做演讲时候放映PPT</td></tr><tr><td><a href=https://pandoc.org/installing.html>pandoc</a></td><td>文档转换</td><td>比较常用的文档转换工具，像是将markdown转换成pdf或者是orgmode转换成其他的格式</td></tr></tbody></table><h2 id=macports设置>MacPorts设置</h2><p>MacPorts包管理刚开始同步是很慢的，我们需要设置一下源加速第一次的同步。</p><p>修改<code>/opt/local/etc/macports/macports.conf</code>文件：</p><p>我们需要更改的有：</p><ul><li><code>rsync_server</code></li><li><code>rsync_dir</code></li></ul><p>修改内容如下</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>rsync_server            mirrors.tuna.tsinghua.edu.cn
+rsync_dir                macports/release/tarballs/base.tar
+</code></pre></td></tr></table></div></div><p>还需要修改<code>/opt/local/etc/macports/sources.conf</code>文件，更改默认的<code>ports.tar</code>的镜像站：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>rsync://mirrors.tuna.tsinghua.edu.cn/macports/release/tarballs/ports.tar <span class=o>[</span>default<span class=o>]</span>
+</code></pre></td></tr></table></div></div><p>更新本地的树</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>sudo port selfupdate
+</code></pre></td></tr></table></div></div><h2 id=gpg>GPG</h2><p>首先要恢复的就是GPG KEY，这里我是将之前的系统备份盘拿了一份。将它挂在到我原来的计算机上。</p><p>打开LUKS分区：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>sudo cryptsetup luksOpen /dev/sdb1 backup
+</code></pre></td></tr></table></div></div><p>创建挂载点和挂载分区：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>sudo mkdir -p /mnt/gentoo
+sudo mount -v /dev/sdb1 /mnt/gentoo
+</code></pre></td></tr></table></div></div><p>打开Mac的ssh功能，首先打开系统偏好设置选择<code>Sharing</code>菜单其中有一个<code>Remote Login</code>的选项勾选即可打开：</p><p><img src=../../images/mac_remote_login.png alt="Mac Remote Login"></p><p>复制GPG KEY到Mac上：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>scp -r /mnt/gentoo/home/xena/.gnupg yafa@Yafas-MacBook-Pro.local:~/
+</code></pre></td></tr></table></div></div><p>这里就复制完成了，接下来还需要在Mac上安装GPG软件。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>sudo port install gnupg2
+</code></pre></td></tr></table></div></div><blockquote><p>验证</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>gpg -K
+/Users/yafa/.gnupg/pubring.kbx
+------------------------------
+sec   rsa4096/0xC6964DEDF01A4DA0 2021-01-18 <span class=o>[</span>C<span class=o>]</span>
+      Key <span class=nv>fingerprint</span> <span class=o>=</span> 6F10 BB83 80EE B003 58CE  6B04 C696 4DED F01A 4DA0
+uid                   <span class=o>[</span>ultimate<span class=o>]</span> Yafa Xena <span class=o>(</span>Freedom and responsibility<span class=o>)</span> &lt;email&gt;
+ssb   rsa4096/0x43164C130518FCF1 2021-01-18 <span class=o>[</span>S<span class=o>]</span>
+ssb   rsa4096/0xF2A3043B78F88E93 2021-01-18 <span class=o>[</span>E<span class=o>]</span>
+ssb   rsa4096/0x670F630605DCA3B6 2021-01-18 <span class=o>[</span>A<span class=o>]</span>
+</code></pre></td></tr></table></div></div><p>GPG KEY已经恢复啦～</p><h2 id=password-store>password store</h2><p>接下来就是恢复之前的密码了，在重装之前我实际上是有备份到git一份的，这个就直接从git拿下来就好了。</p><p>但是git的话默认还是没有的我们要先安装一下git，打开终端运行git就会提醒让你安装开发者工具，选择安装：
+<img src=../../images/mac_install_dev_tools.png alt="Mac install dev tools"></p><p>还会出现一个提示让你接受许可：
+<img src=../../images/mac_use_lic.png alt="use lic">
+接受之后就开始安装开发者工具了。</p><p>安装完成之后从git拿到原来的密码数据库：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>git clone https://github.com/yafa-xena/pass .password-store
+</code></pre></td></tr></table></div></div><p>安装<code>pass</code></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>sudo port install pass
+</code></pre></td></tr></table></div></div><p>安装完成之后验证一下：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>pass list
+Password Store
+├── gentoo
+│   ├── bugz
+│   │   └── yafa-xena
+│   └── wiki
+│       └── yafa-xena
+</code></pre></td></tr></table></div></div><p>嗯还好没丢2333～</p><h2 id=git设置>git设置</h2><p>为了能够git正常工作还是需要设置一下用户名和邮箱地址之类的，还有GPG的KEY信息。</p><p>用户名和邮箱：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>git config --global user.name <span class=s2>&#34;yafa-xena&#34;</span>
+git config --global user.email <span class=s2>&#34;emilyjace778@gmail.com&#34;</span>
+</code></pre></td></tr></table></div></div><p>设置用户的签名KEY</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>git config --global user.signingkey 0xC6964DEDF01A4DA0
+</code></pre></td></tr></table></div></div><p>开启commit的gpg签名和gpg程序：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>git config --global commit.gpgsign <span class=nb>true</span>
+git config --global gpg.program gpg2
+</code></pre></td></tr></table></div></div><p>验证创建一个测试的仓库，创建一个空文件并生成commit。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>git init <span class=nb>test</span>
+<span class=nb>cd</span> <span class=nb>test</span>
+<span class=nb>echo</span> hello &gt; readme
+git add .
+git commit -S -m <span class=s2>&#34;test&#34;</span>
+</code></pre></td></tr></table></div></div><p>输入GPG的密码之后可以查看一下git的日志：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>git log --show-signature
+commit b9bb31d347e5bcfc342ec33bcf2cf48ad5af1f29 <span class=o>(</span>HEAD -&gt; master<span class=o>)</span>
+gpg: Signature made Wed Mar <span class=m>10</span> 17:18:26 <span class=m>2021</span> CST
+gpg:                using RSA key DCFC5352D5FA6FB8457222E643164C130518FCF1
+gpg: Good signature from <span class=s2>&#34;Yafa Xena (Freedom and responsibility) &lt;email&gt;&#34;</span> <span class=o>[</span>ultimate<span class=o>]</span>
+Primary key fingerprint: 6F10 BB83 80EE B003 58CE  6B04 C696 4DED F01A 4DA0
+     Subkey fingerprint: DCFC <span class=m>5352</span> D5FA 6FB8 <span class=m>4572</span>  22E6 <span class=m>4316</span> 4C13 <span class=m>0518</span> FCF1
+</code></pre></td></tr></table></div></div><p>这里GIT的配置就完成了。</p><h2 id=emacs>Emacs</h2><p>最近在学习用emacs来做编辑器还有一些日程管理的事物，我写了一个配置文件放在github。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>git clone https://github.com/yafa-xena/emacs.git ~/.emacs.d
+</code></pre></td></tr></table></div></div><p>最后启动emacs</p><h2 id=hashicorp软件设置>hashicorp软件设置</h2><p>像是terraform和packer之类的软件在mac上可以使用Macports去管理比如说：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>sudo port install terraform packer
+</code></pre></td></tr></table></div></div><p>也可以从官网下载下来之后创建一个目录统一管理：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>mkdir -pv ~/bin/
+</code></pre></td></tr></table></div></div><p>这个目录就是用于存放这些程序的目录。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>cp -v ~/Downloads/terraform ~/bin 
+cp -v ~/Downloads/packer  ~/bin
+</code></pre></td></tr></table></div></div><p>编辑默认的<code>zshrc</code>文件（macOS big sure默认使用zsh了）。</p><p>编辑<code>~/zshrc</code>文件，添加内容如下：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell><span class=nb>typeset</span> -U PATH path
+<span class=nv>path</span><span class=o>=(</span>~/bin  <span class=nv>$path</span> <span class=o>)</span>
+</code></pre></td></tr></table></div></div><p>保存退出最后打开新的终端输入<code>terraform --version</code>发现可以正常运行了～</p><h2 id=结束语>结束语</h2><p>今天折腾了差不多又是1天终于将必备的软件安装的差不多还有一些实验环境的虚拟机安装好了，接下来就开始步入正常和学习的节奏了～</p><p>我的Todo清单也会慢慢更新，尽情期待～</p><h2 id=参考资料>参考资料</h2><ul><li><a href=https://trac.macports.org/wiki/Mirrors#MacPortsSource>MacPorts Mirrors</a></li><li><a href=https://unix.stackexchange.com/questions/555473/path-setup-in-zsh-in-os-x>Stackexchange: PATH setup in Zsh in OS X</a></li></ul></div><div class=post-copyright><p class=copyright-item><span class=item-title>Author</span>
+<span class=item-content>Yafa Xena</span></p><p class=copyright-item><span class=item-title>LastMod</span>
+<span class=item-content>2021-03-10</span></p></div><footer class=post-footer><div class=post-tags><a href=/tags/gpg/>gpg</a>
+<a href=/tags/mac/>mac</a>
+<a href=/tags/pass/>pass</a>
+<a href=/tags/git/>git</a></div><nav class=post-nav><a class=next href=/post/how-to-use-usb-install-mac/><span class="next-text nav-default">如何使用USB重装Mac</span>
+<span class="next-text nav-mobile">Next</span>
+<i class="iconfont icon-right"></i></a></nav></footer></article></div></div></main><footer id=footer class=footer><div class=social-links><a href=https://www.yafa.moe/index.xml type=application/rss+xml class="iconfont icon-rss" title=rss></a></div><div class=copyright><span class=power-by>Powered by <a class=hexo-link href=https://gohugo.io>Hugo</a></span>
+<span class=division>|</span>
+<span class=theme-info>Theme -
+<a class=theme-link href=https://github.com/olOwOlo/hugo-theme-even>Even</a></span>
+<span class=copyright-year>&copy;
+2021<span class=heart><i class="iconfont icon-heart"></i></span><span>Yafa Xena</span></span></div></footer><div class=back-to-top id=back-to-top><i class="iconfont icon-up"></i></div></div><script src=https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin=anonymous></script><script type=text/javascript src=/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js></script><script type=text/javascript>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],tags:'ams',}};</script><script async src=https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin=anonymous></script></body></html>
