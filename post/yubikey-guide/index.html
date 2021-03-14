@@ -1,0 +1,1798 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><title>Yubikey Guide - Yafa Xena's Blog</title><meta name=renderer content="webkit"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><meta http-equiv=cache-control content="no-transform"><meta http-equiv=cache-control content="no-siteapp"><meta name=theme-color content="#f8f5ec"><meta name=msapplication-navbutton-color content="#f8f5ec"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="#f8f5ec"><meta name=author content="Yafa Xena"><meta name=description content="前言 之前收到学姐送的Mac的时候还收到了一个Yubikey，最近在折腾完ZFS之类的之后终于有时间看看这个东西要怎么玩了。
+什么是Yubikey呢？ 这里引用一下官方的解释：
+ A YubiKey is a small hardware device that offers two-factor authentication with a simple touch of a button. YubiKeys are built strong enough for the largest enterprises, while remaining simple enough for anyone to use. The YubiKey NEO offers both contact (USB) and contactless (NFC, MIFARE) communications. YubiKeys can support FIDO U2F, Yubico-OTP, OATH-OTP, OATH-HOTP, OATH-TOTP, OpenPGP, and PIV, and one security key can support an unlimited number of applications without the need for drivers, client software, or batteries.
+ 对于我来说的话我比较看中的是2FA和openpgp的支持，这篇文章也会着重讲解这两点，这篇文章算是drduh Yubikey Guide的中文版？"><meta name=keywords content="Linux,Emacs,Python,Golang,Devops,Zabbix"><meta name=generator content="Hugo 0.79.1 with theme even"><link rel=canonical href=https://www.yafa.moe/post/yubikey-guide/><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/manifest.json><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link href=/sass/main.min.03cf0bcb43896b5503a036fa924447c2b44d56b1c35cc097d0c7b19fe5b52c84.css rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin=anonymous><meta property="og:title" content="Yubikey Guide"><meta property="og:description" content="前言
+之前收到学姐送的Mac的时候还收到了一个Yubikey，最近在折腾完ZFS之类的之后终于有时间看看这个东西要怎么玩了。
+什么是Yubikey呢？
+这里引用一下官方的解释：
+
+A YubiKey is a small hardware device that offers two-factor authentication with a simple touch of a button. YubiKeys are built strong enough for the largest enterprises, while remaining simple enough for anyone to use. The YubiKey NEO offers both contact (USB) and contactless (NFC, MIFARE) communications. YubiKeys can support FIDO U2F, Yubico-OTP, OATH-OTP, OATH-HOTP, OATH-TOTP, OpenPGP, and PIV, and one security key can support an unlimited number of applications without the need for drivers, client software, or batteries.
+
+对于我来说的话我比较看中的是2FA和openpgp的支持，这篇文章也会着重讲解这两点，这篇文章算是drduh Yubikey Guide的中文版？"><meta property="og:type" content="article"><meta property="og:url" content="https://www.yafa.moe/post/yubikey-guide/"><meta property="article:published_time" content="2021-03-11T10:16:04+08:00"><meta property="article:modified_time" content="2021-03-11T10:16:04+08:00"><meta itemprop=name content="Yubikey Guide"><meta itemprop=description content="前言
+之前收到学姐送的Mac的时候还收到了一个Yubikey，最近在折腾完ZFS之类的之后终于有时间看看这个东西要怎么玩了。
+什么是Yubikey呢？
+这里引用一下官方的解释：
+
+A YubiKey is a small hardware device that offers two-factor authentication with a simple touch of a button. YubiKeys are built strong enough for the largest enterprises, while remaining simple enough for anyone to use. The YubiKey NEO offers both contact (USB) and contactless (NFC, MIFARE) communications. YubiKeys can support FIDO U2F, Yubico-OTP, OATH-OTP, OATH-HOTP, OATH-TOTP, OpenPGP, and PIV, and one security key can support an unlimited number of applications without the need for drivers, client software, or batteries.
+
+对于我来说的话我比较看中的是2FA和openpgp的支持，这篇文章也会着重讲解这两点，这篇文章算是drduh Yubikey Guide的中文版？"><meta itemprop=datePublished content="2021-03-11T10:16:04+08:00"><meta itemprop=dateModified content="2021-03-11T10:16:04+08:00"><meta itemprop=wordCount content="5258"><meta itemprop=keywords content="yubikey,gentoo,2fa,"><meta name=twitter:card content="summary"><meta name=twitter:title content="Yubikey Guide"><meta name=twitter:description content="前言
+之前收到学姐送的Mac的时候还收到了一个Yubikey，最近在折腾完ZFS之类的之后终于有时间看看这个东西要怎么玩了。
+什么是Yubikey呢？
+这里引用一下官方的解释：
+
+A YubiKey is a small hardware device that offers two-factor authentication with a simple touch of a button. YubiKeys are built strong enough for the largest enterprises, while remaining simple enough for anyone to use. The YubiKey NEO offers both contact (USB) and contactless (NFC, MIFARE) communications. YubiKeys can support FIDO U2F, Yubico-OTP, OATH-OTP, OATH-HOTP, OATH-TOTP, OpenPGP, and PIV, and one security key can support an unlimited number of applications without the need for drivers, client software, or batteries.
+
+对于我来说的话我比较看中的是2FA和openpgp的支持，这篇文章也会着重讲解这两点，这篇文章算是drduh Yubikey Guide的中文版？"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script><script src=https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js></script><![endif]--></head><body><div id=mobile-navbar class=mobile-navbar><div class=mobile-header-logo><a href=/ class=logo>Yafa-Xena</a></div><div class=mobile-navbar-icon><span></span><span></span><span></span></div></div><nav id=mobile-menu class="mobile-menu slideout-menu"><ul class=mobile-menu-list><a href=/><li class=mobile-menu-item>Home</li></a><a href=/post/><li class=mobile-menu-item>Archives</li></a><a href=/tags/><li class=mobile-menu-item>Tags</li></a><a href=/todo><li class=mobile-menu-item>Todo</li></a><a href=/about><li class=mobile-menu-item>About</li></a><a href=/links><li class=mobile-menu-item>Links</li></a><a href=/product><li class=mobile-menu-item>Product</li></a></ul></nav><div class=container id=mobile-panel><header id=header class=header><div class=logo-wrapper><a href=/ class=logo>Yafa-Xena</a></div><nav class=site-navbar><ul id=menu class=menu><li class=menu-item><a class=menu-item-link href=/>Home</a></li><li class=menu-item><a class=menu-item-link href=/post/>Archives</a></li><li class=menu-item><a class=menu-item-link href=/tags/>Tags</a></li><li class=menu-item><a class=menu-item-link href=/todo>Todo</a></li><li class=menu-item><a class=menu-item-link href=/about>About</a></li><li class=menu-item><a class=menu-item-link href=/links>Links</a></li><li class=menu-item><a class=menu-item-link href=/product>Product</a></li></ul></nav></header><main id=main class=main><div class=content-wrapper><div id=content class=content><article class=post><header class=post-header><h1 class=post-title>Yubikey Guide</h1><div class=post-meta><span class=post-time>2021-03-11</span>
+<span class=more-meta>5258 words</span>
+<span class=more-meta>25 mins read</span></div></header><div class=post-toc id=post-toc><h2 class=post-toc-title>Contents</h2><div class=post-toc-content><nav id=TableOfContents><ul><li><a href=#前言>前言</a></li><li><a href=#准备>准备</a><ul><li><a href=#准备livecd>准备Livecd</a></li><li><a href=#livecd环境初始化>livecd环境初始化</a></li><li><a href=#非livecd环境>非livecd环境</a></li></ul></li><li><a href=#创建gpg-key>创建GPG KEY</a><ul><li><a href=#创建临时工作目录>创建临时工作目录</a></li><li><a href=#gpg-配置文件>GPG 配置文件</a></li><li><a href=#生成master-key>生成Master Key</a></li><li><a href=#添加子密钥>添加子密钥</a></li></ul></li><li><a href=#导出key>导出KEY</a></li><li><a href=#创建吊销key>创建吊销KEY</a></li><li><a href=#备份key>备份KEY</a></li><li><a href=#导出公钥>导出公钥</a></li><li><a href=#配置yubikey>配置Yubikey</a><ul><li><a href=#配置pin>配置PIN</a></li><li><a href=#设置基本信息>设置基本信息</a></li></ul></li><li><a href=#传输key>传输KEY</a><ul><li><a href=#签名>签名</a></li><li><a href=#加密>加密</a></li><li><a href=#认证>认证</a></li></ul></li><li><a href=#验证yubikey工作是否正常>验证Yubikey工作是否正常</a></li><li><a href=#清理工作>清理工作</a></li><li><a href=#使用>使用</a></li><li><a href=#轮转key>轮转KEY</a><ul><li><a href=#初始化环境>初始化环境</a></li><li><a href=#续订子密钥>续订子密钥</a></li><li><a href=#旋转key>旋转KEY</a></li></ul></li><li><a href=#ssh>SSH</a><ul><li><a href=#创建配置文件>创建配置文件</a></li><li><a href=#更换agents>更换agents</a></li><li><a href=#复制公钥匙>复制公钥匙</a></li></ul></li><li><a href=#重置>重置</a></li><li><a href=#结束语>结束语</a></li><li><a href=#参考链接>参考链接</a></li></ul></nav></div></div><div class=post-content><h2 id=前言>前言</h2><p>之前收到学姐送的Mac的时候还收到了一个Yubikey，最近在折腾完ZFS之类的之后终于有时间看看这个东西要怎么玩了。</p><p>什么是Yubikey呢？
+这里引用一下官方的解释：</p><blockquote><p>A YubiKey is a small hardware device that offers two-factor authentication with a simple touch of a button. YubiKeys are built strong enough for the largest enterprises, while remaining simple enough for anyone to use. The YubiKey NEO offers both contact (USB) and contactless (NFC, MIFARE) communications. YubiKeys can support FIDO U2F, Yubico-OTP, OATH-OTP, OATH-HOTP, OATH-TOTP, OpenPGP, and PIV, and one security key can support an unlimited number of applications without the need for drivers, client software, or batteries.</p></blockquote><p>对于我来说的话我比较看中的是2FA和openpgp的支持，这篇文章也会着重讲解这两点，这篇文章算是<a href=https://github.com/drduh/YubiKey-Guide>drduh Yubikey Guide</a>的中文版？</p><h2 id=准备>准备</h2><p>这里要准备如下物品：</p><ol><li>Yubikey 我的是Yubikey 5NFC 的版本购买页面在<a href=https://www.yubico.com/store/#yubikey-fips-series>官网</a></li><li>一台电脑（最好是Linux系统）</li><li>2个U盘 （一个作为Livecd环境制作GPG密钥，一个用于备份主密钥）</li></ol><h3 id=准备livecd>准备Livecd</h3><p>之所以用livecd环境是为了保证安全，安装了gpg必要的软件之后可以断网不留痕迹。</p><p>这里用Ubuntu 2020 Desktop livecd为例子：</p><p>安装必要的软件，这里是用于yubikey的初始化，以及配置GPG密钥和LUKS所需要用到的工具，</p><blockquote><p>下载ISO文件 （这个iso链接可能不可用，可以从<a href=https://ubuntu.com/download/desktop>Ubuntu官网</a>下载这个最新的版本</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh>wget -c https://mirrors.aliyun.com/ubuntu-releases/20.10/ubuntu-20.10-desktop-amd64.iso
+</code></pre></td></tr></table></div></div><p>将U盘插入你的机器然后使用<code>dd</code>刻录安装介质</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh>sudo dd <span class=k>if</span><span class=o>=</span>ubuntu-20.10-desktop-amd64.iso <span class=nv>of</span><span class=o>=</span>/dev/sdb <span class=nv>bs</span><span class=o>=</span>20M <span class=nv>status</span><span class=o>=</span>progress
+</code></pre></td></tr></table></div></div><p>耐心等待程序执行完成。</p><p>等到执行完成之后你就有了一个Ubuntu 20.10 Desktop的安装介质</p><h3 id=livecd环境初始化>livecd环境初始化</h3><p>重启之后进入到机器的Boot Manger选择USB引导启动，进入Livecd环境。</p><p>连接网络之后安装必要的包：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>apt-get update <span class=o>&amp;&amp;</span> sudo apt install -y gnupg2 gnupg-agent gnupg-curl scdaemon pcscd
+</code></pre></td></tr></table></div></div><p>之后打开这篇文章，就可以断网了XDD</p><h3 id=非livecd环境>非livecd环境</h3><p>如果你使用的是非Livecd环境，比如说Mac（像是我现在的操作就是在Mac上），你可以用<a href=https://www.macports.org/install.php>Macports</a>安装必要的包</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>sudo port install gnupg2 pinentry-mac yubikey-manager
+</code></pre></td></tr></table></div></div><h2 id=创建gpg-key>创建GPG KEY</h2><h3 id=创建临时工作目录>创建临时工作目录</h3><p>为了安全保障我们首先创建一个临时的工作目录：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell><span class=nb>export</span> <span class=nv>GNUPGHOME</span><span class=o>=</span><span class=k>$(</span>mktemp -d<span class=k>)</span>
+</code></pre></td></tr></table></div></div><p>之后GPG KEY文件也会存放在这个目录下。</p><h3 id=gpg-配置文件>GPG 配置文件</h3><p>进入我们创建的临时目录：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell><span class=nb>cd</span> <span class=nv>$GNUPGHOME</span>
+</code></pre></td></tr></table></div></div><p>下载一个已经配置好配置文件：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>wget -O <span class=nv>$GNUPGHOME</span>/gpg.conf https://raw.githubusercontent.com/drduh/config/master/gpg.conf
+</code></pre></td></tr></table></div></div><h3 id=生成master-key>生成Master Key</h3><p>首先我们要生成的密钥是Master密钥，这个密钥仅用于认证：加密、签名、身份验证的子密钥。</p><blockquote><p>安全提示：主密钥应该始终保持离线的状态，最好是只用来撤销或者是发布新的子密钥。子密钥应该只存在于Yubikey本身，确保不保留其他的副本。</p></blockquote><p>使用GPG生成一个Master密钥，选择8个RSA仅用于认证功能，密钥为4096位（需要注意的是GPG 的Master Key不用设置过期，能够保持GPG Master Key不丢失就可以了，丢失了设置GPG Key延长日期并没有什么太大的用处。反而是管理子密钥不是很方便。）：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>gpg --expert --full-generate-key
+gpg: keybox <span class=s1>&#39;/var/folders/8_/mkr2jpxx1pdgqx7jsnv04k100000gn/T/tmp.UdKeLYEs/pubring.kbx&#39;</span> created
+Please <span class=k>select</span> what kind of key you want:
+   <span class=o>(</span>1<span class=o>)</span> RSA and RSA <span class=o>(</span>default<span class=o>)</span>
+   <span class=o>(</span>2<span class=o>)</span> DSA and Elgamal
+   <span class=o>(</span>3<span class=o>)</span> DSA <span class=o>(</span>sign only<span class=o>)</span>
+   <span class=o>(</span>4<span class=o>)</span> RSA <span class=o>(</span>sign only<span class=o>)</span>
+   <span class=o>(</span>7<span class=o>)</span> DSA <span class=o>(</span><span class=nb>set</span> your own capabilities<span class=o>)</span>
+   <span class=o>(</span>8<span class=o>)</span> RSA <span class=o>(</span><span class=nb>set</span> your own capabilities<span class=o>)</span>
+   <span class=o>(</span>9<span class=o>)</span> ECC and ECC
+  <span class=o>(</span>10<span class=o>)</span> ECC <span class=o>(</span>sign only<span class=o>)</span>
+  <span class=o>(</span>11<span class=o>)</span> ECC <span class=o>(</span><span class=nb>set</span> your own capabilities<span class=o>)</span>
+  <span class=o>(</span>13<span class=o>)</span> Existing key
+  <span class=o>(</span>14<span class=o>)</span> Existing key from card
+Your selection? <span class=m>8</span>
+
+Possible actions <span class=k>for</span> a RSA key: Sign Certify Encrypt Authenticate
+Current allowed actions: Sign Certify Encrypt
+
+   <span class=o>(</span>S<span class=o>)</span> Toggle the sign capability
+   <span class=o>(</span>E<span class=o>)</span> Toggle the encrypt capability
+   <span class=o>(</span>A<span class=o>)</span> Toggle the authenticate capability
+   <span class=o>(</span>Q<span class=o>)</span> Finished
+
+Your selection? E
+
+Possible actions <span class=k>for</span> a RSA key: Sign Certify Encrypt Authenticate
+Current allowed actions: Sign Certify
+
+   <span class=o>(</span>S<span class=o>)</span> Toggle the sign capability
+   <span class=o>(</span>E<span class=o>)</span> Toggle the encrypt capability
+   <span class=o>(</span>A<span class=o>)</span> Toggle the authenticate capability
+   <span class=o>(</span>Q<span class=o>)</span> Finished
+
+Your selection? S
+
+Possible actions <span class=k>for</span> a RSA key: Sign Certify Encrypt Authenticate
+Current allowed actions: Certify
+
+   <span class=o>(</span>S<span class=o>)</span> Toggle the sign capability
+   <span class=o>(</span>E<span class=o>)</span> Toggle the encrypt capability
+   <span class=o>(</span>A<span class=o>)</span> Toggle the authenticate capability
+   <span class=o>(</span>Q<span class=o>)</span> Finished
+
+Your selection? Q
+RSA keys may be between <span class=m>1024</span> and <span class=m>4096</span> bits long.
+What keysize <span class=k>do</span> you want? <span class=o>(</span>3072<span class=o>)</span> <span class=m>4096</span>
+Requested keysize is <span class=m>4096</span> bits
+Please specify how long the key should be valid.
+         <span class=nv>0</span> <span class=o>=</span> key does not expire
+      &lt;n&gt;  <span class=o>=</span> key expires in n days
+      &lt;n&gt;w <span class=o>=</span> key expires in n weeks
+      &lt;n&gt;m <span class=o>=</span> key expires in n months
+      &lt;n&gt;y <span class=o>=</span> key expires in n years
+Key is valid <span class=k>for</span>? <span class=o>(</span>0<span class=o>)</span> <span class=m>0</span>
+Key does not expire at all
+Is this correct? <span class=o>(</span>y/N<span class=o>)</span> y
+</code></pre></td></tr></table></div></div><p>输入你的姓名和邮件地址（comment可以写也可以不写）：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>
+GnuPG needs to construct a user ID to identify your key.
+
+Real name: Yafa Xena
+Email address: i@yafa.moe
+Comment: Freedom and responsibility
+You selected this USER-ID:
+    <span class=s2>&#34;Yafa Xena (Freedom and responsibility) &lt;i@yafa.moe&gt;&#34;</span>
+
+Change <span class=o>(</span>N<span class=o>)</span>ame, <span class=o>(</span>C<span class=o>)</span>omment, <span class=o>(</span>E<span class=o>)</span>mail or <span class=o>(</span>O<span class=o>)</span>kay/<span class=o>(</span>Q<span class=o>)</span>uit? O
+We need to generate a lot of random bytes. It is a good idea to perform
+some other action <span class=o>(</span><span class=nb>type</span> on the keyboard, move the mouse, utilize the
+disks<span class=o>)</span> during the prime generation<span class=p>;</span> this gives the random number
+generator a better chance to gain enough entropy.
+gpg: /var/folders/8_/mkr2jpxx1pdgqx7jsnv04k100000gn/T/tmp.UdKeLYEs/trustdb.gpg: trustdb created
+gpg: key 0xBE5E83CAC35379C8 marked as ultimately trusted
+gpg: directory <span class=s1>&#39;/var/folders/8_/mkr2jpxx1pdgqx7jsnv04k100000gn/T/tmp.UdKeLYEs/openpgp-revocs.d&#39;</span> created
+gpg: revocation certificate stored as <span class=s1>&#39;/var/folders/8_/mkr2jpxx1pdgqx7jsnv04k100000gn/T/tmp.UdKeLYEs/openpgp-revocs.d/08A3150E30B49637D01C6C77BE5E83CAC35379C8.rev&#39;</span>
+public and secret key created and signed.
+
+pub   rsa4096/0xBE5E83CAC35379C8 2021-03-14 <span class=o>[</span>C<span class=o>]</span>
+      Key <span class=nv>fingerprint</span> <span class=o>=</span> 08A3 150E 30B4 <span class=m>9637</span> D01C  6C77 BE5E 83CA C353 79C8
+uid                              Yafa Xena <span class=o>(</span>Freedom and responsibility<span class=o>)</span> &lt;i@yafa.moe&gt;
+</code></pre></td></tr></table></div></div><p>这里你输入Okay的时候会提示你给主密钥设置一个密码，需要重复输入两次，一定要记好你的这个密码。</p><p>将密钥的ID设置位环境变量，后面会用到：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell><span class=nb>export</span> <span class=nv>KEYID</span><span class=o>=</span>0xBE5E83CAC35379C8
+</code></pre></td></tr></table></div></div><h3 id=添加子密钥>添加子密钥</h3><p>首先编辑主密钥用于添加子密钥：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>gpg --expert --edit-key <span class=nv>$KEYID</span>
+
+Secret key is available.
+
+gpg: checking the trustdb
+gpg: marginals needed: <span class=m>3</span>  completes needed: <span class=m>1</span>  trust model: pgp
+gpg: depth: <span class=m>0</span>  valid:   <span class=m>1</span>  signed:   <span class=m>0</span>  trust: 0-, 0q, 0n, 0m, 0f, 1u
+sec  rsa4096/0xBE5E83CAC35379C8
+     created: 2021-03-14  expires: never       usage: C
+     trust: ultimate      validity: ultimate
+<span class=o>[</span>ultimate<span class=o>]</span> <span class=o>(</span>1<span class=o>)</span>. Yafa Xena <span class=o>(</span>Freedom and responsibility<span class=o>)</span> &lt;i@yafa.moe&gt;
+</code></pre></td></tr></table></div></div><p>使用4096位RSA密钥。</p><p>子密钥的有效期为1年-可以使用离线主密钥续订这些子密钥。 请参阅<a href=#%E8%BD%AE%E8%BD%ACkey>轮转KEY</a>。</p><h4 id=签名密钥>签名密钥</h4><p>使用<code>addkey</code>命令进行创建密钥，然后选择（4）RSA（仅签名），以创建<a href=https://stackoverflow.com/questions/5421107/can-rsa-be-both-used-as-encryption-and-signature/5432623#5432623>签名密钥</a>：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>gpg&gt; addkey
+Please <span class=k>select</span> what kind of key you want:
+   <span class=o>(</span>3<span class=o>)</span> DSA <span class=o>(</span>sign only<span class=o>)</span>
+   <span class=o>(</span>4<span class=o>)</span> RSA <span class=o>(</span>sign only<span class=o>)</span>
+   <span class=o>(</span>5<span class=o>)</span> Elgamal <span class=o>(</span>encrypt only<span class=o>)</span>
+   <span class=o>(</span>6<span class=o>)</span> RSA <span class=o>(</span>encrypt only<span class=o>)</span>
+   <span class=o>(</span>7<span class=o>)</span> DSA <span class=o>(</span><span class=nb>set</span> your own capabilities<span class=o>)</span>
+   <span class=o>(</span>8<span class=o>)</span> RSA <span class=o>(</span><span class=nb>set</span> your own capabilities<span class=o>)</span>
+  <span class=o>(</span>10<span class=o>)</span> ECC <span class=o>(</span>sign only<span class=o>)</span>
+  <span class=o>(</span>11<span class=o>)</span> ECC <span class=o>(</span><span class=nb>set</span> your own capabilities<span class=o>)</span>
+  <span class=o>(</span>12<span class=o>)</span> ECC <span class=o>(</span>encrypt only<span class=o>)</span>
+  <span class=o>(</span>13<span class=o>)</span> Existing key
+  <span class=o>(</span>14<span class=o>)</span> Existing key from card
+Your selection? <span class=m>4</span>
+RSA keys may be between <span class=m>1024</span> and <span class=m>4096</span> bits long.
+What keysize <span class=k>do</span> you want? <span class=o>(</span>3072<span class=o>)</span> <span class=m>4096</span>
+Requested keysize is <span class=m>4096</span> bits
+Please specify how long the key should be valid.
+         <span class=nv>0</span> <span class=o>=</span> key does not expire
+      &lt;n&gt;  <span class=o>=</span> key expires in n days
+      &lt;n&gt;w <span class=o>=</span> key expires in n weeks
+      &lt;n&gt;m <span class=o>=</span> key expires in n months
+      &lt;n&gt;y <span class=o>=</span> key expires in n years
+Key is valid <span class=k>for</span>? <span class=o>(</span>0<span class=o>)</span> 1y
+Key expires at Mon Mar <span class=m>14</span> 13:57:07 <span class=m>2022</span> CST
+Is this correct? <span class=o>(</span>y/N<span class=o>)</span> y
+Really create? <span class=o>(</span>y/N<span class=o>)</span> y
+We need to generate a lot of random bytes. It is a good idea to perform
+some other action <span class=o>(</span><span class=nb>type</span> on the keyboard, move the mouse, utilize the
+disks<span class=o>)</span> during the prime generation<span class=p>;</span> this gives the random number
+generator a better chance to gain enough entropy.
+
+sec  rsa4096/0xBE5E83CAC35379C8
+     created: 2021-03-14  expires: never       usage: C
+     trust: ultimate      validity: ultimate
+ssb  rsa4096/0xD40C8A853177702B
+     created: 2021-03-14  expires: 2022-03-14  usage: S
+<span class=o>[</span>ultimate<span class=o>]</span> <span class=o>(</span>1<span class=o>)</span>. Yafa Xena <span class=o>(</span>Freedom and responsibility<span class=o>)</span> &lt;i@yafa.moe&gt;
+</code></pre></td></tr></table></div></div><h4 id=加密密钥>加密密钥</h4><p>接下来，通过选择（6）RSA（仅加密）来创建<a href=https://www.cs.cornell.edu/courses/cs5430/2015sp/notes/rsa_sign_vs_dec.php>加密密钥</a>：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>gpg&gt; addkey
+Please <span class=k>select</span> what kind of key you want:
+   <span class=o>(</span>3<span class=o>)</span> DSA <span class=o>(</span>sign only<span class=o>)</span>
+   <span class=o>(</span>4<span class=o>)</span> RSA <span class=o>(</span>sign only<span class=o>)</span>
+   <span class=o>(</span>5<span class=o>)</span> Elgamal <span class=o>(</span>encrypt only<span class=o>)</span>
+   <span class=o>(</span>6<span class=o>)</span> RSA <span class=o>(</span>encrypt only<span class=o>)</span>
+   <span class=o>(</span>7<span class=o>)</span> DSA <span class=o>(</span><span class=nb>set</span> your own capabilities<span class=o>)</span>
+   <span class=o>(</span>8<span class=o>)</span> RSA <span class=o>(</span><span class=nb>set</span> your own capabilities<span class=o>)</span>
+  <span class=o>(</span>10<span class=o>)</span> ECC <span class=o>(</span>sign only<span class=o>)</span>
+  <span class=o>(</span>11<span class=o>)</span> ECC <span class=o>(</span><span class=nb>set</span> your own capabilities<span class=o>)</span>
+  <span class=o>(</span>12<span class=o>)</span> ECC <span class=o>(</span>encrypt only<span class=o>)</span>
+  <span class=o>(</span>13<span class=o>)</span> Existing key
+  <span class=o>(</span>14<span class=o>)</span> Existing key from card
+Your selection? <span class=m>6</span>
+RSA keys may be between <span class=m>1024</span> and <span class=m>4096</span> bits long.
+What keysize <span class=k>do</span> you want? <span class=o>(</span>3072<span class=o>)</span> <span class=m>4096</span>
+Requested keysize is <span class=m>4096</span> bits
+Please specify how long the key should be valid.
+         <span class=nv>0</span> <span class=o>=</span> key does not expire
+      &lt;n&gt;  <span class=o>=</span> key expires in n days
+      &lt;n&gt;w <span class=o>=</span> key expires in n weeks
+      &lt;n&gt;m <span class=o>=</span> key expires in n months
+      &lt;n&gt;y <span class=o>=</span> key expires in n years
+Key is valid <span class=k>for</span>? <span class=o>(</span>0<span class=o>)</span> 1y
+Key expires at Mon Mar <span class=m>14</span> 13:57:29 <span class=m>2022</span> CST
+Is this correct? <span class=o>(</span>y/N<span class=o>)</span> y
+Really create? <span class=o>(</span>y/N<span class=o>)</span> y
+We need to generate a lot of random bytes. It is a good idea to perform
+some other action <span class=o>(</span><span class=nb>type</span> on the keyboard, move the mouse, utilize the
+disks<span class=o>)</span> during the prime generation<span class=p>;</span> this gives the random number
+generator a better chance to gain enough entropy.
+
+sec  rsa4096/0xBE5E83CAC35379C8
+     created: 2021-03-14  expires: never       usage: C
+     trust: ultimate      validity: ultimate
+ssb  rsa4096/0xD40C8A853177702B
+     created: 2021-03-14  expires: 2022-03-14  usage: S
+ssb  rsa4096/0x80D9D0834E2A346E
+     created: 2021-03-14  expires: 2022-03-14  usage: E
+<span class=o>[</span>ultimate<span class=o>]</span> <span class=o>(</span>1<span class=o>)</span>. Yafa Xena <span class=o>(</span>Freedom and responsibility<span class=o>)</span> &lt;i@yafa.moe&gt;
+</code></pre></td></tr></table></div></div><h4 id=身份验证密钥>身份验证密钥</h4><p>最后，创建一个<a href=https://superuser.com/questions/390265/what-is-a-gpg-with-authenticate-capability-used-for>身份验证密钥</a>。</p><p>GPG不提供仅用于身份验证的密钥类型，因此选择（8）RSA（设置你自己的功能）并切换所需的功能，直到唯一允许的操作是Authenticate：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span><span class=lnt>73
+</span><span class=lnt>74
+</span><span class=lnt>75
+</span><span class=lnt>76
+</span><span class=lnt>77
+</span><span class=lnt>78
+</span><span class=lnt>79
+</span><span class=lnt>80
+</span><span class=lnt>81
+</span><span class=lnt>82
+</span><span class=lnt>83
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>gpg&gt; addkey
+Please <span class=k>select</span> what kind of key you want:
+   <span class=o>(</span>3<span class=o>)</span> DSA <span class=o>(</span>sign only<span class=o>)</span>
+   <span class=o>(</span>4<span class=o>)</span> RSA <span class=o>(</span>sign only<span class=o>)</span>
+   <span class=o>(</span>5<span class=o>)</span> Elgamal <span class=o>(</span>encrypt only<span class=o>)</span>
+   <span class=o>(</span>6<span class=o>)</span> RSA <span class=o>(</span>encrypt only<span class=o>)</span>
+   <span class=o>(</span>7<span class=o>)</span> DSA <span class=o>(</span><span class=nb>set</span> your own capabilities<span class=o>)</span>
+   <span class=o>(</span>8<span class=o>)</span> RSA <span class=o>(</span><span class=nb>set</span> your own capabilities<span class=o>)</span>
+  <span class=o>(</span>10<span class=o>)</span> ECC <span class=o>(</span>sign only<span class=o>)</span>
+  <span class=o>(</span>11<span class=o>)</span> ECC <span class=o>(</span><span class=nb>set</span> your own capabilities<span class=o>)</span>
+  <span class=o>(</span>12<span class=o>)</span> ECC <span class=o>(</span>encrypt only<span class=o>)</span>
+  <span class=o>(</span>13<span class=o>)</span> Existing key
+  <span class=o>(</span>14<span class=o>)</span> Existing key from card
+Your selection? <span class=m>8</span>
+
+Possible actions <span class=k>for</span> a RSA key: Sign Encrypt Authenticate
+Current allowed actions: Sign Encrypt
+
+   <span class=o>(</span>S<span class=o>)</span> Toggle the sign capability
+   <span class=o>(</span>E<span class=o>)</span> Toggle the encrypt capability
+   <span class=o>(</span>A<span class=o>)</span> Toggle the authenticate capability
+   <span class=o>(</span>Q<span class=o>)</span> Finished
+
+Your selection? S
+
+Possible actions <span class=k>for</span> a RSA key: Sign Encrypt Authenticate
+Current allowed actions: Encrypt
+
+   <span class=o>(</span>S<span class=o>)</span> Toggle the sign capability
+   <span class=o>(</span>E<span class=o>)</span> Toggle the encrypt capability
+   <span class=o>(</span>A<span class=o>)</span> Toggle the authenticate capability
+   <span class=o>(</span>Q<span class=o>)</span> Finished
+
+Your selection? E
+
+Possible actions <span class=k>for</span> a RSA key: Sign Encrypt Authenticate
+Current allowed actions:
+
+   <span class=o>(</span>S<span class=o>)</span> Toggle the sign capability
+   <span class=o>(</span>E<span class=o>)</span> Toggle the encrypt capability
+   <span class=o>(</span>A<span class=o>)</span> Toggle the authenticate capability
+   <span class=o>(</span>Q<span class=o>)</span> Finished
+
+Your selection? A
+
+Possible actions <span class=k>for</span> a RSA key: Sign Encrypt Authenticate
+Current allowed actions: Authenticate
+
+   <span class=o>(</span>S<span class=o>)</span> Toggle the sign capability
+   <span class=o>(</span>E<span class=o>)</span> Toggle the encrypt capability
+   <span class=o>(</span>A<span class=o>)</span> Toggle the authenticate capability
+   <span class=o>(</span>Q<span class=o>)</span> Finished
+
+Your selection? Q
+RSA keys may be between <span class=m>1024</span> and <span class=m>4096</span> bits long.
+What keysize <span class=k>do</span> you want? <span class=o>(</span>3072<span class=o>)</span> <span class=m>4096</span>
+Requested keysize is <span class=m>4096</span> bits
+Please specify how long the key should be valid.
+         <span class=nv>0</span> <span class=o>=</span> key does not expire
+      &lt;n&gt;  <span class=o>=</span> key expires in n days
+      &lt;n&gt;w <span class=o>=</span> key expires in n weeks
+      &lt;n&gt;m <span class=o>=</span> key expires in n months
+      &lt;n&gt;y <span class=o>=</span> key expires in n years
+Key is valid <span class=k>for</span>? <span class=o>(</span>0<span class=o>)</span> 1y
+Key expires at Mon Mar <span class=m>14</span> 13:57:52 <span class=m>2022</span> CST
+Is this correct? <span class=o>(</span>y/N<span class=o>)</span> y
+Really create? <span class=o>(</span>y/N<span class=o>)</span> y
+We need to generate a lot of random bytes. It is a good idea to perform
+some other action <span class=o>(</span><span class=nb>type</span> on the keyboard, move the mouse, utilize the
+disks<span class=o>)</span> during the prime generation<span class=p>;</span> this gives the random number
+generator a better chance to gain enough entropy.
+
+sec  rsa4096/0xBE5E83CAC35379C8
+     created: 2021-03-14  expires: never       usage: C
+     trust: ultimate      validity: ultimate
+ssb  rsa4096/0xD40C8A853177702B
+     created: 2021-03-14  expires: 2022-03-14  usage: S
+ssb  rsa4096/0x80D9D0834E2A346E
+     created: 2021-03-14  expires: 2022-03-14  usage: E
+ssb  rsa4096/0xD1144013D3F7F320
+     created: 2021-03-14  expires: 2022-03-14  usage: A
+<span class=o>[</span>ultimate<span class=o>]</span> <span class=o>(</span>1<span class=o>)</span>. Yafa Xena <span class=o>(</span>Freedom and responsibility<span class=o>)</span> &lt;i@yafa.moe&gt;
+
+</code></pre></td></tr></table></div></div><p>最后保存所做的操作：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>save
+</code></pre></td></tr></table></div></div><h4 id=验证>验证</h4><p>我们来看一下最终生成的密钥：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>gpg -K
+/var/folders/8_/mkr2jpxx1pdgqx7jsnv04k100000gn/T/tmp.UdKeLYEs/pubring.kbx
+-------------------------------------------------------------------------
+sec   rsa4096/0xBE5E83CAC35379C8 2021-03-14 <span class=o>[</span>C<span class=o>]</span>
+      Key <span class=nv>fingerprint</span> <span class=o>=</span> 08A3 150E 30B4 <span class=m>9637</span> D01C  6C77 BE5E 83CA C353 79C8
+uid                   <span class=o>[</span>ultimate<span class=o>]</span> Yafa Xena <span class=o>(</span>Freedom and responsibility<span class=o>)</span> &lt;i@yafa.moe&gt;
+ssb   rsa4096/0xD40C8A853177702B 2021-03-14 <span class=o>[</span>S<span class=o>]</span> <span class=o>[</span>expires: 2022-03-14<span class=o>]</span>
+ssb   rsa4096/0x80D9D0834E2A346E 2021-03-14 <span class=o>[</span>E<span class=o>]</span> <span class=o>[</span>expires: 2022-03-14<span class=o>]</span>
+ssb   rsa4096/0xD1144013D3F7F320 2021-03-14 <span class=o>[</span>A<span class=o>]</span> <span class=o>[</span>expires: 2022-03-14<span class=o>]</span>
+</code></pre></td></tr></table></div></div><h2 id=导出key>导出KEY</h2><p>导出时，主密钥和子密钥将使用你设置的密码进行加密。</p><p>保存密钥：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>gpg --armor --export-secret-keys <span class=nv>$KEYID</span> &gt; <span class=nv>$GNUPGHOME</span>/mastersub.key
+gpg --armor --export-secret-subkeys <span class=nv>$KEYID</span> &gt; <span class=nv>$GNUPGHOME</span>/sub.key
+</code></pre></td></tr></table></div></div><h2 id=创建吊销key>创建吊销KEY</h2><p>虽然尽可能去备份和保存主密钥，但是不排除丢失主密钥或者是备份失败的可能性（就像是这次安装Mac操作系统，最后发现备份U盘坏了。。。）。没有主密钥就没有办法更新或者是吊销子密钥，PGP的身份就毫无意义了。</p><p>更糟糕的事情是，没办法告诉别人自己的GPG密钥丢了可能被其他人利用起来了。唯一的办法就是吊销这个KEY。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>gpg --output <span class=nv>$GNUPGHOME</span>/revoke.asc --gen-revoke <span class=nv>$KEYID</span>
+
+
+sec  rsa4096/0xBE5E83CAC35379C8 2021-03-14 Yafa Xena <span class=o>(</span>Freedom and responsibility<span class=o>)</span> &lt;i@yafa.moe&gt;
+
+Create a revocation certificate <span class=k>for</span> this key? <span class=o>(</span>y/N<span class=o>)</span> y
+Please <span class=k>select</span> the reason <span class=k>for</span> the revocation:
+  <span class=nv>0</span> <span class=o>=</span> No reason specified
+  <span class=nv>1</span> <span class=o>=</span> Key has been compromised
+  <span class=nv>2</span> <span class=o>=</span> Key is superseded
+  <span class=nv>3</span> <span class=o>=</span> Key is no longer used
+  <span class=nv>Q</span> <span class=o>=</span> Cancel
+<span class=o>(</span>Probably you want to <span class=k>select</span> <span class=m>1</span> here<span class=o>)</span>
+Your decision? <span class=m>1</span>
+Enter an optional description<span class=p>;</span> end it with an empty line:
+&gt; Key has been compromised
+&gt;
+Reason <span class=k>for</span> revocation: Key has been compromised
+Key has been compromised
+Is this okay? <span class=o>(</span>y/N<span class=o>)</span> y
+ASCII armored output forced.
+Revocation certificate created.
+
+Please move it to a medium which you can hide away<span class=p>;</span> <span class=k>if</span> Mallory gets
+access to this certificate he can use it to make your key unusable.
+It is smart to print this certificate and store it away, just in <span class=k>case</span>
+your media become unreadable.  But have some caution:  The print system of
+your machine might store the data and make it available to others!
+</code></pre></td></tr></table></div></div><p>revoke.asc证书文件应存储（或打印）在安全位置，以防万一主备份失败时进行检索。</p><h2 id=备份key>备份KEY</h2><p>密钥一旦移动到YubiKey，就无法再次移动！ 创建密钥环的加密备份，并考虑使用密钥的纸质副本作为其他备份措施。</p><p>提示ext2文件系统（不加密）可以安装在Linux和OpenBSD上。 考虑改为使用FAT32 文件系统来实现MacOS / Linux/BSD/Windows平台的兼容性。</p><p>插入硬盘之后查看新添加的设备：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>sudo dmesg <span class=p>|</span> tail
+<span class=o>[</span>692184.973943<span class=o>]</span> usb-storage 2-8:1.0: USB Mass Storage device detected
+<span class=o>[</span>692184.974344<span class=o>]</span> scsi host8: usb-storage 2-8:1.0
+<span class=o>[</span>692186.509922<span class=o>]</span> scsi 8:0:0:0: Direct-Access     Kingston DataTraveler 2.0 1.00 PQ: <span class=m>0</span> ANSI: <span class=m>4</span>
+<span class=o>[</span>692186.510249<span class=o>]</span> sd 8:0:0:0: Attached scsi generic sg3 <span class=nb>type</span> <span class=m>0</span>
+<span class=o>[</span>692186.510918<span class=o>]</span> sd 8:0:0:0: <span class=o>[</span>sdf<span class=o>]</span> <span class=m>15131636</span> 512-byte logical blocks: <span class=o>(</span>7.75 GB/7.21 GiB<span class=o>)</span>
+<span class=o>[</span>692186.511628<span class=o>]</span> sd 8:0:0:0: <span class=o>[</span>sdf<span class=o>]</span> Write Protect is off
+<span class=o>[</span>692186.511631<span class=o>]</span> sd 8:0:0:0: <span class=o>[</span>sdf<span class=o>]</span> Mode Sense: <span class=m>45</span> <span class=m>00</span> <span class=m>00</span> <span class=m>00</span>
+<span class=o>[</span>692186.512625<span class=o>]</span> sd 8:0:0:0: <span class=o>[</span>sdf<span class=o>]</span> Write cache: disabled, <span class=nb>read</span> cache: enabled, doesn<span class=err>&#39;</span>t support DPO or FUA
+<span class=o>[</span>692186.525141<span class=o>]</span>  sdf: sdf1 sdf2
+<span class=o>[</span>692186.527842<span class=o>]</span> sd 8:0:0:0: <span class=o>[</span>sdf<span class=o>]</span> Attached SCSI removable disk
+</code></pre></td></tr></table></div></div><p>用随机数写满整个硬盘：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>sudo dd <span class=k>if</span><span class=o>=</span>/dev/urandom <span class=nv>of</span><span class=o>=</span>/dev/sdf <span class=nv>bs</span><span class=o>=</span>4M <span class=nv>status</span><span class=o>=</span>progress
+</code></pre></td></tr></table></div></div><p>这次我们要创建两个分区一个是加密存储GPG KEY，另外一个是存放公钥。</p><table><thead><tr><th>分区</th><th>文件系统</th><th>挂载点</th><th>大小</th></tr></thead><tbody><tr><td>/dev/sdf1</td><td>LUKS</td><td>/mnt/gpg</td><td>25M</td></tr><tr><td>/dev/sdf2</td><td>fat32</td><td>/mnt/public</td><td>25M</td></tr></tbody></table><p>创建分区：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>fdisk /dev/sdf
+
+Welcome to fdisk <span class=o>(</span>util-linux 2.36.1<span class=o>)</span>.
+Changes will remain in memory only, <span class=k>until</span> you decide to write them.
+Be careful before using the write command.
+
+Device does not contain a recognized partition table.
+Created a new DOS disklabel with disk identifier 0xde306216.
+
+Command <span class=o>(</span>m <span class=k>for</span> <span class=nb>help</span><span class=o>)</span>: n
+Partition <span class=nb>type</span>
+   p   primary <span class=o>(</span><span class=m>0</span> primary, <span class=m>0</span> extended, <span class=m>4</span> free<span class=o>)</span>
+   e   extended <span class=o>(</span>container <span class=k>for</span> logical partitions<span class=o>)</span>
+Select <span class=o>(</span>default p<span class=o>)</span>:
+
+Using default response p.
+Partition number <span class=o>(</span>1-4, default 1<span class=o>)</span>:
+First sector <span class=o>(</span>2048-15131635, default 2048<span class=o>)</span>:
+Last sector, +/-sectors or +/-size<span class=o>{</span>K,M,G,T,P<span class=o>}</span> <span class=o>(</span>2048-15131635, default 15131635<span class=o>)</span>: +25M
+
+Created a new partition <span class=m>1</span> of <span class=nb>type</span> <span class=s1>&#39;Linux&#39;</span> and of size <span class=m>25</span> MiB.
+
+Command <span class=o>(</span>m <span class=k>for</span> <span class=nb>help</span><span class=o>)</span>: n
+Partition <span class=nb>type</span>
+   p   primary <span class=o>(</span><span class=m>1</span> primary, <span class=m>0</span> extended, <span class=m>3</span> free<span class=o>)</span>
+   e   extended <span class=o>(</span>container <span class=k>for</span> logical partitions<span class=o>)</span>
+Select <span class=o>(</span>default p<span class=o>)</span>:
+
+Using default response p.
+Partition number <span class=o>(</span>2-4, default 2<span class=o>)</span>:
+First sector <span class=o>(</span>53248-15131635, default 53248<span class=o>)</span>:
+Last sector, +/-sectors or +/-size<span class=o>{</span>K,M,G,T,P<span class=o>}</span> <span class=o>(</span>53248-15131635, default 15131635<span class=o>)</span>: +25M
+
+Created a new partition <span class=m>2</span> of <span class=nb>type</span> <span class=s1>&#39;Linux&#39;</span> and of size <span class=m>25</span> MiB.
+
+Command <span class=o>(</span>m <span class=k>for</span> <span class=nb>help</span><span class=o>)</span>: w
+The partition table has been altered.
+Calling ioctl<span class=o>()</span> to re-read partition table.
+Syncing disks.
+</code></pre></td></tr></table></div></div><p>初始化LUKS：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>cryptsetup luksFormat /dev/sdf1 
+
+WARNING!
+<span class=o>========</span>
+This will overwrite data on /dev/sdf1 irrevocably.
+
+Are you sure? <span class=o>(</span>Type <span class=s1>&#39;yes&#39;</span> in capital letters<span class=o>)</span>: YES
+Enter passphrase <span class=k>for</span> /dev/sdf1:
+Verify passphrase:
+</code></pre></td></tr></table></div></div><p>打开LUKS分区：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>cryptsetup luksOpen /dev/sdf1 secret
+</code></pre></td></tr></table></div></div><p>初始化文件系统：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>sudo mkfs.ext2 /dev/mapper/secret -L gpg-<span class=k>$(</span>date +%F<span class=k>)</span>
+</code></pre></td></tr></table></div></div><p>创建挂载点：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>sudo mkdir /mnt/encrypted-storage
+</code></pre></td></tr></table></div></div><p>挂载分区：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>sudo mount /dev/mapper/secret /mnt/encrypted-storage
+</code></pre></td></tr></table></div></div><p>复制文件：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>sudo cp -avi <span class=nv>$GNUPGHOME</span> /mnt/encrypted-storage/
+</code></pre></td></tr></table></div></div><p>卸载分区和关闭LUKS：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>sudo umount /mnt/encrypted-storage/
+sudo cryptsetup luksClose secret
+</code></pre></td></tr></table></div></div><h2 id=导出公钥>导出公钥</h2><blockquote><p>重要提示如果没有公共密钥，您将无法使用GPG加密，解密或签名消息。 但是，您仍然可以使用YubiKey进行SSH身份验证。
+现在我们要做的就是在可移动存储设备上创建另一个分区来存储公用密钥，之后可以连接网络并上传到密钥服务器。</p></blockquote><p>首先初始化另外一个分区：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>sudo mkfs.ext2 /dev/sdf2
+</code></pre></td></tr></table></div></div><p>创建挂载点：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>sudo mkdir /mnt/public
+</code></pre></td></tr></table></div></div><p>挂载分区：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>sudo mount /dev/mmcblk0p2 /mnt/public/
+</code></pre></td></tr></table></div></div><p>导出公钥到这个分区：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>gpg --armor --export <span class=nv>$KEYID</span> <span class=p>|</span> sudo tee /mnt/public/gpg-<span class=nv>$KEYID</span>-<span class=k>$(</span>date +%F<span class=k>)</span>.txt
+</code></pre></td></tr></table></div></div><p>上传到公开的keyserver：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>gpg --send-key <span class=nv>$KEYID</span>
+</code></pre></td></tr></table></div></div><p>这个默认的keyserver可以在<code>gpg.conf</code>配置文件中设置默认的，也可以像是这样手动指定：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>gpg --keyserver pgp.mit.edu --send-key <span class=nv>$KEYID</span>
+gpg --keyserver keys.gnupg.net --send-key <span class=nv>$KEYID</span>
+gpg --keyserver hkps://keyserver.ubuntu.com:443 --send-key <span class=nv>$KEYID</span>
+</code></pre></td></tr></table></div></div><h2 id=配置yubikey>配置Yubikey</h2><p>插入YubiKey并使用GPG将其配置：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>gpg --card-edit
+
+Reader ...........: Yubico YubiKey OTP FIDO CCID
+Application ID ...: D2760001240103040006136541830000
+Application <span class=nb>type</span> .: OpenPGP
+Version ..........: 3.4
+Manufacturer .....: Yubico
+Serial number ....: <span class=m>13654183</span>
+Name of cardholder: <span class=o>[</span>not set<span class=o>]</span>
+Language prefs ...: <span class=o>[</span>not set<span class=o>]</span>
+Salutation .......:
+URL of public key : <span class=o>[</span>not set<span class=o>]</span>
+Login data .......: <span class=o>[</span>not set<span class=o>]</span>
+Signature PIN ....: not forced
+Key attributes ...: rsa2048 rsa2048 rsa2048
+Max. PIN lengths .: <span class=m>127</span> <span class=m>127</span> <span class=m>127</span>
+PIN retry counter : <span class=m>3</span> <span class=m>0</span> <span class=m>3</span>
+Signature counter : <span class=m>0</span>
+KDF setting ......: off
+Signature key ....: <span class=o>[</span>none<span class=o>]</span>
+Encryption key....: <span class=o>[</span>none<span class=o>]</span>
+Authentication key: <span class=o>[</span>none<span class=o>]</span>
+General key info..: <span class=o>[</span>none<span class=o>]</span>
+</code></pre></td></tr></table></div></div><blockquote><p>如果你的yubikey已经被锁住，或者是忘记密码被锁了，可以参考<a href=#%E9%87%8D%E7%BD%AE>重置</a></p></blockquote><h3 id=配置pin>配置PIN</h3><p>默认PIN是<code>123456</code>，默认Admin PIN（PUK）是<code>12345678</code>。CCID模式PIN最多可以包含127个ASCII字符。 它们必须至少为6（PIN）或8（PUK）ASCII字符。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>gpg/card&gt; admin
+Admin commands are allowed
+
+gpg/card&gt; passwd
+gpg: OpenPGP card no. D2760001240103040006136541830000 detected
+
+<span class=m>1</span> - change PIN
+<span class=m>2</span> - unblock PIN
+<span class=m>3</span> - change Admin PIN
+<span class=m>4</span> - <span class=nb>set</span> the Reset Code
+Q - quit
+
+
+Your selection? <span class=m>3</span>
+PIN changed.
+
+<span class=m>1</span> - change PIN
+<span class=m>2</span> - unblock PIN
+<span class=m>3</span> - change Admin PIN
+<span class=m>4</span> - <span class=nb>set</span> the Reset Code
+Q - quit
+
+
+Your selection? <span class=m>1</span>
+PIN changed.
+
+<span class=m>1</span> - change PIN
+<span class=m>2</span> - unblock PIN
+<span class=m>3</span> - change Admin PIN
+<span class=m>4</span> - <span class=nb>set</span> the Reset Code
+Q - quit
+
+Your selection? q
+</code></pre></td></tr></table></div></div><h3 id=设置基本信息>设置基本信息</h3><p>这里设置的字段信息都是可选的：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>gpg/card&gt; name
+Cardholder<span class=s1>&#39;s surname: Xena
+</span><span class=s1>Cardholder&#39;</span>s given name: Yafa
+
+gpg/card&gt; lang
+Language preferences: en
+
+gpg/card&gt; login
+Login data <span class=o>(</span>account name<span class=o>)</span>: i@yafa.moe
+
+gpg/card&gt; url
+URL to retrieve public key: https://www.yafa.moe/yafa.asc
+
+gpg/card&gt; salutation
+Salutation <span class=o>(</span><span class=nv>M</span> <span class=o>=</span> Mr., <span class=nv>F</span> <span class=o>=</span> Ms., or space<span class=o>)</span>: F
+
+gpg/card&gt; forcesig
+
+gpg/card&gt; list
+
+Reader ...........: Yubico YubiKey OTP FIDO CCID
+Application ID ...: D2760001240103040006136541830000
+Application <span class=nb>type</span> .: OpenPGP
+Version ..........: 3.4
+Manufacturer .....: Yubico
+Serial number ....: <span class=m>13654183</span>
+Name of cardholder: Yafa Xena
+Language prefs ...: us
+Salutation .......: Ms.
+URL of public key : https://www.yafa.moe/yafa.asc
+Login data .......: <span class=o>[</span>not set<span class=o>]</span>
+Signature PIN ....: forced
+Key attributes ...: rsa2048 rsa2048 rsa2048
+Max. PIN lengths .: <span class=m>127</span> <span class=m>127</span> <span class=m>127</span>
+PIN retry counter : <span class=m>3</span> <span class=m>0</span> <span class=m>3</span>
+Signature counter : <span class=m>0</span>
+KDF setting ......: off
+Signature key ....: <span class=o>[</span>none<span class=o>]</span>
+Encryption key....: <span class=o>[</span>none<span class=o>]</span>
+Authentication key: <span class=o>[</span>none<span class=o>]</span>
+General key info..: <span class=o>[</span>none<span class=o>]</span>
+
+</code></pre></td></tr></table></div></div><h2 id=传输key>传输KEY</h2><p>重要说明：使用密钥卡将密钥转移到YubiKey只是一种单向操作，不能将yubikey中的密钥再拿出来。 在继续操作之前，请确保已进行了备份：<code>key to card</code>将磁盘上的本地密钥转换为存根，这意味着磁盘上的副本不再可用于传输到后续的安全密钥设备或创建其他密钥。</p><p>以前的GPG版本需要在选择密钥之前使用toggle命令。 当前选择的密钥以<code>*</code>表示。 移动键时，一次只能选择一个密钥。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>gpg --edit-key <span class=nv>$KEYID</span>
+
+Secret key is available.
+
+sec  rsa4096/0xBE5E83CAC35379C8
+     created: 2021-03-14  expires: never       usage: C
+     trust: ultimate      validity: ultimate
+ssb  rsa4096/0xD40C8A853177702B
+     created: 2021-03-14  expires: 2022-03-14  usage: S
+ssb  rsa4096/0x80D9D0834E2A346E
+     created: 2021-03-14  expires: 2022-03-14  usage: E
+ssb  rsa4096/0xD1144013D3F7F320
+     created: 2021-03-14  expires: 2022-03-14  usage: A
+<span class=o>[</span>ultimate<span class=o>]</span> <span class=o>(</span>1<span class=o>)</span>. Yafa Xena <span class=o>(</span>Freedom and responsibility<span class=o>)</span> &lt;i@yafa.moe&gt;
+</code></pre></td></tr></table></div></div><h3 id=签名>签名</h3><p>系统将提示你输入主密钥密码和管理员PIN。</p><p>选择并传输签名密钥。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>gpg&gt; key <span class=m>1</span>
+
+sec  rsa4096/0xBE5E83CAC35379C8
+     created: 2021-03-14  expires: never       usage: C
+     trust: ultimate      validity: ultimate
+ssb* rsa4096/0xD40C8A853177702B
+     created: 2021-03-14  expires: 2022-03-14  usage: S
+ssb  rsa4096/0x80D9D0834E2A346E
+     created: 2021-03-14  expires: 2022-03-14  usage: E
+ssb  rsa4096/0xD1144013D3F7F320
+     created: 2021-03-14  expires: 2022-03-14  usage: A
+<span class=o>[</span>ultimate<span class=o>]</span> <span class=o>(</span>1<span class=o>)</span>. Yafa Xena <span class=o>(</span>Freedom and responsibility<span class=o>)</span> &lt;i@yafa.moe&gt;
+
+gpg&gt; keytocard
+Please <span class=k>select</span> where to store the key:
+   <span class=o>(</span>1<span class=o>)</span> Signature key
+   <span class=o>(</span>3<span class=o>)</span> Authentication key
+Your selection? <span class=m>1</span>
+
+sec  rsa4096/0xBE5E83CAC35379C8
+     created: 2021-03-14  expires: never       usage: C
+     trust: ultimate      validity: ultimate
+ssb* rsa4096/0xD40C8A853177702B
+     created: 2021-03-14  expires: 2022-03-14  usage: S
+ssb  rsa4096/0x80D9D0834E2A346E
+     created: 2021-03-14  expires: 2022-03-14  usage: E
+ssb  rsa4096/0xD1144013D3F7F320
+     created: 2021-03-14  expires: 2022-03-14  usage: A
+<span class=o>[</span>ultimate<span class=o>]</span> <span class=o>(</span>1<span class=o>)</span>. Yafa Xena <span class=o>(</span>Freedom and responsibility<span class=o>)</span> &lt;i@yafa.moe&gt;
+</code></pre></td></tr></table></div></div><h3 id=加密>加密</h3><p>再次输入键<code>1</code>取消选择，再输入<code>2</code>选择下一个密钥：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>gpg&gt; key <span class=m>1</span>
+
+sec  rsa4096/0xBE5E83CAC35379C8
+     created: 2021-03-14  expires: never       usage: C
+     trust: ultimate      validity: ultimate
+ssb  rsa4096/0xD40C8A853177702B
+     created: 2021-03-14  expires: 2022-03-14  usage: S
+ssb  rsa4096/0x80D9D0834E2A346E
+     created: 2021-03-14  expires: 2022-03-14  usage: E
+ssb  rsa4096/0xD1144013D3F7F320
+     created: 2021-03-14  expires: 2022-03-14  usage: A
+<span class=o>[</span>ultimate<span class=o>]</span> <span class=o>(</span>1<span class=o>)</span>. Yafa Xena <span class=o>(</span>Freedom and responsibility<span class=o>)</span> &lt;i@yafa.moe&gt;
+
+gpg&gt; key <span class=m>2</span>
+
+sec  rsa4096/0xBE5E83CAC35379C8
+     created: 2021-03-14  expires: never       usage: C
+     trust: ultimate      validity: ultimate
+ssb  rsa4096/0xD40C8A853177702B
+     created: 2021-03-14  expires: 2022-03-14  usage: S
+ssb* rsa4096/0x80D9D0834E2A346E
+     created: 2021-03-14  expires: 2022-03-14  usage: E
+ssb  rsa4096/0xD1144013D3F7F320
+     created: 2021-03-14  expires: 2022-03-14  usage: A
+<span class=o>[</span>ultimate<span class=o>]</span> <span class=o>(</span>1<span class=o>)</span>. Yafa Xena <span class=o>(</span>Freedom and responsibility<span class=o>)</span> &lt;i@yafa.moe&gt;
+
+gpg&gt; keytocard
+Please <span class=k>select</span> where to store the key:
+   <span class=o>(</span>2<span class=o>)</span> Encryption key
+Your selection? <span class=m>2</span>
+
+sec  rsa4096/0xBE5E83CAC35379C8
+     created: 2021-03-14  expires: never       usage: C
+     trust: ultimate      validity: ultimate
+ssb  rsa4096/0xD40C8A853177702B
+     created: 2021-03-14  expires: 2022-03-14  usage: S
+ssb* rsa4096/0x80D9D0834E2A346E
+     created: 2021-03-14  expires: 2022-03-14  usage: E
+ssb  rsa4096/0xD1144013D3F7F320
+     created: 2021-03-14  expires: 2022-03-14  usage: A
+<span class=o>[</span>ultimate<span class=o>]</span> <span class=o>(</span>1<span class=o>)</span>. Yafa Xena <span class=o>(</span>Freedom and responsibility<span class=o>)</span> &lt;i@yafa.moe&gt;
+</code></pre></td></tr></table></div></div><h3 id=认证>认证</h3><p>再次输入<code>2</code>以取消选择，并输入<code>3</code>以选择最后一个密钥：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>gpg&gt; key <span class=m>2</span>
+
+sec  rsa4096/0xBE5E83CAC35379C8
+     created: 2021-03-14  expires: never       usage: C
+     trust: ultimate      validity: ultimate
+ssb  rsa4096/0xD40C8A853177702B
+     created: 2021-03-14  expires: 2022-03-14  usage: S
+ssb  rsa4096/0x80D9D0834E2A346E
+     created: 2021-03-14  expires: 2022-03-14  usage: E
+ssb  rsa4096/0xD1144013D3F7F320
+     created: 2021-03-14  expires: 2022-03-14  usage: A
+<span class=o>[</span>ultimate<span class=o>]</span> <span class=o>(</span>1<span class=o>)</span>. Yafa Xena <span class=o>(</span>Freedom and responsibility<span class=o>)</span> &lt;i@yafa.moe&gt;
+
+gpg&gt; key <span class=m>3</span>
+
+sec  rsa4096/0xBE5E83CAC35379C8
+     created: 2021-03-14  expires: never       usage: C
+     trust: ultimate      validity: ultimate
+ssb  rsa4096/0xD40C8A853177702B
+     created: 2021-03-14  expires: 2022-03-14  usage: S
+ssb  rsa4096/0x80D9D0834E2A346E
+     created: 2021-03-14  expires: 2022-03-14  usage: E
+ssb* rsa4096/0xD1144013D3F7F320
+     created: 2021-03-14  expires: 2022-03-14  usage: A
+<span class=o>[</span>ultimate<span class=o>]</span> <span class=o>(</span>1<span class=o>)</span>. Yafa Xena <span class=o>(</span>Freedom and responsibility<span class=o>)</span> &lt;i@yafa.moe&gt;
+
+gpg&gt; keytocard
+Please <span class=k>select</span> where to store the key:
+   <span class=o>(</span>3<span class=o>)</span> Authentication key
+Your selection? <span class=m>3</span>
+
+sec  rsa4096/0xBE5E83CAC35379C8
+     created: 2021-03-14  expires: never       usage: C
+     trust: ultimate      validity: ultimate
+ssb  rsa4096/0xD40C8A853177702B
+     created: 2021-03-14  expires: 2022-03-14  usage: S
+ssb  rsa4096/0x80D9D0834E2A346E
+     created: 2021-03-14  expires: 2022-03-14  usage: E
+ssb* rsa4096/0xD1144013D3F7F320
+     created: 2021-03-14  expires: 2022-03-14  usage: A
+<span class=o>[</span>ultimate<span class=o>]</span> <span class=o>(</span>1<span class=o>)</span>. Yafa Xena <span class=o>(</span>Freedom and responsibility<span class=o>)</span> &lt;i@yafa.moe&gt;
+</code></pre></td></tr></table></div></div><p>保存并退出</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>save
+</code></pre></td></tr></table></div></div><h2 id=验证yubikey工作是否正常>验证Yubikey工作是否正常</h2><p>验证子密钥是否已移至YubiKey，如<code>ssb></code>所示：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>gpg -K
+/var/folders/8_/mkr2jpxx1pdgqx7jsnv04k100000gn/T/tmp.UdKeLYEs/pubring.kbx
+-------------------------------------------------------------------------
+sec   rsa4096/0xBE5E83CAC35379C8 2021-03-14 <span class=o>[</span>C<span class=o>]</span>
+      Key <span class=nv>fingerprint</span> <span class=o>=</span> 08A3 150E 30B4 <span class=m>9637</span> D01C  6C77 BE5E 83CA C353 79C8
+uid                   <span class=o>[</span>ultimate<span class=o>]</span> Yafa Xena <span class=o>(</span>Freedom and responsibility<span class=o>)</span> &lt;i@yafa.moe&gt;
+ssb&gt;  rsa4096/0xD40C8A853177702B 2021-03-14 <span class=o>[</span>S<span class=o>]</span> <span class=o>[</span>expires: 2022-03-14<span class=o>]</span>
+ssb&gt;  rsa4096/0x80D9D0834E2A346E 2021-03-14 <span class=o>[</span>E<span class=o>]</span> <span class=o>[</span>expires: 2022-03-14<span class=o>]</span>
+ssb&gt;  rsa4096/0xD1144013D3F7F320 2021-03-14 <span class=o>[</span>A<span class=o>]</span> <span class=o>[</span>expires: 2022-03-14<span class=o>]</span>
+</code></pre></td></tr></table></div></div><p>yubikey信息：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>gpg --card-status
+Reader ...........: Yubico YubiKey OTP FIDO CCID
+Application ID ...: D2760001240103040006136541830000
+Application <span class=nb>type</span> .: OpenPGP
+Version ..........: 3.4
+Manufacturer .....: Yubico
+Serial number ....: <span class=m>13654183</span>
+Name of cardholder: Yafa Xena
+Language prefs ...: us
+Salutation .......: Ms.
+URL of public key : https://www.yafa.moe/yafa.asc
+Login data .......: <span class=o>[</span>not set<span class=o>]</span>
+Signature PIN ....: forced
+Key attributes ...: rsa4096 rsa4096 rsa4096
+Max. PIN lengths .: <span class=m>127</span> <span class=m>127</span> <span class=m>127</span>
+PIN retry counter : <span class=m>3</span> <span class=m>0</span> <span class=m>3</span>
+Signature counter : <span class=m>0</span>
+KDF setting ......: off
+Signature key ....: 1E89 F219 E617 6E21 <span class=m>7946</span>  009A D40C 8A85 <span class=m>3177</span> 702B
+      created ....: 2021-03-14 05:56:53
+Encryption key....: 93AB 2D59 4CAE 483D 43FE  7EAE 80D9 D083 4E2A 346E
+      created ....: 2021-03-14 05:57:22
+Authentication key: CABE A4A2 88F3 6BEC E866  B4A9 D114 <span class=m>4013</span> D3F7 F320
+      created ....: 2021-03-14 05:57:39
+General key info..: sub  rsa4096/0xD40C8A853177702B 2021-03-14 Yafa Xena <span class=o>(</span>Freedom and responsibility<span class=o>)</span> &lt;i@yafa.moe&gt;
+sec   rsa4096/0xBE5E83CAC35379C8  created: 2021-03-14  expires: never
+ssb&gt;  rsa4096/0xD40C8A853177702B  created: 2021-03-14  expires: 2022-03-14
+                                  card-no: <span class=m>0006</span> <span class=m>13654183</span>
+ssb&gt;  rsa4096/0x80D9D0834E2A346E  created: 2021-03-14  expires: 2022-03-14
+                                  card-no: <span class=m>0006</span> <span class=m>13654183</span>
+ssb&gt;  rsa4096/0xD1144013D3F7F320  created: 2021-03-14  expires: 2022-03-14
+                                  card-no: <span class=m>0006</span> <span class=m>13654183</span>
+</code></pre></td></tr></table></div></div><h2 id=清理工作>清理工作</h2><p>在开始清理工作之前确保这些内容你已经完成了：</p><ul><li>将加密，签名和身份验证的子密钥保存到yubikey。（对于子密钥，<code>gpg -K</code>应该显示<code>ssb></code>）</li><li>记住你设置后的yubikey用户pin和管理员pin</li><li>记住你的GPG主密钥密码</li><li>将你主密钥，子密钥和吊销证书的副本保存在加密的卷上（比如说LUKS），并脱机保存。</li><li>将公钥的副本保存到一个能够轻松访问的位置（我在博客保存了一份，而且还在keyserver保存了一份。）</li></ul><blockquote><p>重要：建议重启机器或者是删除当前电脑上的<code>$GNUPGHOME</code>目录</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell><span class=nb>cd</span> <span class=o>&amp;&amp;</span>sudo rm -rf <span class=nv>$GNUPGHOME</span>
+gpg --delete-secret-key <span class=nv>$KEYID</span>
+<span class=nb>unset</span> GNUPGHOME
+</code></pre></td></tr></table></div></div><h2 id=使用>使用</h2><p>确保你的电脑上有GPG的软件，CCID相关的服务已经启动了。</p><p>下载配置文件：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell><span class=nb>cd</span> ~/.gnupg <span class=p>;</span> wget https://raw.githubusercontent.com/drduh/config/master/gpg.conf
+chmod <span class=m>600</span> gpg.conf
+</code></pre></td></tr></table></div></div><p>从备份文件中导出公钥：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>sudo mount /dev/sdf1 /mnt
+gpg --import /mnt/0x*txt
+</code></pre></td></tr></table></div></div><p>从keyserver导入GPG 公钥</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>gpg --recv <span class=nv>$KEYID</span>
+</code></pre></td></tr></table></div></div><p>编辑主密钥，以通过选择和<code>5</code>为其分配最终信任：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>trust
+<span class=m>5</span>
+y
+</code></pre></td></tr></table></div></div><p>重新插入USB然后查看yubikey信息：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>gpg --card-status
+Reader ...........: Yubico YubiKey OTP FIDO CCID
+Application ID ...: D2760001240103040006136541830000
+Application <span class=nb>type</span> .: OpenPGP
+Version ..........: 3.4
+Manufacturer .....: Yubico
+Serial number ....: <span class=m>13654183</span>
+Name of cardholder: Yafa Xena
+Language prefs ...: us
+Salutation .......: Ms.
+URL of public key : https://www.yafa.moe/yafa.asc
+Login data .......: <span class=o>[</span>not set<span class=o>]</span>
+Signature PIN ....: forced
+Key attributes ...: rsa4096 rsa4096 rsa4096
+Max. PIN lengths .: <span class=m>127</span> <span class=m>127</span> <span class=m>127</span>
+PIN retry counter : <span class=m>3</span> <span class=m>0</span> <span class=m>3</span>
+Signature counter : <span class=m>0</span>
+KDF setting ......: off
+Signature key ....: 1E89 F219 E617 6E21 <span class=m>7946</span>  009A D40C 8A85 <span class=m>3177</span> 702B
+      created ....: 2021-03-14 05:56:53
+Encryption key....: 93AB 2D59 4CAE 483D 43FE  7EAE 80D9 D083 4E2A 346E
+      created ....: 2021-03-14 05:57:22
+Authentication key: CABE A4A2 88F3 6BEC E866  B4A9 D114 <span class=m>4013</span> D3F7 F320
+      created ....: 2021-03-14 05:57:39
+General key info..: sub  rsa4096/0xD40C8A853177702B 2021-03-14 Yafa Xena <span class=o>(</span>Freedom and responsibility<span class=o>)</span> &lt;i@yafa.moe&gt;
+sec   rsa4096/0xBE5E83CAC35379C8  created: 2021-03-14  expires: never
+ssb&gt;  rsa4096/0xD40C8A853177702B  created: 2021-03-14  expires: 2022-03-14
+                                  card-no: <span class=m>0006</span> <span class=m>13654183</span>
+ssb&gt;  rsa4096/0x80D9D0834E2A346E  created: 2021-03-14  expires: 2022-03-14
+                                  card-no: <span class=m>0006</span> <span class=m>13654183</span>
+ssb&gt;  rsa4096/0xD1144013D3F7F320  created: 2021-03-14  expires: 2022-03-14
+                                  card-no: <span class=m>0006</span> <span class=m>13654183</span>
+</code></pre></td></tr></table></div></div><p>我们将信息通过管道给gpg，让其帮我们生成一个加密之后的文件，以此来测试是否工作正常：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell> <span class=nb>echo</span> <span class=s2>&#34;test message string&#34;</span> <span class=p>|</span> gpg --encrypt --armor --recipient <span class=nv>$KEYID</span> -o encrypted.txt
+</code></pre></td></tr></table></div></div><p>尝试解密信息：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>gpg --decrypt --armor encrypted.txt
+gpg: anonymous recipient<span class=p>;</span> trying secret key 0xF2A3043B78F88E93 ...
+gpg: okay, we are the anonymous recipient.
+gpg: encrypted with RSA key, ID 0x0000000000000000
+<span class=nb>test</span> message string
+</code></pre></td></tr></table></div></div><p>签名信息：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell><span class=nb>echo</span> <span class=s2>&#34;test message string&#34;</span> <span class=p>|</span> gpg --armor --clearsign &gt; signed.txt
+</code></pre></td></tr></table></div></div><p>查看签名：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>gpg --verify signed.txt
+gpg: Signature made Sun Mar <span class=m>14</span> 18:44:28 <span class=m>2021</span> CST
+gpg:                using RSA key DCFC5352D5FA6FB8457222E643164C130518FCF1
+gpg: Good signature from <span class=s2>&#34;Yafa Xena (Freedom and responsibility) &lt;i@yafa.moe&gt;&#34;</span> <span class=o>[</span>ultimate<span class=o>]</span>
+Primary key fingerprint: 6F10 BB83 80EE B003 58CE  6B04 C696 4DED F01A 4DA0
+     Subkey fingerprint: DCFC <span class=m>5352</span> D5FA 6FB8 <span class=m>4572</span>  22E6 <span class=m>4316</span> 4C13 <span class=m>0518</span> FCF1
+</code></pre></td></tr></table></div></div><p>这些文件加密解密可能是非常常用的，我们可以为此写一个简单的shell函数用来加密和解密（放到你的shell配置中）：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell><span class=k>function</span> reveal <span class=o>{</span>
+  <span class=nv>output</span><span class=o>=</span><span class=k>$(</span><span class=nb>echo</span> <span class=s2>&#34;</span><span class=si>${</span><span class=nv>1</span><span class=si>}</span><span class=s2>&#34;</span> <span class=p>|</span> rev <span class=p>|</span> cut -c16- <span class=p>|</span> rev<span class=k>)</span>
+  gpg --decrypt --output <span class=si>${</span><span class=nv>output</span><span class=si>}</span> <span class=s2>&#34;</span><span class=si>${</span><span class=nv>1</span><span class=si>}</span><span class=s2>&#34;</span> <span class=se>\
+</span><span class=se></span>    <span class=o>&amp;&amp;</span> <span class=nb>echo</span> <span class=s2>&#34;</span><span class=si>${</span><span class=nv>1</span><span class=si>}</span><span class=s2> -&gt; </span><span class=si>${</span><span class=nv>output</span><span class=si>}</span><span class=s2>&#34;</span> <span class=o>}</span>
+
+<span class=k>function</span> secret <span class=o>{</span>  <span class=c1># list preferred id last</span>
+  <span class=nv>output</span><span class=o>=</span><span class=s2>&#34;</span><span class=si>${</span><span class=nv>HOME</span><span class=si>}</span><span class=s2>/</span><span class=k>$(</span>basename <span class=si>${</span><span class=nv>1</span><span class=si>}</span><span class=k>)</span><span class=s2>.</span><span class=k>$(</span>date +%F<span class=k>)</span><span class=s2>.enc&#34;</span>
+  gpg --encrypt --armor <span class=se>\
+</span><span class=se></span>    --output <span class=si>${</span><span class=nv>output</span><span class=si>}</span> <span class=se>\
+</span><span class=se></span>    -r 0xC6964DEDF01A4DA0 <span class=se>\
+</span><span class=se></span>    -r i@yafa.moe <span class=se>\
+</span><span class=se></span>    <span class=s2>&#34;</span><span class=si>${</span><span class=nv>1</span><span class=si>}</span><span class=s2>&#34;</span> <span class=o>&amp;&amp;</span> <span class=nb>echo</span> <span class=s2>&#34;</span><span class=si>${</span><span class=nv>1</span><span class=si>}</span><span class=s2> -&gt; </span><span class=si>${</span><span class=nv>output</span><span class=si>}</span><span class=s2>&#34;</span> <span class=o>}</span>
+</code></pre></td></tr></table></div></div><p>使用：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>secret IEEE.1364-2005.pdf
+reveal  ~/IEEE.1364-2005.pdf.2021-03-14.enc
+gpg: selecting card failed: Operation not supported by device
+gpg: anonymous recipient<span class=p>;</span> trying secret key 0xF2A3043B78F88E93 ...
+gpg: okay, we are the anonymous recipient.
+gpg: encrypted with RSA key, ID 0x0000000000000000
+/Users/yafa/IEEE.1364-2005.pdf.2021-03-14.enc -&gt; /Users/yafa/IEEE.1364-2005.pdf
+</code></pre></td></tr></table></div></div><h2 id=轮转key>轮转KEY</h2><p>PGP不提供前向保密性-泄露的密钥可用于解密所有过去的消息。尽管存储在YubiKey上的密钥很难被窃取，但这不是不可能的-例如，可以使用密钥和PIN，或者可以在用于创建密钥的硬件或随机数生成器中发现漏洞。因此，偶尔轮转子密钥是一个好习惯。</p><p>子密钥过期后，可以对其进行更新或替换。这两个操作都需要访问脱机主密钥。通过更新子密钥的到期日期来更新子密钥，表明您仍然拥有脱机主密钥，并且更加方便。</p><p>另一方面，替换密钥较不方便，但更安全：新的子密钥将无法解密以前的消息，比如说使用SSH进行身份验证等。联系人将需要接收更新的公共密钥，而任何加密的机密都需要解密并重新加密为新的子密钥才能使用。此过程在功能上等效于“丢失” YubiKey，并提供一个新的。但是，你将始终能够使用原始密钥的脱机加密备份来解密以前的消息。</p><p>轮换方法都不是上乘方法，它完全取决于身份管理和个人威胁模型的个人理念来决定使用哪个密钥，或者是否使子密钥完全失效。理想情况下，子密钥应是短暂的：每个加密，签名和身份验证事件仅使用一次，但是在实践中，YubiKey并不切实可行或不值得。高级用户可能希望将脱机设备专用于更频繁地轮换密钥并简化配置。</p><h3 id=初始化环境>初始化环境</h3><p>如果想要更新子密钥或者是轮转，差不多就是和生成密钥差不多的流程：</p><p>进入livecd环境，安装必要的软件 插入备份密钥的U盘，然后打开LUKS所在的分区：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>sudo cryptsetup luksOpen /dev/sdf1 secret
+</code></pre></td></tr></table></div></div><p>创建挂载点并挂载分区：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>sudo mount /dev/mapper/secret /mnt/encrypted-storage
+</code></pre></td></tr></table></div></div><p>将主密钥和配置文件导入到临时的工作目录：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell><span class=nb>export</span> <span class=nv>GNUPGHOME</span><span class=o>=</span><span class=k>$(</span>mktemp -d<span class=k>)</span>
+gpg --import /mnt/encrypted-storage/tmp.XXX/mastersub.key
+cp -v /mnt/encrypted-storage/tmp.XXX/gpg.conf <span class=nv>$GNUPGHOME</span>
+</code></pre></td></tr></table></div></div><p>修改主密钥：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell><span class=nb>export</span> <span class=nv>KEYID</span><span class=o>=</span>0xBE5E83CAC35379C8
+gpg --expert --edit-key <span class=nv>$KEYID</span>
+Secret key is available
+<span class=o>[</span>...<span class=o>]</span>
+</code></pre></td></tr></table></div></div><h3 id=续订子密钥>续订子密钥</h3><p>更新子密钥更为简单：无需生成新密钥，将密钥移至YubiKey或更新链接至GPG密钥的任何SSH公共密钥。 需要做的就是更改与公钥关联的到期时间（这需要访问刚刚加载的主密钥），然后导出该公钥并将其导入到希望使用GPG的任何计算机上（例如 与SSH）密钥不同。</p><p>要更改所有子键的失效日期，请先选择所有的密钥：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>gpg --edit-key <span class=nv>$KEYID</span>
+
+Secret key is available.
+
+sec  rsa4096/0xBE5E83CAC35379C8
+     created: 2021-03-14  expires: never       usage: C
+     trust: ultimate      validity: ultimate
+ssb  rsa4096/0xD40C8A853177702B
+     created: 2021-03-14  expires: 2022-03-14  usage: S
+ssb  rsa4096/0x80D9D0834E2A346E
+     created: 2021-03-14  expires: 2022-03-14  usage: E
+ssb  rsa4096/0xD1144013D3F7F320
+     created: 2021-03-14  expires: 2022-03-14  usage: A
+<span class=o>[</span>ultimate<span class=o>]</span> <span class=o>(</span>1<span class=o>)</span>. Yafa Xena <span class=o>(</span>Freedom and responsibility<span class=o>)</span> &lt;i@yafa.moe&gt;
+
+gpg&gt; key <span class=m>1</span>
+
+sec  rsa4096/0xBE5E83CAC35379C8
+     created: 2021-03-14  expires: never       usage: C
+     trust: ultimate      validity: ultimate
+ssb* rsa4096/0xD40C8A853177702B
+     created: 2021-03-14  expires: 2022-03-14  usage: S
+ssb  rsa4096/0x80D9D0834E2A346E
+     created: 2021-03-14  expires: 2022-03-14  usage: E
+ssb  rsa4096/0xD1144013D3F7F320
+     created: 2021-03-14  expires: 2022-03-14  usage: A
+<span class=o>[</span>ultimate<span class=o>]</span> <span class=o>(</span>1<span class=o>)</span>. Yafa Xena <span class=o>(</span>Freedom and responsibility<span class=o>)</span> &lt;i@yafa.moe&gt;
+
+gpg&gt; key <span class=m>2</span>
+
+sec  rsa4096/0xBE5E83CAC35379C8
+     created: 2021-03-14  expires: never       usage: C
+     trust: ultimate      validity: ultimate
+ssb* rsa4096/0xD40C8A853177702B
+     created: 2021-03-14  expires: 2022-03-14  usage: S
+ssb*  rsa4096/0x80D9D0834E2A346E
+     created: 2021-03-14  expires: 2022-03-14  usage: E
+ssb  rsa4096/0xD1144013D3F7F320
+     created: 2021-03-14  expires: 2022-03-14  usage: A
+<span class=o>[</span>ultimate<span class=o>]</span> <span class=o>(</span>1<span class=o>)</span>. Yafa Xena <span class=o>(</span>Freedom and responsibility<span class=o>)</span> &lt;i@yafa.moe&gt;
+
+
+gpg&gt; key <span class=m>3</span>
+
+sec  rsa4096/0xBE5E83CAC35379C8
+     created: 2021-03-14  expires: never       usage: C
+     trust: ultimate      validity: ultimate
+ssb* rsa4096/0xD40C8A853177702B
+     created: 2021-03-14  expires: 2022-03-14  usage: S
+ssb*  rsa4096/0x80D9D0834E2A346E
+     created: 2021-03-14  expires: 2022-03-14  usage: E
+ssb*  rsa4096/0xD1144013D3F7F320
+     created: 2021-03-14  expires: 2022-03-14  usage: A
+<span class=o>[</span>ultimate<span class=o>]</span> <span class=o>(</span>1<span class=o>)</span>. Yafa Xena <span class=o>(</span>Freedom and responsibility<span class=o>)</span> &lt;i@yafa.moe&gt;
+</code></pre></td></tr></table></div></div><p>然后，使用<code>expire</code>命令设置新的到期日期。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>gpg&gt; expire
+Changing expiration <span class=nb>time</span> <span class=k>for</span> a subkey.
+Please specify how long the key should be valid.
+         <span class=nv>0</span> <span class=o>=</span> key does not expire
+      &lt;n&gt;  <span class=o>=</span> key expires in n days
+      &lt;n&gt;w <span class=o>=</span> key expires in n weeks
+      &lt;n&gt;m <span class=o>=</span> key expires in n months
+      &lt;n&gt;y <span class=o>=</span> key expires in n years
+Key is valid <span class=k>for</span>? <span class=o>(</span>0<span class=o>)</span>
+</code></pre></td></tr></table></div></div><p>按照这些提示设置新的到期日期，然后保存以保存更改。</p><p>接下来，导出公钥：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>gpg --export <span class=nv>$KEYID</span> &gt; pubkey.gpg
+</code></pre></td></tr></table></div></div><p>将该公钥转移到使用GPG密钥的计算机上，然后使用以下命令导入：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>gpg --import pubkey.gpg
+</code></pre></td></tr></table></div></div><p>这将扩展GPG密钥的有效性，并允许将其用于SSH授权。 请注意，实际上不需要更新位于远程服务器上的SSH公共密钥。</p><h3 id=旋转key>旋转KEY</h3><p>旋转Key需要的操作更多一些。 首先，按照原始步骤生成每个子密钥。 先前的子密钥可以保留或从身份中删除。</p><p>通过导出新密钥完成操作：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>gpg --armor --export-secret-keys <span class=nv>$KEYID</span> &gt; <span class=nv>$GNUPGHOME</span>/mastersub.key
+gpg --armor --export-secret-subkeys <span class=nv>$KEYID</span> &gt; <span class=nv>$GNUPGHOME</span>/sub.key
+</code></pre></td></tr></table></div></div><p>将新的临时工作目录复制到加密的脱机存储中，该存储仍应挂载：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>sudo cp -avi <span class=nv>$GNUPGHOME</span> /mnt/encrypted-storage
+</code></pre></td></tr></table></div></div><p>再去查看脱机存储挂载的目录应该有2份不同的主密钥和子密钥的备份：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>ls /mnt/encrypted-storage
+lost+found   tmp.lpW6wTr9  tmp.M4PdcQMe
+</code></pre></td></tr></table></div></div><p>卸除挂载然后关闭加密分区：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>sudo umount /mnt/encrypted-storage
+sudo cryptsetup luksClose /dev/mapper/secret
+</code></pre></td></tr></table></div></div><p>导出公钥：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>sudo mkdir /mnt/public
+sudo mount /dev/mmcblk0p2 /mnt/public
+gpg --armor --export <span class=nv>$KEYID</span> <span class=p>|</span> sudo tee /mnt/public/<span class=nv>$KEYID</span>-<span class=k>$(</span>date +%F<span class=k>)</span>.txt
+sudo umount /mnt/public
+</code></pre></td></tr></table></div></div><p>断开离线备份的USB设备，然后重新按照之前的步骤将新的密钥转移到yubikey中，以此来替换现有的密钥。之后重新启动计算机或者是删除掉GPGHOME这个临时工作目录。</p><h2 id=ssh>SSH</h2><p>这里就是如何用<a href=https://wiki.archlinux.org/index.php/GnuPG#SSH_agent>gpg-agent</a>，来达到像是ssh密钥对那样去链接Linux节点。</p><h3 id=创建配置文件>创建配置文件</h3><p>首先要下载一个<code>gpg-agent</code>配置文件：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell><span class=nb>cd</span> ~/.gnupg
+wget https://raw.githubusercontent.com/drduh/config/master/gpg-agent.conf
+grep -ve <span class=s2>&#34;^#&#34;</span> gpg-agent.conf
+enable-ssh-support
+ttyname <span class=nv>$GPG_TTY</span>
+default-cache-ttl <span class=m>60</span>
+max-cache-ttl <span class=m>120</span>
+pinentry-program /usr/bin/pinentry-curses
+</code></pre></td></tr></table></div></div><p>我这里是Mac环境为此我要修改一下<code>pinentry-program</code>的值</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>pinentry-program /Applications/MacPorts/pinentry-mac.app/Contents/MacOS/pinentry-mac
+</code></pre></td></tr></table></div></div><h3 id=更换agents>更换agents</h3><p>要启动供SSH使用的<code>gpg-agent</code>，请使用<code>gpg-connect-agent/bye</code>或<code>gpgconf --launch gpg-agent</code>命令。</p><p>将它们添加到shell <code>rc</code>文件中：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell><span class=nb>export</span> <span class=nv>GPG_TTY</span><span class=o>=</span><span class=s2>&#34;</span><span class=k>$(</span>tty<span class=k>)</span><span class=s2>&#34;</span>
+<span class=nb>export</span> <span class=nv>SSH_AUTH_SOCK</span><span class=o>=</span><span class=k>$(</span>gpgconf --list-dirs agent-ssh-socket<span class=k>)</span>
+gpgconf --launch gpg-agent
+</code></pre></td></tr></table></div></div><h3 id=复制公钥匙>复制公钥匙</h3><p>将ssh-add的输出复制并粘贴到服务器的<code>authorized_keys</code>文件中：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCzj33cdrl5s1g2AEL3qi/Xro+L6CpcywVuH1Tegw6xHyQO3B1jOS/CtKW5ecmvQBo9GJqP6I4oeu8IjKBRYCkASu28TaVdV2RF1MgpagVCg8TXcdhZ+k7HsKD51TT+jYgTsmZiY0J6pALr9V1vcrtBNIhqbIlF0K4IykCKCICikBzT3qiLPCJgL79s6jiV39VqNOReoALX9uarMkHTeG95Ks+qXcbd/zukqQeWcPjfsc105v8hB7haMENSbpQlGZFiWD5IsU7RQXo6bv941FVBw6M2C5ZMS7aNKacahkRMhdCcNjghdAmyQ2FMGSl+amYMKCBrNzz9CLa1YDr7pRhe3V4y2iSA3YQAtT6eqdxV4+1/ceU8aVhG0no6Vlw3Yclswa5alQ/VGEvkKs2AA4OXhfFubfF1h9UWgORsix6ExojgzZEQoDcSRfT/KJFff0QWI6ySTLcYvyTb9kaKV0ShF6QcsEQdq8KZGB/OaeEmdeVJQF/9dy7Gtq+fKjHzSY/OrU2/ozcl9MN+Rl81yt3hKRhYo/4AQ6LlwqV6o6Y79BjPmx4nd1cU/ZoEayxJkqDCCLfdZOY418df6xthu0qXATJS1nGE40Cinnq0s97e0BOiVPMjmRAwSQQFlQQB+G6KTFAh7Nd1cU6qiuaJ95cYAMoU+7AxTjtOgB6G4tLL8Q<span class=o>==</span> cardno:000613654183
+</code></pre></td></tr></table></div></div><p>这里我拿一台虚拟机进行测试</p><p>首先将<code>ssh-add</code>的输出复制到这台虚拟机并更改对应的权限：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>mkdir -pv .ssh
+vi .ssh/authorized_keys
+chmod <span class=m>640</span> .ssh/authorized_keys
+chmod <span class=m>700</span> .ssh/
+</code></pre></td></tr></table></div></div><p>链接这台机器：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>ssh -vvv root@192.168.56.103
+OpenSSH_8.1p1, LibreSSL 2.7.3
+debug1: Reading configuration data /etc/ssh/ssh_config
+debug1: /etc/ssh/ssh_config line 47: Applying options <span class=k>for</span> *
+debug1: Connecting to 192.168.56.103 <span class=o>[</span>192.168.56.103<span class=o>]</span> port 22.
+debug1: Connection established.
+debug1: identity file /Users/yafa/.ssh/id_rsa <span class=nb>type</span> -1
+debug1: identity file /Users/yafa/.ssh/id_rsa-cert <span class=nb>type</span> -1
+debug1: identity file /Users/yafa/.ssh/id_dsa <span class=nb>type</span> -1
+debug1: identity file /Users/yafa/.ssh/id_dsa-cert <span class=nb>type</span> -1
+debug1: identity file /Users/yafa/.ssh/id_ecdsa <span class=nb>type</span> -1
+debug1: identity file /Users/yafa/.ssh/id_ecdsa-cert <span class=nb>type</span> -1
+debug1: identity file /Users/yafa/.ssh/id_ed25519 <span class=nb>type</span> -1
+debug1: identity file /Users/yafa/.ssh/id_ed25519-cert <span class=nb>type</span> -1
+debug1: identity file /Users/yafa/.ssh/id_xmss <span class=nb>type</span> -1
+debug1: identity file /Users/yafa/.ssh/id_xmss-cert <span class=nb>type</span> -1
+debug1: Local version string SSH-2.0-OpenSSH_8.1
+debug1: Remote protocol version 2.0, remote software version OpenSSH_7.4
+debug1: match: OpenSSH_7.4 pat OpenSSH_7.0*,OpenSSH_7.1*,OpenSSH_7.2*,OpenSSH_7.3*,OpenSSH_7.4*,OpenSSH_7.5*,OpenSSH_7.6*,OpenSSH_7.7* compat 0x04000002
+debug1: Authenticating to 192.168.56.103:22 as <span class=s1>&#39;root&#39;</span>
+debug1: SSH2_MSG_KEXINIT sent
+debug1: SSH2_MSG_KEXINIT received
+debug1: kex: algorithm: curve25519-sha256
+debug1: kex: host key algorithm: ecdsa-sha2-nistp256
+debug1: kex: server-&gt;client cipher: chacha20-poly1305@openssh.com MAC: &lt;implicit&gt; compression: none
+debug1: kex: client-&gt;server cipher: chacha20-poly1305@openssh.com MAC: &lt;implicit&gt; compression: none
+debug1: expecting SSH2_MSG_KEX_ECDH_REPLY
+debug1: Server host key: ecdsa-sha2-nistp256 SHA256:yDltSSOLjxzYCT7xpi5LPWpQTbPbHhwV+hQHXxpDsYU
+debug1: Host <span class=s1>&#39;192.168.56.103&#39;</span> is known and matches the ECDSA host key.
+debug1: Found key in /Users/yafa/.ssh/known_hosts:4
+debug1: rekey out after <span class=m>134217728</span> blocks
+debug1: SSH2_MSG_NEWKEYS sent
+debug1: expecting SSH2_MSG_NEWKEYS
+debug1: SSH2_MSG_NEWKEYS received
+debug1: rekey in after <span class=m>134217728</span> blocks
+debug1: Will attempt key: cardno:000613654183 RSA SHA256:HMJRGtFTObD6t0xpTZtFNhmFB6nKIfITVCpEXecGmCA agent
+debug1: Will attempt key: /Users/yafa/.ssh/id_rsa
+debug1: Will attempt key: /Users/yafa/.ssh/id_dsa
+debug1: Will attempt key: /Users/yafa/.ssh/id_ecdsa
+debug1: Will attempt key: /Users/yafa/.ssh/id_ed25519
+debug1: Will attempt key: /Users/yafa/.ssh/id_xmss
+debug1: SSH2_MSG_EXT_INFO received
+debug1: kex_input_ext_info: server-sig-algs<span class=o>=</span>&lt;rsa-sha2-256,rsa-sha2-512&gt;
+debug1: SSH2_MSG_SERVICE_ACCEPT received
+debug1: Authentications that can <span class=k>continue</span>: publickey,gssapi-keyex,gssapi-with-mic,password
+debug1: Next authentication method: publickey
+debug1: Offering public key: cardno:000613654183 RSA SHA256:HMJRGtFTObD6t0xpTZtFNhmFB6nKIfITVCpEXecGmCA agent
+debug1: Server accepts key: cardno:000613654183 RSA SHA256:HMJRGtFTObD6t0xpTZtFNhmFB6nKIfITVCpEXecGmCA agent
+debug1: Authentication succeeded <span class=o>(</span>publickey<span class=o>)</span>.
+Authenticated to 192.168.56.103 <span class=o>([</span>192.168.56.103<span class=o>]</span>:22<span class=o>)</span>.
+debug1: channel 0: new <span class=o>[</span>client-session<span class=o>]</span>
+debug1: Requesting no-more-sessions@openssh.com
+debug1: Entering interactive session.
+debug1: pledge: network
+debug1: client_input_global_request: rtype hostkeys-00@openssh.com want_reply <span class=m>0</span>
+debug1: Sending environment.
+debug1: Sending env <span class=nv>LC_TERMINAL_VERSION</span> <span class=o>=</span> 3.4.4
+debug1: Sending env <span class=nv>LC_CTYPE</span> <span class=o>=</span> UTF-8
+debug1: Sending env <span class=nv>LC_TERMINAL</span> <span class=o>=</span> iTerm2
+Last login: Sun Mar <span class=m>14</span> 19:53:43 <span class=m>2021</span> from 192.168.56.1
+</code></pre></td></tr></table></div></div><p>在链接的时候会提示你输入yubikey的pin：</p><p><img src=../../images/yubikey_pinentry.png alt="Yubikey unlock pinentry"></p><p>输入正确之后就可以登录到这台机器了～</p><h2 id=重置>重置</h2><p>如果你发现你的yubikey被锁了想要重新设置pin可以运行：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>ykman piv reset
+</code></pre></td></tr></table></div></div><p>如果你想要重设opengpg的信息可以运行：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>ykman openpgp reset
+</code></pre></td></tr></table></div></div><h2 id=结束语>结束语</h2><p>经过这次折腾经历发现对于安全这块、以及算法部分有相当大的空洞，之后要补习补习这部分的内容了，像是邮件加密之类的功能应该是可以用的，但是我在Thunderbird中配置了一下感觉不是很友好，因为需要将私钥拿出来才能够正常用。。。。</p><p>后面看看能否结合yubikey进行端对端的邮件加密</p><h2 id=参考链接>参考链接</h2><ul><li><a href=https://github.com/drduh/YubiKey-Guide>YubiKey-Guide</a></li><li><a href=https://docs.github.com/en/github/authenticating-to-github/securing-your-account-with-two-factor-authentication-2fa>Securing your account with two-factor authentication (2FA)</a></li><li><a href=https://yubikey.me/using-yubikey-with-github/>Using YubiKey with GitHub</a></li></ul></div><div class=post-copyright><p class=copyright-item><span class=item-title>Author</span>
+<span class=item-content>Yafa Xena</span></p><p class=copyright-item><span class=item-title>LastMod</span>
+<span class=item-content>2021-03-11</span></p></div><footer class=post-footer><div class=post-tags><a href=/tags/yubikey/>yubikey</a>
+<a href=/tags/gentoo/>gentoo</a>
+<a href=/tags/2fa/>2fa</a></div><nav class=post-nav><a class=next href=/post/blog-image-quality/><span class="next-text nav-default">博客图片优化</span>
+<span class="next-text nav-mobile">Next</span>
+<i class="iconfont icon-right"></i></a></nav></footer></article></div></div></main><footer id=footer class=footer><div class=social-links><a href=https://www.yafa.moe/index.xml type=application/rss+xml class="iconfont icon-rss" title=rss></a></div><div class=copyright><span class=power-by>Powered by <a class=hexo-link href=https://gohugo.io>Hugo</a></span>
+<span class=division>|</span>
+<span class=theme-info>Theme -
+<a class=theme-link href=https://github.com/olOwOlo/hugo-theme-even>Even</a></span>
+<span class=copyright-year>&copy;
+2021<span class=heart><i class="iconfont icon-heart"></i></span><span>Yafa Xena</span></span></div></footer><div class=back-to-top id=back-to-top><i class="iconfont icon-up"></i></div></div><script src=https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin=anonymous></script><script type=text/javascript src=/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js></script><script type=text/javascript>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],tags:'ams',}};</script><script async src=https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin=anonymous></script></body></html>

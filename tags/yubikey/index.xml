@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>yubikey on Yafa Xena's Blog</title><link>https://www.yafa.moe/tags/yubikey/</link><description>Recent content in yubikey on Yafa Xena's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 11 Mar 2021 10:16:04 +0800</lastBuildDate><atom:link href="https://www.yafa.moe/tags/yubikey/index.xml" rel="self" type="application/rss+xml"/><item><title>Yubikey Guide</title><link>https://www.yafa.moe/post/yubikey-guide/</link><pubDate>Thu, 11 Mar 2021 10:16:04 +0800</pubDate><guid>https://www.yafa.moe/post/yubikey-guide/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>之前收到学姐送的Mac的时候还收到了一个Yubikey，最近在折腾完ZFS之类的之后终于有时间看看这个东西要怎么玩了。&lt;/p>
+&lt;p>什么是Yubikey呢？
+这里引用一下官方的解释：&lt;/p>
+&lt;blockquote>
+&lt;p>A YubiKey is a small hardware device that offers two-factor authentication with a simple touch of a button. YubiKeys are built strong enough for the largest enterprises, while remaining simple enough for anyone to use. The YubiKey NEO offers both contact (USB) and contactless (NFC, MIFARE) communications. YubiKeys can support FIDO U2F, Yubico-OTP, OATH-OTP, OATH-HOTP, OATH-TOTP, OpenPGP, and PIV, and one security key can support an unlimited number of applications without the need for drivers, client software, or batteries.&lt;/p>
+&lt;/blockquote>
+&lt;p>对于我来说的话我比较看中的是2FA和openpgp的支持，这篇文章也会着重讲解这两点，这篇文章算是&lt;a href="https://github.com/drduh/YubiKey-Guide">drduh Yubikey Guide&lt;/a>的中文版？&lt;/p></description></item></channel></rss>
