@@ -1,0 +1,71 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><title>NTP时间同步服务器 - Yafa Xena's blog</title><meta name=renderer content="webkit"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><meta http-equiv=cache-control content="no-transform"><meta http-equiv=cache-control content="no-siteapp"><meta name=theme-color content="#f8f5ec"><meta name=msapplication-navbutton-color content="#f8f5ec"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="#f8f5ec"><meta name=author content="Yafa Xena"><meta name=description content="前言 平时做实验的时候发现集群时间状态不一致，有的集群为了模拟真实环境的状态都是断网的所以我要在内网也搞一个NTP服务器用于时间同步。"><meta name=keywords content="Linux,Emacs,Python,Golang,Devops,Zabbix,Kubernetes,Gentoo"><meta name=generator content="Hugo 0.79.1 with theme even"><link rel=canonical href=https://www.yafa.moe/post/ntp/><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/manifest.json><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link href=/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin=anonymous><meta property="og:title" content="NTP时间同步服务器"><meta property="og:description" content="前言
+平时做实验的时候发现集群时间状态不一致，有的集群为了模拟真实环境的状态都是断网的所以我要在内网也搞一个NTP服务器用于时间同步。"><meta property="og:type" content="article"><meta property="og:url" content="https://www.yafa.moe/post/ntp/"><meta property="article:published_time" content="2021-03-23T20:24:04+08:00"><meta property="article:modified_time" content="2021-03-23T20:24:04+08:00"><meta itemprop=name content="NTP时间同步服务器"><meta itemprop=description content="前言
+平时做实验的时候发现集群时间状态不一致，有的集群为了模拟真实环境的状态都是断网的所以我要在内网也搞一个NTP服务器用于时间同步。"><meta itemprop=datePublished content="2021-03-23T20:24:04+08:00"><meta itemprop=dateModified content="2021-03-23T20:24:04+08:00"><meta itemprop=wordCount content="637"><meta itemprop=keywords content="ntp,linux,"><meta name=twitter:card content="summary"><meta name=twitter:title content="NTP时间同步服务器"><meta name=twitter:description content="前言
+平时做实验的时候发现集群时间状态不一致，有的集群为了模拟真实环境的状态都是断网的所以我要在内网也搞一个NTP服务器用于时间同步。"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script><script src=https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js></script><![endif]--></head><body><div id=mobile-navbar class=mobile-navbar><div class=mobile-header-logo><a href=/ class=logo>Yafa-Xena</a></div><div class=mobile-navbar-icon><span></span><span></span><span></span></div></div><nav id=mobile-menu class="mobile-menu slideout-menu"><ul class=mobile-menu-list><a href=/><li class=mobile-menu-item>Home</li></a><a href=/post/><li class=mobile-menu-item>Archives</li></a><a href=/tags/><li class=mobile-menu-item>Tags</li></a><a href=/todo><li class=mobile-menu-item>Todo</li></a><a href=/about><li class=mobile-menu-item>About</li></a><a href=/product><li class=mobile-menu-item>Product</li></a></ul></nav><div class=container id=mobile-panel><header id=header class=header><div class=logo-wrapper><a href=/ class=logo>Yafa-Xena</a></div><nav class=site-navbar><ul id=menu class=menu><li class=menu-item><a class=menu-item-link href=/>Home</a></li><li class=menu-item><a class=menu-item-link href=/post/>Archives</a></li><li class=menu-item><a class=menu-item-link href=/tags/>Tags</a></li><li class=menu-item><a class=menu-item-link href=/todo>Todo</a></li><li class=menu-item><a class=menu-item-link href=/about>About</a></li><li class=menu-item><a class=menu-item-link href=/product>Product</a></li></ul></nav></header><main id=main class=main><div class=content-wrapper><div id=content class=content><article class=post><header class=post-header><h1 class=post-title>NTP时间同步服务器</h1><div class=post-meta><span class=post-time>2021-03-23</span></div></header><div class=post-toc id=post-toc><h2 class=post-toc-title>Contents</h2><div class=post-toc-content><nav id=TableOfContents><ul><li><ul><li><a href=#前言>前言</a></li><li><a href=#环境>环境</a></li><li><a href=#部署>部署</a></li><li><a href=#验证>验证</a></li><li><a href=#后记>后记</a></li><li><a href=#参考资料>参考资料</a></li></ul></li></ul></nav></div></div><div class=post-content><h2 id=前言>前言</h2><p>平时做实验的时候发现集群时间状态不一致，有的集群为了模拟真实环境的状态都是断网的所以我要在内网也搞一个<a href=https://en.wikipedia.org/wiki/Network_Time_Protocol>NTP服务器</a>用于时间同步。</p><h2 id=环境>环境</h2><p>虚拟机列表如下：</p><table><thead><tr><th>主机名</th><th>OS</th><th>ip</th><th>firewalld</th><th>selinux</th></tr></thead><tbody><tr><td>ntp</td><td>CentOS7</td><td>192.168.56.2, 10.0.2.2</td><td>enable</td><td>enforcing</td></tr></tbody></table><p>使用的网络如下：</p><ul><li>hostonly (192.168.56.0/24) 用于hostonly网络通讯</li><li>NAT network (10.0.2.0/24)用于链接外网</li></ul><p>设置主机名和ip：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>hostnamectl set-hostname ntp
+nmcli con mod enp0s3 ipv4.method manual ipv4.addresses <span class=s2>&#34;192.168.56.2/24&#34;</span> connection.autoconnect yes
+nmcli con mod enp0s8 ipv4.method manual ipv4.addresses <span class=s2>&#34;10.0.2.2/24&#34;</span> ipv4.dns 114.114.114.114 ipv4.gateway 10.0.2.1 connection.autoconnect yes
+nmcli con up enp0s3
+nmcli con up enp0s8
+</code></pre></td></tr></table></div></div><h2 id=部署>部署</h2><p>RHEL7中默认使用<a href=https://en.wikipedia.org/wiki/Chrony>chrony</a>作为时间服务器，也支持NTP，需要额外安装。
+NTP与chrony不能同时存在，只能用其中一个，并将另一个mask掉。</p><p>这篇文章配置的是NTP服务器非默认的<code>chrony</code>服务器。</p><blockquote><p>安装NTP</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>yum -y install ntp 
+</code></pre></td></tr></table></div></div><p>编辑<code>/etc/ntp.conf</code>配置文件，修改内容如下：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>vi /etc/ntp.conf 
+restrict 192.168.56.2
+<span class=c1># 允许192.168.56.0/24 网络访问这个NTP服务器</span>
+restrict 192.168.56.0 mask 255.255.255.0 nomodify notrap
+<span class=c1># 设置阿里云的NTP服务器为上游服务器，其他的全部删除</span>
+server ntp1.aliyun.com iburst
+</code></pre></td></tr></table></div></div><p>添加防火墙规则：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>firewall-cmd --add-service<span class=o>=</span>ntp --permanent
+firewall-cmd --reload 
+</code></pre></td></tr></table></div></div><p>启动<code>ntp</code>服务并将其加入到开机启动中：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>systemctl start ntpd 
+systemctl <span class=nb>enable</span> ntpd 
+systemctl status ntpd 
+</code></pre></td></tr></table></div></div><p>验证：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>ntpq -p
+date
+</code></pre></td></tr></table></div></div><h2 id=验证>验证</h2><p>这里我开了一台新的虚拟机用于验证ntp服务是否工作正常。</p><p>安装ntp：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>yum install ntp -y
+</code></pre></td></tr></table></div></div><p>配置ntp：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>vi /etc/ntp.conf
+<span class=c1># 注释掉原有的ntp server，添加这一条：</span>
+server 192.168.56.2 iburst
+</code></pre></td></tr></table></div></div><p>启动ntp服务并将其加入到开机启动中：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>systemctl start ntpd 
+systemctl <span class=nb>enable</span> ntpd 
+systemctl status ntpd 
+</code></pre></td></tr></table></div></div><p>最终验证时间是否正常：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>ntpq -p
+date
+</code></pre></td></tr></table></div></div><h2 id=后记>后记</h2><p>在设置了NTP服务器之后集群的时间不一致问题就得到了完美解决，好诶🎉～</p><h2 id=参考资料>参考资料</h2><ul><li><a href=https://thelinuxcode.com/configure-ntp-server-centos-7/>How To Configure NTP Server in CentOS 7</a></li><li><a href="https://www.server-world.info/en/note?os=CentOS_7&p=ntp&f=1">Install NTPd and Configure NTP server for time adjustment.</a></li></ul></div><div class=post-copyright><p class=copyright-item><span class=item-title>Author</span>
+<span class=item-content>Yafa Xena</span></p><p class=copyright-item><span class=item-title>LastMod</span>
+<span class=item-content>2021-03-23</span></p></div><footer class=post-footer><div class=post-tags><a href=/tags/ntp/>ntp</a>
+<a href=/tags/linux/>linux</a></div><nav class=post-nav><a class=next href=/post/yubikey-guide/><span class="next-text nav-default">Yubikey Guide</span>
+<span class="next-text nav-mobile">Next</span>
+<i class="iconfont icon-right"></i></a></nav></footer></article></div><script src=https://utteranc.es/client.js repo=yafa-xena/yafa-xena/blog-comments issue-term=pathname theme=github-light crossorigin=anonymous async></script><noscript>Please enable JavaScript to view the <a href=https://github.com/utterance>comments powered by utterances.</a></noscript></div></main><footer id=footer class=footer><div class=social-links><a href=mailto:i@yafa.moe class="iconfont icon-email" title=email></a><a href=https://twitter.com/XenaYafa class="iconfont icon-twitter" title=twitter></a><a href=https://github.com/yafa-xena/ class="iconfont icon-github" title=github></a><a href=https://www.yafa.moe/index.xml type=application/rss+xml class="iconfont icon-rss" title=rss></a></div><div class=copyright><span class=power-by>Powered by <a class=hexo-link href=https://gohugo.io>Hugo</a></span>
+<span class=division>|</span>
+<span class=theme-info>Theme -
+<a class=theme-link href=https://github.com/olOwOlo/hugo-theme-even>Even</a></span>
+<span class=copyright-year>&copy;
+2021<span class=heart><i class="iconfont icon-heart"></i></span><span>Yafa Xena</span></span></div></footer><div class=back-to-top id=back-to-top><i class="iconfont icon-up"></i></div></div><script src=https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin=anonymous></script><script type=text/javascript src=/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js></script><script type=text/javascript>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],tags:'ams',}};</script><script async src=https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin=anonymous></script></body></html>
