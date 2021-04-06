@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xl="http://www.w3.org/1999/xlink" viewBox="338 261 279 325" width="279" height="325">
+  <defs>
+    <font-face font-family="Helvetica Neue" font-size="16" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.18.4\n2021-04-04 05:47:57 +0000</metadata>
+  <g id="Canvas_1" stroke="none" stroke-opacity="1" fill-opacity="1" fill="none" stroke-dasharray="none">
+    <title>Canvas 1</title>
+    <rect fill="white" x="338" y="261" width="279" height="325"/>
+    <g id="Canvas_1_Layer_1">
+      <title>Layer 1</title>
+      <g id="Graphic_2">
+        <path d="M 343 262.5 L 612 262.5 C 613.65685 262.5 615 263.84315 615 265.5 L 615 581 C 615 582.65685 613.65685 584 612 584 L 343 584 C 341.34315 584 340 582.65685 340 581 L 340 265.5 C 340 263.84315 341.34315 262.5 343 262.5 Z" fill="white"/>
+        <path d="M 343 262.5 L 612 262.5 C 613.65685 262.5 615 263.84315 615 265.5 L 615 581 C 615 582.65685 613.65685 584 612 584 L 343 584 C 341.34315 584 340 582.65685 340 581 L 340 265.5 C 340 263.84315 341.34315 262.5 343 262.5 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+      </g>
+      <g id="Graphic_3">
+        <path d="M 375 304 L 493 304 C 494.65685 304 496 305.34315 496 307 L 496 464 C 496 465.65685 494.65685 467 493 467 L 375 467 C 373.34315 467 372 465.65685 372 464 L 372 307 C 372 305.34315 373.34315 304 375 304 Z" fill="white"/>
+        <path d="M 375 304 L 493 304 C 494.65685 304 496 305.34315 496 307 L 496 464 C 496 465.65685 494.65685 467 493 467 L 375 467 C 373.34315 467 372 465.65685 372 464 L 372 307 C 372 305.34315 373.34315 304 375 304 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+        <text transform="translate(377 376.276)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="23.664" y="15">container</tspan>
+        </text>
+      </g>
+      <g id="Graphic_4">
+        <text transform="translate(538 541)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="831335e-18" y="15">Host</tspan>
+        </text>
+      </g>
+      <g id="Graphic_5">
+        <rect x="399" y="421" width="70" height="34" fill="white"/>
+        <rect x="399" y="421" width="70" height="34" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(404 428.776)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="10" y="15">aa.txt</tspan>
+        </text>
+      </g>
+      <g id="Graphic_7">
+        <rect x="519.888" y="486" width="70" height="34" fill="white"/>
+        <rect x="519.888" y="486" width="70" height="34" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(524.888 493.776)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="10" y="15">aa.txt</tspan>
+        </text>
+      </g>
+      <g id="Line_8">
+        <line x1="465.61686" y1="455" x2="523.27114" y2="486" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+    </g>
+  </g>
+</svg>

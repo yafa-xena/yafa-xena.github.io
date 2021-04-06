@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Yafa Xena's Blog</title><link>https://www.yafa.moe/</link><description>Recent content on Yafa Xena's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 11 Mar 2021 10:16:04 +0800</lastBuildDate><atom:link href="https://www.yafa.moe/index.xml" rel="self" type="application/rss+xml"/><item><title>Yubikey Guide</title><link>https://www.yafa.moe/post/yubikey-guide/</link><pubDate>Thu, 11 Mar 2021 10:16:04 +0800</pubDate><guid>https://www.yafa.moe/post/yubikey-guide/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Even - A super concise theme for Hugo</title><link>https://www.yafa.moe/</link><description>Recent content on Even - A super concise theme for Hugo</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Thu, 11 Mar 2021 10:16:04 +0800</lastBuildDate><atom:link href="https://www.yafa.moe/index.xml" rel="self" type="application/rss+xml"/><item><title>Yubikey Guide</title><link>https://www.yafa.moe/post/yubikey-guide/</link><pubDate>Thu, 11 Mar 2021 10:16:04 +0800</pubDate><guid>https://www.yafa.moe/post/yubikey-guide/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>之前收到学姐送的Mac的时候还收到了一个Yubikey，最近在折腾完ZFS之类的之后终于有时间看看这个东西要怎么玩了。&lt;/p>
 &lt;p>什么是Yubikey呢？
 这里引用一下官方的解释：&lt;/p>
@@ -14,17 +14,7 @@
 &lt;p>最近换了一家公司，入职的第一天基本上就是熟悉一下环境和在钉钉上加入一下组织。&lt;/p>
 &lt;p>和同事聊天的时候了解到大部分的工作主要是在钉钉上完成的，看了一下现在的本本还是装着Gentoo。在Linux上像是国产的办公软件想要用的话就是Windows虚拟机或者是wine或者是其他的解决方案，除此之外如果WFH的话需要VPN，这个VPN公司套了层壳子只支持Mac和Windows的客户端。那就把现在这个Mac格式化重新变成它该有的样子吧，这篇文章就是记录我是如何备份必要的数据、制作USB安装介质、和安装Mac OS的。&lt;/p></description></item><item><title>Rsyslog服务器配置和使用</title><link>https://www.yafa.moe/post/rsyslog/</link><pubDate>Mon, 08 Mar 2021 22:52:29 +0800</pubDate><guid>https://www.yafa.moe/post/rsyslog/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>rsyslog是啥？rsyslog服务器是一种集中式处理日志的方法。不用检查的时候连接到每个服务器上，这个虽然不是最为有效的办法但是目前来说对我足够了。这里记录一下如何配置和使用。&lt;/p></description></item><item><title>使用NetworkManger初始化Bond</title><link>https://www.yafa.moe/post/use-networkmanager-setup-bond-inc/</link><pubDate>Sat, 06 Mar 2021 15:25:54 +0800</pubDate><guid>https://www.yafa.moe/post/use-networkmanager-setup-bond-inc/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
-&lt;p>之前手动配置Bond容易出错，查看了一下Redhat的官方文档，发现是可以通过NetworkManager去配置Bond的，这篇文章是记录如何使用NetworkManager去配置Bond的。&lt;/p></description></item><item><title>Product</title><link>https://www.yafa.moe/product/</link><pubDate>Sat, 06 Mar 2021 13:15:58 +0800</pubDate><guid>https://www.yafa.moe/product/</guid><description>简介 我最近在尝试做一些副业，这里是尝试去做的一些产品。
-如果您有任何关于产品的看法或者是建议欢迎给我发邮件，这里是我的邮件地址 Email: aUB5YWZhLm1vZQ== (base64)。
-编写简历服务（即将到来） 这个服务是为你编写简历，使用LaTeX进行编写，节省你在简历上的耗时，让你更快进入面试阶段。
-这个服务需要你提供以下内容：
-基础信息 项目经历 工作年限 获奖情况 求职意向 将这些内容提交给我之后我将会在 2-3个工作日内将简历以及源代码发送给你，当然有不满意的地方可以按照需求修改。同时我也可以提供一些职业生涯（运维方向）上的建议。
-在完成交易之后我将会销毁我这边的所有相关信息，保证您的隐私安全。
-收费如下表：
-服务名称 描述 单价 备注 编写简历服务 为您量身定制简历 1000￥/次 正在策划中</description></item><item><title>Todo</title><link>https://www.yafa.moe/todo/</link><pubDate>Fri, 05 Mar 2021 22:58:31 +0800</pubDate><guid>https://www.yafa.moe/todo/</guid><description>说明 这里是我当前正在进行的写作或者是阅读以及学习新技能的Todo页面。
-当前使用了notion对即将到来的文章做管理，你可以在这里看到文章的处理情况：
-Notion board
-即将到来的文章 Rsyslog server 我的第一台安卓手机 Network boding 30分钟学点latex 如何使用USB重装mac 初始化我的mac 博客图片优化 Yubikey手册 Linux系统启动流程 制作Gentoo Boxs 在Mac上的备份操作 ZFS手札 ZFS性能调优 CDH集群安装 阅读代码之外的生存指南（读后感） 职业生涯之-离职篇 职业生涯之-简历篇 职业生涯之-面试篇 职业生涯之-找房篇 职业生涯之-副业篇 TCP/IP笔记 Git 手札 配置你的zsh ELK手札 Bash Shell Script 手札 Makefile 手札 Mysql 手札 Go 语言手札 Web协议详解与抓包实战 Redis 手札 Tensorflow简单入门使用 nagios 手札 Python 语言手札 Julia 语言手札 Docker 101 k8s手动二进制部署 ceph手动部署 hadoop HA搭建 正在学习的课程 Python 3 Arduino Using emacs 正在阅读的书籍 《Atomic Habits》 《The 4-Hour Workweek》 《Show your work!</description></item><item><title>Automatic Deployment Blog</title><link>https://www.yafa.moe/post/automatic-deployment-blog/</link><pubDate>Mon, 01 Mar 2021 15:39:10 +0800</pubDate><guid>https://www.yafa.moe/post/automatic-deployment-blog/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>之前手动配置Bond容易出错，查看了一下Redhat的官方文档，发现是可以通过NetworkManager去配置Bond的，这篇文章是记录如何使用NetworkManager去配置Bond的。&lt;/p></description></item><item><title>Product</title><link>https://www.yafa.moe/product/</link><pubDate>Sat, 06 Mar 2021 13:15:58 +0800</pubDate><guid>https://www.yafa.moe/product/</guid><description>简介 我最近在尝试做一些副业，这里是尝试去做的一些产品。 如果您有任何关于产品的看法或者是建议欢迎给我发邮件，这里是我的邮件地址 Email: aUB5YWZhLm1vZQ== (base6</description></item><item><title>Todo</title><link>https://www.yafa.moe/todo/</link><pubDate>Fri, 05 Mar 2021 22:58:31 +0800</pubDate><guid>https://www.yafa.moe/todo/</guid><description>说明 这里是我当前正在进行的写作或者是阅读以及学习新技能的Todo页面。 当前使用了notion对即将到来的文章做管理，你可以在这里看到文章的处</description></item><item><title>Automatic Deployment Blog</title><link>https://www.yafa.moe/post/automatic-deployment-blog/</link><pubDate>Mon, 01 Mar 2021 15:39:10 +0800</pubDate><guid>https://www.yafa.moe/post/automatic-deployment-blog/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>最近学习了一点git打开了新世界的大门，git是一个很适合多人协作的工具，就像是当前的这个博客原来我是在本地的，用git可以做版本控制同时可以可以让学姐参与进来一起写博客。&lt;/p>
 &lt;p>用git之后同时也带来了一个问题，就是当分支合并的时候由谁来部署。&lt;/p>
 &lt;p>这篇文章就是关于如何自动化部署博客。&lt;/p></description></item><item><title>使用ZFS备份系统</title><link>https://www.yafa.moe/post/use-zfs-backup-system/</link><pubDate>Sat, 27 Feb 2021 21:03:54 +0800</pubDate><guid>https://www.yafa.moe/post/use-zfs-backup-system/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
@@ -34,44 +24,17 @@ Notion board
 &lt;p>这期文章是看&lt;a href="https://space.bilibili.com/19526512">TenGuSan&lt;/a>的这期&lt;a href="https://www.bilibili.com/video/BV1Uy4y1e7vk">90后7条无痛攒钱指南！&lt;/a>做的笔记。&lt;/p>
 &lt;p>为什么要理财？&lt;/p>
 &lt;p>理财是为了应对计划外和计划内的支出。&lt;/p>
-&lt;p>在步入社会之后确实有这种感觉：对比以前的现金支付移动支付确实让花钱更简单了一些，尤其是现在的商品下沉、消费习惯的改变。最终的结果就是越花钱越没有钱，甚至变成了月欠族（这个月的钱是换上上个月花的钱）。&lt;/p></description></item><item><title>使用命令行移除照片的EXIF元数据</title><link>https://www.yafa.moe/post/removing_exif_data_use_commandline/</link><pubDate>Thu, 18 Feb 2021 19:13:37 +0800</pubDate><guid>https://www.yafa.moe/post/removing_exif_data_use_commandline/</guid><description>前言 在我们将日常的生活照发到网上的时候，为了隐私我们要对发到网上的这些图片提前做一些处理，比如说移除掉“EXIF”信息。 EXIF信息就是在拍照的时候采集到的信息，比如说时间、位置、设备信息等等。
-我在准备写一篇关于我的第一步智能手机的文章，其中涉及到现实的一些拍照，我不想让这些信息泄露出去，这里记录以下我是如何处理这些信息的。
-使用 这里使用到的是一个exiftool的工具，这个工具可以读取和写入EXIF信息。
-安装
-1 emerge -av exiftool 使用
-查看图片的EXIF信息
-1 exiftool foo.png # 你的图片名称 删除图片的EXIF信息
-1 exiftool -all= * foo.png 后记 图片能够暴露的信息不止这么些，像是图片的背景，有哪些物品之类的也可能暴露出很多的信息，当想要把这些图片发布到网上之前应该给自己过一道流程。
-我真的要发吗？发出去之后会给我带来那些影响呢？</description></item><item><title>Yandex Email</title><link>https://www.yafa.moe/post/yandex-email/</link><pubDate>Sun, 14 Feb 2021 13:40:37 +0800</pubDate><guid>https://www.yafa.moe/post/yandex-email/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>在步入社会之后确实有这种感觉：对比以前的现金支付移动支付确实让花钱更简单了一些，尤其是现在的商品下沉、消费习惯的改变。最终的结果就是越花钱越没有钱，甚至变成了月欠族（这个月的钱是换上上个月花的钱）。&lt;/p></description></item><item><title>使用命令行移除照片的EXIF元数据</title><link>https://www.yafa.moe/post/removing_exif_data_use_commandline/</link><pubDate>Thu, 18 Feb 2021 19:13:37 +0800</pubDate><guid>https://www.yafa.moe/post/removing_exif_data_use_commandline/</guid><description>前言 在我们将日常的生活照发到网上的时候，为了隐私我们要对发到网上的这些图片提前做一些处理，比如说移除掉“EXIF”信息。 EXIF信息就是在拍</description></item><item><title>Yandex Email</title><link>https://www.yafa.moe/post/yandex-email/</link><pubDate>Sun, 14 Feb 2021 13:40:37 +0800</pubDate><guid>https://www.yafa.moe/post/yandex-email/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>前几天买了一个域名就是现在的&lt;code>yafa.moe&lt;/code>，看着自己丑啦吧唧的邮箱地址，想到可以自己折腾一个邮箱来着。建立域名邮箱有很多种方法，可以选择自建或者是选择一些免费的邮箱，为了功能和防垃圾邮件也可以选择付费的一些邮箱。毕竟我穷，最后在Zoho和Yandex中选择了Yandex。&lt;/p></description></item><item><title>在Gentoo上优雅的吃ZFS</title><link>https://www.yafa.moe/post/gentoo-on-zfs/</link><pubDate>Sun, 14 Feb 2021 10:58:06 +0800</pubDate><guid>https://www.yafa.moe/post/gentoo-on-zfs/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>在之前的&lt;a href="https://www.yafa.moe/post/install-gentoo-on-mac/">在Mac上安装Gentoo Linux&lt;/a>这篇文章里面我成功的给现在手中的Mac安装上了Gentoo Linux，但是最近在看一些文件系统的资料看到了&lt;a href="https://en.wikipedia.org/wiki/ZFS">ZFS&lt;/a>其中的特性很是让我心动，虽然没有在虚拟机上面做一些尝试但是呢其中的快照、写时复制、数据压缩的特性很让我心动。&lt;/p>
 &lt;p>如果你有了解过一定的文件系统的知识你可能会想为啥不选择&lt;a href="https://en.wikipedia.org/wiki/Btrfs">Btrfs&lt;/a>呢？而且btrfs的话内核是可以直接支持的（需要比较新的内核），这个问题也是一个好问题。因为在我之后的规划里面，我打算自建一个机房。出于成本的考虑采取的方案是存算分离，存储的部分就是打算用ZFS。对于存储来说，连续性检查自动修复，RAID就显得尤为重要，这里也是为了这个计划做一个铺垫。也许你还会说这些btrfs都有啊！为啥还要用ZFS呢？由于我现在的水品还是十分有限，现阶段更多的是调研和测试，后续真正决定要用哪个文件系统或者是组合还是要看最终的测试结果。&lt;/p>
-&lt;p>因为当前用的这个Mac已经有了系统并且正常使用了一段时间，为了保持数据不丢失我先备份了一下系统。关于如何备份系统可以参考我这篇文章&lt;a href="https://www.yafa.moe/post/backup-your-gentoo-system/">备份你的Gentoo系统&lt;/a>。&lt;/p></description></item><item><title>备份你的Gentoo系统</title><link>https://www.yafa.moe/post/backup-your-gentoo-system/</link><pubDate>Sat, 13 Feb 2021 17:11:42 +0800</pubDate><guid>https://www.yafa.moe/post/backup-your-gentoo-system/</guid><description>前言 在前一篇的在Mac上安装Gentoo Linux完成后，我其实还想要折腾一下其他的文件系统比如说ZFS，BTRFS，XFS之类的，虽然说可以在虚拟机里面做实验但是还是想要整个机器切过去，但是重新安装的话耗费的时间太长了，我想备份一下系统然后重新分区之后将原来的系统恢复一下再更新一下fstab bootload之类的就可以正常使用了。
-这篇文章就是讲述如何备份你的Gentoo Linux(离线备份)
-准备 250G硬盘*1 （我当前的数据量在200G左右250G的硬盘能够满足一次备份，后续如果要做周期性备份的话就需要换一个更大的了） 备份 初始化硬盘 这里的初始化硬盘是为了将原来的数据全部清除并且重新建立LUKS和文件系统。出于安全的考虑，备份不应该直接在硬盘上分区创建文件系统后备份在上面，应该做一层加密再去创建文件系统和备份。
-将硬盘插入需要备份的电脑上
-查看新增的设备
-1 2 3 4 5 6 7 8 9 10 11 fdisk -l Disk /dev/sda: 232.9 GiB, 250055122432 bytes, 488388911 sectors Disk model: 00AAJS-00B4A0 Units: sectors of 1 * 512 = 512 bytes Sector size (logical/physical): 512 bytes / 512 bytes I/O size (minimum/optimal): 512 bytes / 512 bytes Disklabel type: dos Disk identifier: 0x80f01a9c Device Boot Start End Sectors Size Id Type /dev/sda1 2048 488388910 488386863 232.</description></item><item><title>2020年终总结</title><link>https://www.yafa.moe/post/2020-summary/</link><pubDate>Wed, 10 Feb 2021 18:32:13 +0800</pubDate><guid>https://www.yafa.moe/post/2020-summary/</guid><description>&lt;h2 id="关于过去的2020年">关于过去的2020年&lt;/h2>
+&lt;p>因为当前用的这个Mac已经有了系统并且正常使用了一段时间，为了保持数据不丢失我先备份了一下系统。关于如何备份系统可以参考我这篇文章&lt;a href="https://www.yafa.moe/post/backup-your-gentoo-system/">备份你的Gentoo系统&lt;/a>。&lt;/p></description></item><item><title>备份你的Gentoo系统</title><link>https://www.yafa.moe/post/backup-your-gentoo-system/</link><pubDate>Sat, 13 Feb 2021 17:11:42 +0800</pubDate><guid>https://www.yafa.moe/post/backup-your-gentoo-system/</guid><description>前言 在前一篇的在Mac上安装Gentoo Linux完成后，我其实还想要折腾一下其他的文件系统比如说ZFS，BTRFS，XFS之类的，虽然说可</description></item><item><title>2020年终总结</title><link>https://www.yafa.moe/post/2020-summary/</link><pubDate>Wed, 10 Feb 2021 18:32:13 +0800</pubDate><guid>https://www.yafa.moe/post/2020-summary/</guid><description>&lt;h2 id="关于过去的2020年">关于过去的2020年&lt;/h2>
 &lt;p>今天是除夕，正好今天过年的准备也做完了，有时间好好去回顾过去的一年。&lt;/p>
 &lt;p>过去的2020年是魔幻的开端，因为疫情的缘故我能够出去找工作的时间就很靠后。
 虽然是找了一家公司，但是这家公司也让我明白了小说里面的场景有些地方是真实的，就是魔幻现实的映射。&lt;/p>
 &lt;p>在工作上获得的进步不是很大，刚开始接触到这个运维行业很多地方都是在探索和学习，虽然感觉进度有点跟不上自己的计划，但是获奖也是一个小惊喜啦。&lt;/p>
 &lt;p>在生活上也是上当受骗了一把，相信所谓的消费主义深受其害。每个月都是月光的状态，对于未来的风险承受能力很低，只能够祈祷不能把当前的工作给丢掉，留给自己审视的时间是很少的。
-在经历这么几个月的“上流月”最后醒悟了（感谢学姐！），不能这么继续下去了。&lt;/p></description></item><item><title>Links</title><link>https://www.yafa.moe/links/</link><pubDate>Thu, 04 Feb 2021 15:40:32 +0800</pubDate><guid>https://www.yafa.moe/links/</guid><description>友情链接 最爱的学姐，无论是生活上，职业生涯上还是心理上都给了我很大的帮助，是我人生中的那座灯塔。
-学姐
-喜欢的音乐 这是我很喜欢在学习，或者是在写博客时候的听的音乐：
-Lakey Inspired</description></item><item><title>关于我</title><link>https://www.yafa.moe/about/</link><pubDate>Thu, 04 Feb 2021 15:37:52 +0800</pubDate><guid>https://www.yafa.moe/about/</guid><description>我是谁？ 你可以叫我Yafa，是一个步入社会没有几年的“学生”。
-目前是运维工程师（全职），这个职业让我深深感受到了自由和责任。
-比较热爱学习，敢于挑战已有的事物。
-这个博客主要是记录一些技术相关的分享，和一些日常。如果您发现我博客中有错误的地方，如果不介意占用您宝贵的时间您可以发送邮件到我的邮箱。内容就是url和文章有错误的部分，非常感谢您的帮助。
-联系方式 Github GPG: 0xC6964DEDF01A4DA0 Email: aUB5YWZhLm1vZQ== (base64) 我的公钥：
-1 https://www.yafa.moe/yafa.asc 赞助方式 如果我的文章能够帮到你，这是我的荣幸。如果您想要支持我的创作，可以考虑以下赞助方式：
-Bitcoin：</description></item><item><title>设置我的实验环境</title><link>https://www.yafa.moe/post/setup-my-lab/</link><pubDate>Sat, 23 Jan 2021 14:30:17 +0800</pubDate><guid>https://www.yafa.moe/post/setup-my-lab/</guid><description>前言 在结束安装Gentoo后，下一步就是要初始化我的实验环境了，我这里使用比较多的实验环境主要是在本机上创建虚拟机然后运行不同的软件和不同的环境。我常用的虚拟化软件如下:
-虚拟化类型 软件包 软件虚拟化 app-emulation/virtualbox 全虚拟化 app-emulation/qemu 半虚拟化 app-emulation/xen container app-emulation/docker 这几种虚拟化各有优点，我平时是使用virtualbox做测试环境，QEMU就更加贴近生产环境，半虚拟化是做Qubes On Gentoo的准备，容器是想要快速测试东西的时候使用的，后续也会作为基础了解一下K8S之类的。
-这些直接使用可能有点不是很舒服为此我还需要以下工具来方便去管理虚拟机:
-软件包 描述 app-emulation/vagrant 管理Virtualbox app-emulation/libvirt 管理QEMU虚拟机 app-admin/terraform 使用libvirt的provider来管理QEMU虚拟机 app-admin/ansible 批量管理虚拟机 app-admin/salt 批量管理虚拟机 安装和配置Virtualbox环境 Virtualbox主要是放一些Whonix或者是测试的简单环境
-安装Virtualbox
-1 emerge --ask --verbose app-emulation/virtualbox app-emulation/virtualbox-additions app-emulation/virtualbox-extpack-oracle 为了普通用户可以正常使用Virtualbox还需要将用户添加到vboxusers组中</description></item><item><title>在Mac上安装Gentoo Linux</title><link>https://www.yafa.moe/post/install-gentoo-on-mac/</link><pubDate>Mon, 18 Jan 2021 19:41:36 -0500</pubDate><guid>https://www.yafa.moe/post/install-gentoo-on-mac/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+在经历这么几个月的“上流月”最后醒悟了（感谢学姐！），不能这么继续下去了。&lt;/p></description></item><item><title>Links</title><link>https://www.yafa.moe/links/</link><pubDate>Thu, 04 Feb 2021 15:40:32 +0800</pubDate><guid>https://www.yafa.moe/links/</guid><description>友情链接 如何申请友情链接？ 可以发将你的网站链接发到我的邮箱，审核通过后会添加到友情链接页面。 最爱的学姐，无论是生活上，职业生涯上还是心理上都</description></item><item><title>关于我</title><link>https://www.yafa.moe/about/</link><pubDate>Thu, 04 Feb 2021 15:37:52 +0800</pubDate><guid>https://www.yafa.moe/about/</guid><description>我是谁？ 你可以叫我Yafa，是一个步入社会没有几年的“学生”。 目前是运维工程师（全职），这个职业让我深深感受到了自由和责任。 比较热爱学习，敢</description></item><item><title>设置我的实验环境</title><link>https://www.yafa.moe/post/setup-my-lab/</link><pubDate>Sat, 23 Jan 2021 14:30:17 +0800</pubDate><guid>https://www.yafa.moe/post/setup-my-lab/</guid><description>前言 在结束安装Gentoo后，下一步就是要初始化我的实验环境了，我这里使用比较多的实验环境主要是在本机上创建虚拟机然后运行不同的软件和不同的</description></item><item><title>在Mac上安装Gentoo Linux</title><link>https://www.yafa.moe/post/install-gentoo-on-mac/</link><pubDate>Mon, 18 Jan 2021 19:41:36 -0500</pubDate><guid>https://www.yafa.moe/post/install-gentoo-on-mac/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>这不是一份简短的Gentoo Linux安装手册，我想在这篇文章中向你展示更多Gentoo Linux的魅力。&lt;/p>
 &lt;blockquote>
 &lt;p>为什么选择Gentoo？&lt;/p>
