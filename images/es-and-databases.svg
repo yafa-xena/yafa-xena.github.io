@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xl="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="717 711 617 357" width="617" height="357">
+  <defs>
+    <font-face font-family="Helvetica Neue" font-size="16" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+    <font-face font-family="PingFang SC" font-size="16" panose-1="2 11 4 0 0 0 0 0 0 0" units-per-em="1000" underline-position="-150" underline-thickness="58" slope="0" x-height="600" cap-height="860" ascent="1060.0021" descent="-340.0007" font-weight="400">
+      <font-face-src>
+        <font-face-name name="PingFangSC-Regular"/>
+      </font-face-src>
+    </font-face>
+    <marker orient="auto" overflow="visible" markerUnits="strokeWidth" id="FilledArrow_Marker" stroke-linejoin="miter" stroke-miterlimit="10" viewBox="-1 -4 10 8" markerWidth="10" markerHeight="8" color="black">
+      <g>
+        <path d="M 8 0 L 0 -3 L 0 3 Z" fill="currentColor" stroke="currentColor" stroke-width="1"/>
+      </g>
+    </marker>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.18.5\n2021-04-22 09:42:06 +0000</metadata>
+  <g id="Canvas_4" fill="none" stroke-opacity="1" stroke="none" stroke-dasharray="none" fill-opacity="1">
+    <title>Canvas 4</title>
+    <g id="Canvas_4_Layer_1">
+      <title>Layer 1</title>
+      <g id="Graphic_2">
+        <rect x="1010.5" y="968.75" width="322.5" height="84" fill="white"/>
+        <rect x="1010.5" y="968.75" width="322.5" height="84" stroke="gray" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(1015.5 1001.526)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="104.986" y="15">elastichsearch</tspan>
+        </text>
+      </g>
+      <g id="Graphic_3">
+        <rect x="744.5" y="711.5" width="588.5" height="88.5" fill="white"/>
+        <rect x="744.5" y="711.5" width="588.5" height="88.5" stroke="gray" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(749.5 744.75)" fill="black">
+          <tspan font-family="PingFang SC" font-size="16" font-weight="400" fill="black" x="257.25" y="17">应用程序</tspan>
+        </text>
+      </g>
+      <g id="Graphic_4">
+        <rect x="744.5" y="954" width="89.5" height="113.5" fill="white"/>
+        <rect x="744.5" y="954" width="89.5" height="113.5" stroke="gray" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(749.5 999.75)" fill="black">
+          <tspan font-family="PingFang SC" font-size="16" font-weight="400" fill="black" x="15.75" y="17">数据库</tspan>
+        </text>
+      </g>
+      <g id="Line_5">
+        <line x1="995.4544" y1="800" x2="840.9236" y2="957.9373" marker-end="url(#FilledArrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_6">
+        <text transform="translate(722 883.5)" fill="black">
+          <tspan font-family="PingFang SC" font-size="16" font-weight="400" fill="black" x="6679102e-19" y="17">写入</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" y="17">/</tspan>
+          <tspan font-family="PingFang SC" font-size="16" font-weight="400" fill="black" y="17">更新</tspan>
+        </text>
+      </g>
+      <g id="Line_7">
+        <line x1="1149.8441" y1="968.75" x2="1066.4076" y2="808.7778" marker-end="url(#FilledArrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_8">
+        <rect x="1089.1609" y="876.6656" width="42" height="32" fill="white"/>
+        <text transform="translate(1094.1609 881.6656)" fill="black">
+          <tspan font-family="PingFang SC" font-size="16" font-weight="400" fill="black" x="0" y="17">查询</tspan>
+        </text>
+      </g>
+      <g id="Line_9">
+        <line x1="834" y1="1010.75" x2="1000.6" y2="1010.75" marker-end="url(#FilledArrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_10">
+        <rect x="886.1242" y="994.75" width="74" height="32" fill="white"/>
+        <text transform="translate(891.1242 999.75)" fill="black">
+          <tspan font-family="PingFang SC" font-size="16" font-weight="400" fill="black" x="0" y="17">同步机制</tspan>
+        </text>
+      </g>
+    </g>
+  </g>
+</svg>

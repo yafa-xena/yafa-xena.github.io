@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xl="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="522 547 926 647" width="926" height="647">
+  <defs>
+    <font-face font-family="PingFang SC" font-size="16" panose-1="2 11 4 0 0 0 0 0 0 0" units-per-em="1000" underline-position="-150" underline-thickness="58" slope="0" x-height="600" cap-height="860" ascent="1060.0021" descent="-340.0007" font-weight="400">
+      <font-face-src>
+        <font-face-name name="PingFangSC-Regular"/>
+      </font-face-src>
+    </font-face>
+    <font-face font-family="Helvetica Neue" font-size="16" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+    <font-face font-family="Helvetica Neue" font-size="15" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.18.5\n2021-04-22 09:21:38 +0000</metadata>
+  <g id="Canvas_3" fill="none" stroke-opacity="1" stroke="none" stroke-dasharray="none" fill-opacity="1">
+    <title>Canvas 3</title>
+    <g id="Canvas_3_Layer_1">
+      <title>Layer 1</title>
+      <g id="Graphic_2">
+        <rect x="523" y="548" width="924.5" height="645" fill="white"/>
+        <rect x="523" y="548" width="924.5" height="645" stroke="gray" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_3">
+        <rect x="676" y="628" width="146" height="62" fill="white"/>
+        <rect x="676" y="628" width="146" height="62" stroke="gray" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(681 648)" fill="black">
+          <tspan font-family="PingFang SC" font-size="16" font-weight="400" fill="black" x="52" y="17">搜索</tspan>
+        </text>
+      </g>
+      <g id="Graphic_4">
+        <rect x="896" y="628" width="146" height="62" fill="white"/>
+        <rect x="896" y="628" width="146" height="62" stroke="gray" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(901 648)" fill="black">
+          <tspan font-family="PingFang SC" font-size="16" font-weight="400" fill="black" x="36" y="17">日志分析</tspan>
+        </text>
+      </g>
+      <g id="Graphic_5">
+        <rect x="676" y="757" width="146" height="62" fill="#4040ff"/>
+        <rect x="676" y="757" width="146" height="62" stroke="gray" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(681 778.776)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="43.104" y="15">Kibana</tspan>
+        </text>
+      </g>
+      <g id="Graphic_6">
+        <rect x="676" y="831" width="146" height="62" fill="#c0c0ff"/>
+        <rect x="676" y="831" width="146" height="62" stroke="gray" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(681 852.776)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="20.592" y="15">Elasticsearch</tspan>
+        </text>
+      </g>
+      <g id="Graphic_7">
+        <rect x="676" y="923" width="73" height="62" fill="#8080ff"/>
+        <rect x="676" y="923" width="73" height="62" stroke="gray" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(681 945.29)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="15" font-weight="400" fill="black" x=".66" y="14">Logstash</tspan>
+        </text>
+      </g>
+      <g id="Graphic_8">
+        <rect x="1093" y="628" width="146" height="62" fill="white"/>
+        <rect x="1093" y="628" width="146" height="62" stroke="gray" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(1098 648)" fill="black">
+          <tspan font-family="PingFang SC" font-size="16" font-weight="400" fill="black" x="36" y="17">指标分析</tspan>
+        </text>
+      </g>
+      <g id="Graphic_9">
+        <rect x="896" y="765" width="258" height="233" fill="#ffc0ff"/>
+        <rect x="896" y="765" width="258" height="233" stroke="gray" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_10">
+        <rect x="998" y="780.5" width="146" height="40.4" fill="#ff8080"/>
+        <rect x="998" y="780.5" width="146" height="40.4" stroke="gray" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(1003 789.7)" fill="black">
+          <tspan font-family="PingFang SC" font-size="16" font-weight="400" fill="black" x="52" y="17">安全</tspan>
+        </text>
+      </g>
+      <g id="Graphic_11">
+        <rect x="998" y="820.9" width="146" height="40.4" fill="#ffc0c0"/>
+        <rect x="998" y="820.9" width="146" height="40.4" stroke="gray" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(1003 830.1)" fill="black">
+          <tspan font-family="PingFang SC" font-size="16" font-weight="400" fill="black" x="52" y="17">告警</tspan>
+        </text>
+      </g>
+      <g id="Graphic_12">
+        <rect x="998" y="861.3" width="146" height="40.4" fill="#ff40ff"/>
+        <rect x="998" y="861.3" width="146" height="40.4" stroke="gray" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(1003 870.5)" fill="black">
+          <tspan font-family="PingFang SC" font-size="16" font-weight="400" fill="black" x="52" y="17">监控</tspan>
+        </text>
+      </g>
+      <g id="Graphic_13">
+        <rect x="998" y="901.7" width="146" height="40.4" fill="#80ff80"/>
+        <rect x="998" y="901.7" width="146" height="40.4" stroke="gray" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(1003 910.9)" fill="black">
+          <tspan font-family="PingFang SC" font-size="16" font-weight="400" fill="black" x="44" y="17">图查询</tspan>
+        </text>
+      </g>
+      <g id="Graphic_14">
+        <rect x="998" y="942.1" width="146" height="40.4" fill="#c0ffff"/>
+        <rect x="998" y="942.1" width="146" height="40.4" stroke="gray" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(1003 951.3)" fill="black">
+          <tspan font-family="PingFang SC" font-size="16" font-weight="400" fill="black" x="36" y="17">机器学习</tspan>
+        </text>
+      </g>
+      <g id="Graphic_15">
+        <path d="M 1381.0495 707.5481 L 1376.9968 1055.0425 L 1344.999 1054.6694 L 1349.0517 707.1749 Z" fill="white"/>
+        <path d="M 1381.0495 707.5481 L 1376.9968 1055.0425 L 1344.999 1054.6694 L 1349.0517 707.1749 Z" stroke="gray" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <clipPath id="clip_path">
+          <path d="M 191.7843 -157.56062 L 187.73159 189.9338 L 155.73376 189.56062 L 159.78647 -157.9338 Z" fill="white"/>
+        </clipPath>
+        <text clip-path="url(#clip_path)" transform="translate(1375.9915 712.48945) rotate(90.66819)" fill="black">
+          <tspan font-family="PingFang SC" font-size="16" font-weight="400" fill="black" x="144.75903" y="17">云服务</tspan>
+        </text>
+      </g>
+      <g id="Graphic_16">
+        <text transform="translate(549 777)" fill="black">
+          <tspan font-family="PingFang SC" font-size="16" font-weight="400" fill="black" x="0" y="17">可视化</tspan>
+        </text>
+      </g>
+      <g id="Graphic_17">
+        <text transform="translate(537 859.5)" fill="black">
+          <tspan font-family="PingFang SC" font-size="16" font-weight="400" fill="black" x="0" y="17">存储/计算</tspan>
+        </text>
+      </g>
+      <g id="Graphic_18">
+        <text transform="translate(541 942)" fill="black">
+          <tspan font-family="PingFang SC" font-size="16" font-weight="400" fill="black" x="0" y="17">数据抓取</tspan>
+        </text>
+      </g>
+      <g id="Graphic_19">
+        <text transform="translate(694 712.5)" fill="black">
+          <tspan font-family="PingFang SC" font-size="16" font-weight="400" fill="black" x="0" y="17">数据平台</tspan>
+        </text>
+      </g>
+      <g id="Graphic_20">
+        <rect x="749" y="923" width="73" height="62" fill="#8080ff"/>
+        <rect x="749" y="923" width="73" height="62" stroke="gray" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(754 944.776)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="14.908" y="15">Beat</tspan>
+        </text>
+      </g>
+      <g id="Graphic_21">
+        <text transform="translate(913 872.276)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="0" y="15">X-Pack</tspan>
+        </text>
+      </g>
+      <g id="Graphic_22">
+        <text transform="translate(712 1020)" fill="black">
+          <tspan font-family="PingFang SC" font-size="16" font-weight="400" fill="black" x="0" y="17">开源</tspan>
+        </text>
+      </g>
+      <g id="Graphic_23">
+        <text transform="translate(995 1027.9)" fill="black">
+          <tspan font-family="PingFang SC" font-size="16" font-weight="400" fill="black" x="0" y="17">商业</tspan>
+        </text>
+      </g>
+      <g id="Graphic_24">
+        <text transform="translate(651 578)" fill="black">
+          <tspan font-family="PingFang SC" font-size="16" font-weight="400" fill="black" x="0" y="17">解决方案</tspan>
+        </text>
+      </g>
+    </g>
+  </g>
+</svg>

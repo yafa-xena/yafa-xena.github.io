@@ -1,0 +1,982 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><title>CKA Docker 基础 - Yafa Xena's blog</title><meta name=renderer content="webkit"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><meta http-equiv=cache-control content="no-transform"><meta http-equiv=cache-control content="no-siteapp"><meta name=theme-color content="#f8f5ec"><meta name=msapplication-navbutton-color content="#f8f5ec"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="#f8f5ec"><meta name=author content="Yafa Xena"><meta name=description content="前言 目前的运维行业有个趋势就是云原生，可以看到的趋势就是像是容器和无服务计算开始慢慢推行。结合实际工作上有一个趋势那就是上云，为了能够更好的了解其基础我打算从容器入手，像是工作中用到的k8s和docker之类的，这次打算好好学一学，同时呢也报名了CKA和CKS的考试，这里记录一下所学的笔记和实际遇到的问题。
+这篇文章是关于CKA考试中使用到的runtime docker的基础部分。"><meta name=keywords content="Linux,Emacs,Python,Golang,Devops,Zabbix,Kubernetes,Gentoo"><meta name=generator content="Hugo 0.79.1 with theme even"><link rel=canonical href=https://www.yafa.moe/post/cka-docker-basic/><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/manifest.json><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link href=/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin=anonymous><meta property="og:title" content="CKA Docker 基础"><meta property="og:description" content="前言
+目前的运维行业有个趋势就是云原生，可以看到的趋势就是像是容器和无服务计算开始慢慢推行。结合实际工作上有一个趋势那就是上云，为了能够更好的了解其基础我打算从容器入手，像是工作中用到的k8s和docker之类的，这次打算好好学一学，同时呢也报名了CKA和CKS的考试，这里记录一下所学的笔记和实际遇到的问题。
+这篇文章是关于CKA考试中使用到的runtime docker的基础部分。"><meta property="og:type" content="article"><meta property="og:url" content="https://www.yafa.moe/post/cka-docker-basic/"><meta property="article:published_time" content="2021-03-30T22:42:54+08:00"><meta property="article:modified_time" content="2021-03-30T22:42:54+08:00"><meta itemprop=name content="CKA Docker 基础"><meta itemprop=description content="前言
+目前的运维行业有个趋势就是云原生，可以看到的趋势就是像是容器和无服务计算开始慢慢推行。结合实际工作上有一个趋势那就是上云，为了能够更好的了解其基础我打算从容器入手，像是工作中用到的k8s和docker之类的，这次打算好好学一学，同时呢也报名了CKA和CKS的考试，这里记录一下所学的笔记和实际遇到的问题。
+这篇文章是关于CKA考试中使用到的runtime docker的基础部分。"><meta itemprop=datePublished content="2021-03-30T22:42:54+08:00"><meta itemprop=dateModified content="2021-03-30T22:42:54+08:00"><meta itemprop=wordCount content="17644"><meta itemprop=keywords content="linux,docker,cka,certification,exam,"><meta name=twitter:card content="summary"><meta name=twitter:title content="CKA Docker 基础"><meta name=twitter:description content="前言
+目前的运维行业有个趋势就是云原生，可以看到的趋势就是像是容器和无服务计算开始慢慢推行。结合实际工作上有一个趋势那就是上云，为了能够更好的了解其基础我打算从容器入手，像是工作中用到的k8s和docker之类的，这次打算好好学一学，同时呢也报名了CKA和CKS的考试，这里记录一下所学的笔记和实际遇到的问题。
+这篇文章是关于CKA考试中使用到的runtime docker的基础部分。"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script><script src=https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js></script><![endif]--></head><body><div id=mobile-navbar class=mobile-navbar><div class=mobile-header-logo><a href=/ class=logo>Yafa-Xena</a></div><div class=mobile-navbar-icon><span></span><span></span><span></span></div></div><nav id=mobile-menu class="mobile-menu slideout-menu"><ul class=mobile-menu-list><a href=/><li class=mobile-menu-item>Home</li></a><a href=/post/><li class=mobile-menu-item>Archives</li></a><a href=/tags/><li class=mobile-menu-item>Tags</li></a><a href=/todo><li class=mobile-menu-item>Todo</li></a><a href=/about><li class=mobile-menu-item>About</li></a><a href=/product><li class=mobile-menu-item>Product</li></a></ul></nav><div class=container id=mobile-panel><header id=header class=header><div class=logo-wrapper><a href=/ class=logo>Yafa-Xena</a></div><nav class=site-navbar><ul id=menu class=menu><li class=menu-item><a class=menu-item-link href=/>Home</a></li><li class=menu-item><a class=menu-item-link href=/post/>Archives</a></li><li class=menu-item><a class=menu-item-link href=/tags/>Tags</a></li><li class=menu-item><a class=menu-item-link href=/todo>Todo</a></li><li class=menu-item><a class=menu-item-link href=/about>About</a></li><li class=menu-item><a class=menu-item-link href=/product>Product</a></li></ul></nav></header><main id=main class=main><div class=content-wrapper><div id=content class=content><article class=post><header class=post-header><h1 class=post-title>CKA Docker 基础</h1><div class=post-meta><span class=post-time>2021-03-30</span></div></header><div class=post-toc id=post-toc><h2 class=post-toc-title>Contents</h2><div class=post-toc-content><nav id=TableOfContents><ul><li><ul><li><a href=#前言>前言</a></li><li><a href=#促成devops落地的容器技术>促成DevOps落地的容器技术</a></li><li><a href=#微服务简介>微服务简介</a></li><li><a href=#什么是容器>什么是容器？</a><ul><li><a href=#linux容器技术发展简史>Linux容器技术发展简史</a></li></ul></li><li><a href=#docker基本介绍>Docker基本介绍</a><ul><li><a href=#容器的介绍>容器的介绍</a></li><li><a href=#dockerfile标准化了交付环境>Dockerfile标准化了交付环境</a></li><li><a href=#编排模板标准化交付内容与拓扑>编排模板标准化交付内容与拓扑</a></li><li><a href=#oci与容器运行时>OCI与容器运行时</a></li><li><a href=#关于docker镜像>关于docker镜像</a></li><li><a href=#blackbox>blackbox</a></li></ul></li><li><a href=#安装docker>安装Docker</a><ul><li><a href=#环境>环境</a></li><li><a href=#修改firewalld区和更改selinux>修改firewalld区和更改selinux</a></li><li><a href=#配置yum源>配置yum源</a></li><li><a href=#安装docker-1>安装docker</a></li><li><a href=#运行hello-world>运行hello world</a></li><li><a href=#配置docker加速器>配置Docker加速器</a></li></ul></li><li><a href=#docker镜像管理>Docker镜像管理</a></li><li><a href=#docker管理容器>Docker管理容器</a><ul><li><a href=#启动暂停删除删除>启动、暂停、删除、删除</a></li><li><a href=#容器的权限设定>容器的权限设定</a></li><li><a href=#容器的安全计算模式>容器的安全计算模式</a></li></ul></li><li><a href=#docker数据卷使用>Docker数据卷使用</a></li><li><a href=#docker网络>Docker网络</a><ul><li><a href=#网络的创建和删除>网络的创建和删除</a></li><li><a href=#容器互通测试>容器互通测试</a></li></ul></li><li><a href=#docker自定义镜像>Docker自定义镜像</a></li><li><a href=#搭建私有仓库>搭建私有仓库</a><ul><li><a href=#使用registry搭建仓库>使用registry搭建仓库</a></li><li><a href=#使用harbor搭建私有仓库>使用harbor搭建私有仓库</a></li></ul></li><li><a href=#限制系统资源>限制系统资源</a><ul><li><a href=#限制内存资源>限制内存资源</a></li><li><a href=#对容器cpu的限制>对容器cpu的限制</a></li></ul></li><li><a href=#监控系统资源>监控系统资源</a></li><li><a href=#结束语>结束语</a></li><li><a href=#参考资料>参考资料</a></li></ul></li></ul></nav></div></div><div class=post-content><h2 id=前言>前言</h2><p>目前的运维行业有个趋势就是<a href=https://en.wikipedia.org/wiki/Cloud_native_computing>云原生</a>，可以看到的趋势就是像是<a href=https://en.wikipedia.org/wiki/Container_format_(computing)>容器</a>和<a href=https://en.wikipedia.org/wiki/Serverless_computing>无服务计算</a>开始慢慢推行。结合实际工作上有一个趋势那就是上云，为了能够更好的了解其基础我打算从容器入手，像是工作中用到的<a href=https://en.wikipedia.org/wiki/Kubernetes>k8s</a>和<a href=https://en.wikipedia.org/wiki/Docker_(software)>docker</a>之类的，这次打算好好学一学，同时呢也报名了<a href=https://training.linuxfoundation.org/certification/certified-kubernetes-administrator-cka/>CKA</a>和<a href=https://training.linuxfoundation.org/certification/certified-kubernetes-security-specialist/>CKS</a>的考试，这里记录一下所学的笔记和实际遇到的问题。</p><p>这篇文章是关于CKA考试中使用到的runtime docker的基础部分。</p><h2 id=促成devops落地的容器技术>促成DevOps落地的容器技术</h2><p>DevOps是一种重视软件开发人员（Dev）和运维技术人员（Ops）之间的沟通合作的文化，它透过自动化“软件交付”和“架构变更”的流程，使得构建、测试、发布软件能够更加快捷、频繁和可靠。</p><p>DevOps不只是一个技术伤的问题、更多是一个流程、管理、乃至公司架构的问题；是为了解决“时间”与“质量”而产生的一种交付文化、流程和交付方式的统称，DevOps期望通过消除“等待”的方式来实现更快速、更高质量的交付</p><p>DevOps不只是简单的自动化流程，更多的是开发方式，开发流程的变革，但是由于团队架构、工具生态和基础架构等原因，使得DevOps的理念难以有范式的操作流程可以参考，更多的是在某些特定场景或交付流程中实现了部分的最佳实践。</p><p>直到现代应用容器技术的退出，才让DevOps终于有了范式化的路径；而微服务的流行更是基于容器技术DevOps落地和实践添了一把火。</p><h2 id=微服务简介>微服务简介</h2><ul><li><p>微服务的概念与2014年由<a href=https://en.wikipedia.org/wiki/Martin_Fowler_(software_engineer)>Martin Flowler</a>与James Lewis共同提出；</p><ul><li>单一应用程序构成的小服务，各使用不同的语言和数据库元件</li><li>各服务之间的彼此结偶，仅需要HTTP API的方式通讯</li><li>全自动方式部署</li></ul></li><li><p>微服务可以完美匹配DevOps的理念</p><ul><li>大型应用拆分为为服务，让责任边界更加明确，从而引导交付流程变革</li><li>清晰的边界，独立的部署，为更快地迭代和交付流程自动化提供了可能</li><li>越小的业务边界使得实现的复杂度降低，可以提高交付质量</li></ul></li></ul><p>我们来说说微服务的优缺点。</p><ul><li><p>优点</p><ul><li>将大型的单体服务系统拆分成多个微服务，解决了应用复杂性的问题</li><li>每个服务都有专门的团队负责，可使用最合适的技术进行实现，使得架构演进更加简单</li><li>微服务之间的耦合度低，可以独立更新</li><li>各个微服务可以独立部署，也可以根据业务的特征动态调整规模</li></ul></li><li><p>缺点</p><ul><li>对既有的应用进行分布式改造依赖相当程度的技术能力</li><li>拆分后各程序的指责不同，标准化的工作将变得困难</li><li>各服务的通信成本（延迟）远大于单体内部组件的通信</li><li>管理多个组件或组件拓扑成为微服务的头等要务</li><li>数据库的设计和业务规划成为微服务中的难点</li></ul></li></ul><p>容器和容器编排技术定义了新的交付方式，能解决上面的缺点中的大部分问题！</p><p>我们来设想一个场景，比如说你所在的一家公司是提供餐饮服务的订餐服务软件的软件公司。你的客户有A、B、C、D四家公司。</p><ul><li>其中A客户系统需要在他们本地部署，使用的是CentOS7的操作系统。</li><li>B客户需要在他们云上部署，使用的是openSUSE Leap的操作系统。</li><li>C客户需要在他们的PaaS平台上部署，使用的是OpenShift。</li><li>D客户需要在他们的本地部署，使用的是Ubuntu 16.04的操作系统。</li></ul><p>像是一个服务后端要去这么多不一样的操作系统上部署，实际上是有不同的依赖关系的。如果每个平台都要去开发对应的后台这个开发成本以及维护成本是相当高的，但是有了容器之后就可以做到一次构建到处运行，可以在客户的系统上部署好容器，然后使用容器去运行和编排服务。</p><h2 id=什么是容器>什么是容器？</h2><ul><li>经典容器指的是操作系统用户（<a href=https://en.wikipedia.org/wiki/User_space>Userspace</a>）虚拟化技术，为应用进程及其运行环境提供隔离的沙箱（<a href=https://en.wikipedia.org/wiki/Sandbox_(computer_security)>Sandbox</a>）<ul><li><a href=https://en.wikipedia.org/wiki/LXC>LXC</a>时代的容器技术更像是“虚拟机”，可被称为操作系统容器</li><li>Docker时代的容器技术是应用容器，仅用于运行单个应用的进程以及子进程</li></ul></li></ul><h3 id=linux容器技术发展简史>Linux容器技术发展简史</h3><ul><li>2006年，Google Process Containers<ul><li>限制进程可用的资源（CPU、内存、磁盘IO和网络）：</li><li>2007年更名为ControlGroups，简称<a href=https://en.wikipedia.org/wiki/Cgroups>CGroups</a>，合并到Linux 2.6.24内核版本中</li></ul></li><li>2008年出现的lxc技术代表着Linux系统上第一个最为完整的<strong>容器管理器</strong>出现<ul><li>Linux namespace<ul><li>mount名称空间是始于Linux2.4.19版本的第一个内核名称空间技术</li><li>UTS和IPC两个名称空间与Linux2.6.19版本引入</li><li>2.6.23引入了User名称空间，但是直到3.8版本才完成</li><li>2.6.24引入CGroups，PID名称空间和Network名称空间，但直到2.6.29，Network名称空间才真正完成</li></ul></li><li>LXC全称为Linux Container，它是一个工具集，通过将CGroups的系统资源管理能力和Namespace的视图管理能力结合在一起，实现了Linux Native的容器以及容器管理接口</li></ul></li><li>2013年，由dotCloud创造性地发明了容器镜像技术，并使用了应用容器技术，使得其维护的Docker容器项目名声大噪，极大地推动力容器技术的发展进程<ul><li>最初建立在lxc容器引擎技术智商</li><li>后来改用自研的libcontainer，并且与2014年开源</li></ul></li><li>2014年，由CoreOS启动的Rocket容器项目更像是一个Docker的复刻版本</li><li>2016年，Docker可以原生地运行在Windows Server之上，标志着Windows容器的出现</li></ul><h2 id=docker基本介绍>Docker基本介绍</h2><p>这个章节将会为你讲述关于<a href=https://en.wikipedia.org/wiki/Docker_%28software%29>docker</a>的架构对比传统虚拟化又有什么优势，以及安装和配置docker。</p><h3 id=容器的介绍>容器的介绍</h3><p>为什么现在容器现在这么流行我认为有几个点是非常重要的，我们可以先看一下这张图：</p><p><img src=../../images/docker.png alt=docker></p><p>在这张图中我们可以看到像是传统的虚拟化需要宿主机上有一层<a href=https://en.wikipedia.org/wiki/Hypervisor>Hypervisor</a>，再在这层上去创建虚拟机和安装系统。这个成本相对来说是很高的同样也带来了不是很灵活的特点。</p><p>而docker的话少了<a href=https://en.wikipedia.org/wiki/Hypervisor>Hypervisor</a>这一层，使用容器镜像的方式去运行APP，这个容器镜像只包含了运行必要程序以及需要的库文件，共享宿主机的内核。这样看来使用的资源就相对来说少了很多，同时也更加的灵活。</p><p>docker相比较于传统的虚拟化使用的是使用的是内核的<a href=https://en.wikipedia.org/wiki/Cgroups>cgroups</a>+<a href=https://en.wikipedia.org/wiki/Namespace>namespace</a>的技术实现的抽象成本比较低，而且也比较的灵活。</p><p>接下来为了能够更好的理解docker我们来看看docker的架构图：</p><p><img src=../../images/docker-architecture.svg alt="docker architecture"></p><p>在这个图里面，我们可以使用clinet对docker daemon发出指令让其执行对应的操作。实际上去实现管理容器（创建、删除、停止、启动）这些操作的底层，就叫做runtime，我们现在学习的docker其实也是一种runtime，只不过是相对来说是比较高级的runtime。与之类似的还有：<a href=https://en.wikipedia.org/wiki/Cloud_Native_Computing_Foundation#Containerd>containerd</a>&mldr;.。这些runtime除了本身对容器的管理之外还实现了对镜像的管理。 除了讲到的这些比较高级的runtime，实际上还有一些比较低级的runtime比如说：<a href=https://github.com/opencontainers/runc>runc</a>、<a href=https://gvisor.dev/>gvisor</a>、<a href=https://linuxcontainers.org/>lxc</a>、<a href=https://katacontainers.io/>kata</a>。实际上高级别的runtime在实现容器管理的时候也会去调用低级别的runtime。</p><p>这里面有几个重要的概念：</p><ul><li>Docker images （打包的用户空间和用到的应用程序以及相关依赖）</li><li>Docker Container （运行的容器）</li><li>Dockerfile （标准化了交付环境）</li><li>dockerd和docker cli （docker的守护进程和docker的客户端）</li></ul><h3 id=dockerfile标准化了交付环境>Dockerfile标准化了交付环境</h3><ul><li><code>FROM:</code> 定义标准化环境，比如说是这个镜像使用的<a href=https://en.wikipedia.org/wiki/Alpine_Linux>alpine</a>还是<a href=https://en.wikipedia.org/wiki/CentOS>centos</a>操作系统作为运行时的系统环境</li><li><code>RUN:</code> 初始化脚本</li><li><code>VOLUME:</code> 数据存储</li><li><code>CMD</code>和<code>ENTRYPOINT:</code> 启动命令</li><li><code>EXPOSE:</code>服务端口</li></ul><p>dockerfile是如何标准化了交付环境？</p><p>首先我们可以暂时抛开dockerfile这个概念，可以把它想像成一个黑盒。这个黑盒提供了一些简单的监控接口（健康监测）还有钩子（hook）事件处理的接口，这些对于我们理解云原生的概念来说是至关重要的。</p><h3 id=编排模板标准化交付内容与拓扑>编排模板标准化交付内容与拓扑</h3><p>在实际的应用场景中微服务可能依赖于其他的服务或者是中间件，这个时候就需要用到容器编排的技术，通过容器编排来去提供微服务的依赖服务。</p><p>docker提供了docker-compose这样的编排工具，这个工具标准化了交付内容和拓扑，像是以下基本的内容都可以去定义：</p><ul><li>db和wp：应用名称</li><li>image：交付的最小单元</li><li>environment和env_file: 应用配置</li><li>links: 应用之间的关系</li><li>restart: 应用重启策略</li></ul><h3 id=oci与容器运行时>OCI与容器运行时</h3><ul><li><p>OCI： 2015年6月，由Docker、CoreOS以及容器行业中的其他领导者共同创立的开放容器工业标准（<a href=https://en.wikipedia.org/wiki/Open_Container_Initiative>Open Container Initiative</a>，简称OCI）</p><ul><li>镜像格式规范（image-spec）</li><li>容器运行时规范（runtime-space）：定义了容器的运行状态描述，以及运行时需要提供容器的管理功能</li></ul></li><li><p>OCI对Docker的影响</p><ul><li>OCI项目启动后，Docker公司将2014年开源的libcontainer项目移交至OCI组织并且进化成runc项目，该项目也从一个lib库摇身一变变成了第一个而且是目前接受度最为广泛的，遵循OCI规范的容器运行时实现</li><li>为了兼容OCI规范，Docker项目自身也做了架构调整，自1.11.0版本开始，Docker引擎由一个单一的组件拆分了docker engine(docker-daemon)、containerd、contrainerd-shim和runc等4个独立的项目，并且吧containerd捐赠给了<a href=https://www.cncf.io/>CNCF</a></li></ul></li><li><p>容器运行时的分类：high-level和low-level</p><ul><li><p>low-level：只负责CGroups和Namespace等管理容器</p></li><li><p>high-level：负责额外实现管理镜像的API，包括镜像格式、镜像管理（构建、查询和删除等）和镜像共享等</p><ul><li>Podman：从CRI-O项目中独立出来的成为libpod项目，Podman是命令行工具，专门的构建工具微Buildah，Registry微Skopeo</li></ul></li><li><p>安全容器技术： gVisor和katacontainer</p></li></ul></li></ul><h3 id=关于docker镜像>关于docker镜像</h3><ul><li>Docker镜像包含有启动容器所需要的文件系统及其内容，因此，其用于创建并启动docker容器<ul><li>采用分层构建机制，最为底层的为bootfs，在网上一层就是rootfs</li><li>bootfs：位于系统引导的文件系统，其中包括了bootload和kernel，容器启动完成之后会被卸载以节约内容开销</li><li>rootfs：位于bootfs之上，表现为docker容器的根文件系统<ul><li>传统模式下，系统启动的时候，内核挂载rootfs首先会将其挂载为“只读”模式，完整性检查通过之后才会将其重新挂载为读写模式</li><li>docker中，rootfs由内核挂载为“只读”模式，而后通过“联合挂载”技术额外挂载一个“可写”层</li></ul></li></ul></li></ul><p>可以参考如下图：</p><p><img src=../../images/docker_layers.jpg alt="Docker images layers"></p><p>从这张图中我们可以看到的是镜像由多个只读层叠加而成的，启动容器的时候，Docker会加载只读层并且在镜像栈顶部添加一个读写层。</p><p>如果运行重的容器修改了一个现有的已经存在的文件，那该文件将会从读写层下面只读层复制到读写层，该文件的只读版本仍然存在，只是已经被读写层中的该文件副本所隐藏，这也就是“写时复制（<a href=https://en.wikipedia.org/wiki/Copy-on-write>COW</a>）”机制。</p><p>需要注意的是如果我们想要自定义镜像的时候要确定打包机器支持相应的存储驱动，比如说<a href=https://en.wikipedia.org/wiki/OverlayFS>overlayfs</a>、<a href=https://en.wikipedia.org/wiki/Aufs>aufs</a>、<a href=https://en.wikipedia.org/wiki/Device_mapper>devicemapper</a>。</p><p>像是我们实际生产使用的时候往往需要自己去定义<a href=https://docs.docker.com/registry/>Registry</a>，这个是提供了镜像的索引以及认证的服务。</p><p>再往下一层就是<a href=https://docs.docker.com/docker-hub/repos/>repository</a>仓库，通常使用的时候每个发行版或者是服务都要给单独的一个仓库，比如说CentOS镜像。但是可以放很多个CentOS镜像比如说CentOS:1709、2009 等等</p><h3 id=blackbox>blackbox</h3><p>像是我们实际去运行容器的时候，每个容器就拥有了以下的名称空间：</p><ul><li>MOUNT （根文件系统）</li><li>IPC （容器之间进程通讯彼此隔离）</li><li>NETWORK （网络彼此之间也是隔离的）</li><li>UTS （主机名，域名）</li><li>PID （进程）</li><li>USER （每一个用户空间都可以有自己的用户和UID映射）</li></ul><p>像是每个容器的资源使用情况我们可以使用CGroups去限制CPU、内存、网络等等，具体可以参考<a href=https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/resource_management_guide/ch01>这篇文章</a></p><h2 id=安装docker>安装Docker</h2><h3 id=环境>环境</h3><p>在了解了docker的基本概念后，我们来安装我们的docker环境，这里我的准备了一台virtualbox的虚拟机，用于本地的安装具体信息如下表：</p><table><thead><tr><th>hostname</th><th>ip</th><th>firewalld</th><th>selinux</th></tr></thead><tbody><tr><td>docker-node1</td><td>192.168.56.30</td><td>enable</td><td>disable</td></tr><tr><td>docker-node2</td><td>192.168.56.31</td><td>enable</td><td>disable</td></tr><tr><td>docker-node3</td><td>192.168.56.32</td><td>enable</td><td>disable</td></tr></tbody></table><p>这里这个虚拟机使用了2个网络：</p><ul><li>hostonly 192.168.56.0/24</li><li>NAT network 10.0.2.0/24</li></ul><p>hostonly是对外服务和管理，NAT network是能够让节点联入网络。</p><blockquote><p>首先设置主机名和ip</p></blockquote><p>docker-node1</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>hostnamectl set-hostname docker-node1.nil.ml
+nmcli con mod enp0s8 ipv4.method method manual ipv4.addresses 10.0.2.30/24 ipv4.dns 192.168.56.3 ipv4.gateway.10.0.2.1 connection.autoconnect yes
+nmcli con mod enp0s3 ipv4.method manual ipv4.addresses 192.168.56.30/24 connection.autoconnect yes
+</code></pre></td></tr></table></div></div><p>docker-node2</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>hostnamectl set-hostname docker-node2.nil.ml
+nmcli con mod enp0s8 ipv4.method method manual ipv4.addresses 10.0.2.31/24 ipv4.dns 192.168.56.3 ipv4.gateway.10.0.2.1 connection.autoconnect yes
+nmcli con mod enp0s3 ipv4.method manual ipv4.addresses 192.168.56.31/24 connection.autoconnect yes
+</code></pre></td></tr></table></div></div><p>docker-node3</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>hostnamectl set-hostname docker-node3.nil.ml
+nmcli con mod enp0s8 ipv4.method method manual ipv4.addresses 10.0.2.32/24 ipv4.dns 192.168.56.3 ipv4.gateway.10.0.2.1 connection.autoconnect yes
+nmcli con mod enp0s3 ipv4.method manual ipv4.addresses 192.168.56.32/24 connection.autoconnect yes
+</code></pre></td></tr></table></div></div><h3 id=修改firewalld区和更改selinux>修改firewalld区和更改selinux</h3><p>首先我们需要更改firewalld的默认区为<code>trusted</code></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>firewall-cmd --set-default-zone<span class=o>=</span>trusted
+</code></pre></td></tr></table></div></div><p>更改selinux</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>sed -i <span class=s1>&#39;s/SELINUX=enforcing/SELINUX=disabled/g&#39;</span> /etc/selinux/config
+setenforce <span class=m>0</span>
+getenforce
+</code></pre></td></tr></table></div></div><h3 id=配置yum源>配置yum源</h3><p>这里我们要配置几个需要的yum源：</p><ul><li>epel</li><li>docker-ce</li></ul><p>默认最小化装好是没有这些包的我们需要添加一下（为了能够加速下载的速度，这里使用清华大学的源，当然你可以根据自己的位置选择对应的镜像站）：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>yum install wget -y
+wget -O /etc/yum.repos.d/docker-ce.repo https://download.docker.com/linux/centos/docker-ce.repo
+sudo sed -i <span class=s1>&#39;s+download.docker.com+mirrors.tuna.tsinghua.edu.cn/docker-ce+&#39;</span> /etc/yum.repos.d/docker-ce.repo
+yum install epel-release -y
+sed -e <span class=s1>&#39;s!^metalink=!#metalink=!g&#39;</span> <span class=se>\
+</span><span class=se></span>    -e <span class=s1>&#39;s!^#baseurl=!baseurl=!g&#39;</span> <span class=se>\
+</span><span class=se></span>    -e <span class=s1>&#39;s!//download\.fedoraproject\.org/pub!//mirrors.tuna.tsinghua.edu.cn!g&#39;</span> <span class=se>\
+</span><span class=se></span>    -e <span class=s1>&#39;s!http://mirrors\.tuna!https://mirrors.tuna!g&#39;</span> <span class=se>\
+</span><span class=se></span>    -i /etc/yum.repos.d/epel.repo /etc/yum.repos.d/epel-testing.repo
+</code></pre></td></tr></table></div></div><h3 id=安装docker-1>安装docker</h3><p>这里我们就可以安装docker了：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>yum install -y docker-ce
+</code></pre></td></tr></table></div></div><p>将docker加入开机启动项并启动：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>systemctl <span class=nb>enable</span> docker --now
+</code></pre></td></tr></table></div></div><h3 id=运行hello-world>运行hello world</h3><p>在安装完成docker之后我们可以运行一个容器来验证docker是否能够工作正常：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker run --rm hello-world
+</code></pre></td></tr></table></div></div><h3 id=配置docker加速器>配置Docker加速器</h3><p>在之前的<code>hello world</code>例子中你可能感觉速度有点慢，这个是docker的仓库在国外所以拉取镜像的时候会卡很长的一段时间，在镜像拉取完成之后运行就很快了。</p><p>为了能够有更好的使用体验，推荐配置一下docker的国内加速器，像是163，阿里云等都有提供docke让加速器，这里我们配置一下docker加速器：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>sudo mkdir -p /etc/docker
+sudo tee /etc/docker/daemon.json <span class=s>&lt;&lt;-&#39;EOF&#39;
+</span><span class=s>{
+</span><span class=s>  &#34;registry-mirrors&#34;: [&#34;https://56px195b.mirror.aliyuncs.com&#34;]
+</span><span class=s>}
+</span><span class=s>EOF</span>
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+</code></pre></td></tr></table></div></div><p>在配置完成并完成重启之后我们可以运行<code>docker info</code>命令来查看我们是否配置成功：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker info
+........
+ Registry: https://index.docker.io/v1/
+ Labels:
+ Experimental: <span class=nb>false</span>
+ Insecure Registries:
+  127.0.0.0/8
+ Registry Mirrors:
+  https://56px195b.mirror.aliyuncs.com/
+ Live Restore Enabled: <span class=nb>false</span>
+</code></pre></td></tr></table></div></div><p>这里可以看到<code>Registry Mirrors</code>这里就表示配置成功了，接下来我们可以运行一个<a href=https://en.wikipedia.org/wiki/Nginx>nginx</a>作为测试：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell><span class=nb>time</span> docker run -d -p80:80 nginx
+</code></pre></td></tr></table></div></div><p>用浏览器打开docker节点的ip就可以看到nginx的欢迎页面了。</p><h2 id=docker镜像管理>Docker镜像管理</h2><p>在这章节我们将会学习以下内容：</p><ul><li>镜像的命名方式</li><li>docker pull 镜像</li><li>docker tag 镜像</li><li>docker rmi 镜像</li><li>docker save 镜像名 > 镜像文件.tar</li><li>docker load -i 镜像文件.tar</li></ul><p>docker history xx &ndash;no-trunc 可以显示完整的内容</p><p>首先是查看当前已经有的镜像：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker images
+REPOSITORY    TAG       IMAGE ID       CREATED        SIZE
+hello-world   latest    d1165f221234   <span class=m>3</span> weeks ago    13.3kB
+nginx         latest    f6d0b4767a6c   <span class=m>2</span> months ago   133MB
+</code></pre></td></tr></table></div></div><p>这里大概会有2个镜像一个是我们之前验证时候运行的<code>hello-world</code>和<code>nginx</code>镜像。</p><p>我们先来讲讲这里的镜像命名规则。</p><p>如果镜像和仓库有关系：
+想要往仓库推送某个镜像
+从仓库里拉取某个镜像</p><p>镜像的命名方式如下：
+ip/端口/分类/镜像名：tag</p><p>比如说：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>example.com:5000/os/gentoo:testing
+</code></pre></td></tr></table></div></div><p>需要注意的是：</p><p>默认不写端口是80
+分类可以从系统或者是用途考虑
+镜像名称咬合力
+tag不写默认是latest</p><p>重新打标签：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker tag example.com:5000/os/gentoo:testing gentoo
+</code></pre></td></tr></table></div></div><p>打过标签之后查看就会发现多出来一个镜像，但是这个镜像id是和我们重新打标签的id是一样的</p><p>保存镜像：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker save &gt; nginx.tar
+</code></pre></td></tr></table></div></div><p>导入镜像：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker load -i nginx.tar
+</code></pre></td></tr></table></div></div><p>删除所有镜像脚本：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell><span class=cp>#!/bin/bash
+</span><span class=cp></span>
+<span class=nv>file</span><span class=o>=</span><span class=k>$(</span>mktemp<span class=k>)</span>
+
+docker images <span class=p>|</span> tail -n +2 <span class=p>|</span> awk <span class=s1>&#39;{print $1&#34;:&#34;$2}&#39;</span> &gt; <span class=nv>$file</span>
+
+<span class=k>while</span> <span class=nb>read</span> aa <span class=p>;</span> <span class=k>do</span>
+	docker rmi <span class=nv>$aa</span>
+<span class=k>done</span> &lt; <span class=nv>$file</span>
+rm -rf <span class=nv>$file</span>
+</code></pre></td></tr></table></div></div><h2 id=docker管理容器>Docker管理容器</h2><p>这个章节我们来学习docker如何管理容器</p><h3 id=启动暂停删除删除>启动、暂停、删除、删除</h3><p>查看正在运行的容器：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker ps 
+</code></pre></td></tr></table></div></div><p>查看所有的容器（包括停止和暂停状态的容器）</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker ps -a
+</code></pre></td></tr></table></div></div><p>运行一个容器：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker run centos
+</code></pre></td></tr></table></div></div><p>这个运行完成之后发现并没有什么变化，我们再去查看所有容器的状态看看：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>CONTAINER ID   IMAGE     COMMAND       CREATED         STATUS                     PORTS     NAMES
+449db807188c   centos    <span class=s2>&#34;/bin/bash&#34;</span>   <span class=m>8</span> seconds ago   Exited <span class=o>(</span>0<span class=o>)</span> <span class=m>7</span> seconds ago             exciting_rhodes
+</code></pre></td></tr></table></div></div><p>为什么我们创建出来的容器怎么就直接退出了呢？</p><p>这个就涉及到了容器的生命周期问题，当进程不存在的时候容器就退出了。像是我们运行的centos这个容器默认的是一个<code>/bin/bash</code>的command，像是<code>/bin/bash</code>我们运行的时候并没有与之交互也没用传递参数给到这个容器，所以在<code>/bin/bash</code>运行完成之后容器就已经退出了。</p><p>现在我们删除这个已经停止掉的容器：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker rm 449db807188c
+</code></pre></td></tr></table></div></div><p>我们重新运行这个<code>centos</code>容器，这次我们要添加2个参数用于和这个容器前台交互：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker run -it centos
+<span class=o>[</span>root@ef09f8bb15dd /<span class=o>]</span><span class=c1>#</span>
+</code></pre></td></tr></table></div></div><p>运行完成之后给我们返回了一个交互式的shell，当我们退出这个容器之后就可以看到容器的状态已经是停止了的:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell><span class=nb>exit</span>
+docker ps -a
+CONTAINER ID   IMAGE     COMMAND       CREATED              STATUS                      PORTS     NAMES
+ef09f8bb15dd   centos    <span class=s2>&#34;/bin/bash&#34;</span>   About a minute ago   Exited <span class=o>(</span>130<span class=o>)</span> <span class=m>1</span> second ago             jovial_merkle
+</code></pre></td></tr></table></div></div><p>我们还可以将这个退出的容器重新运行起来：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker start ef09f8bb15dd
+</code></pre></td></tr></table></div></div><p>那么这个时候如果我们想要进入这个容器应该怎么进入的呢？</p><p>我们可以使用<code>attach</code>这个命令来去链接：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker attach ef09f8bb15dd
+</code></pre></td></tr></table></div></div><p>现在我们来总结一下在上面的这个例子中的问题：</p><ol><li>使用容器很费力，每次都需要找到容器的ID</li><li>一旦创建好容器之后，会自动的进入容器</li><li>一旦退出了容器，容器就会关闭</li></ol><p>我们一个一个来解决这些问题：</p><ol><li>针对于这个问题我们可以给容器一个名字作为标识，比如说：</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker run --name<span class=o>=</span>demo centos
+</code></pre></td></tr></table></div></div><p>这样子我们就有了一个名字为<code>demo</code>的容器运行着<code>centos</code>的镜像。</p><ol start=2><li>针对与这个问题我们可以更改创建时候的参数，使用<code>docker run --help</code>查看了一下帮助手册发现了<code>-d</code>这个选项这个选项的意思是:在后台运行容器并打印容器ID。我们可以这样写创建<code>centos</code>容器的命令：</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker run -d centos
+</code></pre></td></tr></table></div></div><ol start=3><li>针对这个问题可以设置重启策略，比如说：</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker run --restart<span class=o>=</span>always centos
+</code></pre></td></tr></table></div></div><p>这样子每当我们退出容器的时候，容器停止运行然后会被自动重启。</p><p>那么我们结合一下这些参数命令为：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker run --name<span class=o>=</span>demo -itd --restart<span class=o>=</span>always centos
+</code></pre></td></tr></table></div></div><p>查看一下正在运行的容器：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker ps
+CONTAINER ID   IMAGE     COMMAND       CREATED         STATUS        PORTS     NAMES
+ba0e50a08ca7   centos    <span class=s2>&#34;/bin/bash&#34;</span>   <span class=m>2</span> seconds ago   Up <span class=m>1</span> second             demo
+</code></pre></td></tr></table></div></div><p>这样子我们就创建了一个名字为<code>demo</code>的容器使用<code>centos</code>镜像运行着一个<code>/bin/bash</code>的进程。</p><p>现在我们再来测试一下之前的实验。</p><p>首先进入容器：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker attach demo
+</code></pre></td></tr></table></div></div><p>然后退出容器并查看容器的状态：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell><span class=nb>exit</span>
+docker ps 
+CONTAINER ID   IMAGE     COMMAND       CREATED         STATUS         PORTS     NAMES
+ba0e50a08ca7   centos    <span class=s2>&#34;/bin/bash&#34;</span>   <span class=m>3</span> minutes ago   Up <span class=m>3</span> seconds             demo
+</code></pre></td></tr></table></div></div><p>这里看到状态的部分在3秒之前启动，说明我们的容器在退出之后又重新启动了一次。</p><p>现在来让我们删除这个容器：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker rm demo 
+Error response from daemon: You cannot remove a running container ba0e50a08ca7d3085a45c6edcd772b7ba1eded7d2ee32971e3a88c1e70dbba59. Stop the container before attempting removal or force remove
+</code></pre></td></tr></table></div></div><p>这里报错了，提示说要我们先要停止掉这个容器然后再去删除这个容器。
+如果不想先停止容器然后再去删除的话可以这样子：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker rm demo --force
+</code></pre></td></tr></table></div></div><p>这样就强制删除了。</p><p>我们再来思考一个问题，在刚刚的例子当中我们使用的<code>centos</code>镜像所创建的容器运行的命令是<code>/bin/bash</code>那么能否运行其他的命令？</p><p>答案是：不确定。 如果镜像里面包含了我们想要运行的命令，那么就是可以被运行的，如果不包含想要运行的命令那么就会创建失败。</p><p>我们来运行两个例子来看看：</p><blockquote><p>运行一个sleep命令</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker run --name<span class=o>=</span>demo -itd --restart<span class=o>=</span>always centos sleep 100s
+docker ps 
+CONTAINER ID   IMAGE     COMMAND        CREATED         STATUS         PORTS     NAMES
+0871448b8701   centos    <span class=s2>&#34;sleep 100s&#34;</span>   <span class=m>4</span> seconds ago   Up <span class=m>3</span> seconds             demo
+</code></pre></td></tr></table></div></div><p>这里看到是被成功运行的，并且运行的不是<code>/bin/bash</code>了，而是sleep命令，那么我们再来找一个没有的命令来试试看：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker run --name<span class=o>=</span><span class=nb>test</span> -itd --restart<span class=o>=</span>always centos docker info
+docker: Error response from daemon: OCI runtime create failed: container_linux.go:367: starting container process caused: exec: <span class=s2>&#34;docker&#34;</span>: executable file not found in <span class=nv>$PATH</span>: unknown.
+</code></pre></td></tr></table></div></div><p>我们再来查看一下容器的状态：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker ps -a
+CONTAINER ID   IMAGE     COMMAND         CREATED              STATUS    PORTS     NAMES
+5f428425aba6   centos    <span class=s2>&#34;docker info&#34;</span>   About a minute ago   Created             <span class=nb>test</span>
+</code></pre></td></tr></table></div></div><p>因为我们给的一直重启的参数，所以这个容器始终都是在创建失败然后重新创建的状态。</p><p>有的时候我们可能会遇到这样的场景，想要给容器内传输一些变量（比如说给到一个服务注册的地址）这个时候应该怎么做呢？</p><p>docker有一个参数就是专门来做这个的，我们来运行一个例子来看看：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker run --name<span class=o>=</span>c1 -it -e <span class=nv>demo</span><span class=o>=</span><span class=m>1</span> centos
+e<span class=o>[</span>root@026caf0470de /<span class=o>]</span><span class=c1># echo $demo</span>
+<span class=m>1</span>
+</code></pre></td></tr></table></div></div><p>这里可以看到让我们创建完成容器之后去输出这个变量<code>demo</code>其返回值就是我们当初给到这个容器的值。</p><p>我们可以来看看容器内的变量时什么样子的：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell><span class=o>[</span>root@026caf0470de /<span class=o>]</span><span class=c1># printenv</span>
+<span class=nv>LANG</span><span class=o>=</span>en_US.UTF-8
+<span class=nv>HOSTNAME</span><span class=o>=</span>026caf0470de
+<span class=nv>demo</span><span class=o>=</span><span class=m>1</span>
+<span class=nv>PWD</span><span class=o>=</span>/
+<span class=nv>HOME</span><span class=o>=</span>/root
+<span class=nv>TERM</span><span class=o>=</span>xterm
+<span class=nv>SHLVL</span><span class=o>=</span><span class=m>1</span>
+<span class=nv>PATH</span><span class=o>=</span>/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+<span class=nv>LESSOPEN</span><span class=o>=||</span>/usr/bin/lesspipe.sh %s
+<span class=nv>_</span><span class=o>=</span>/usr/bin/printenv
+</code></pre></td></tr></table></div></div><p>这里可以看到的是在环境变量中有<code>demo=1</code>这个变量。</p><p>退出容器再去查看这个容器的详细信息：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker inspect c1 
+</code></pre></td></tr></table></div></div><p>我们关注一下输出中的<code>Env</code>字段:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-json data-lang=json>            <span class=s2>&#34;Env&#34;</span><span class=err>:</span> <span class=p>[</span>
+                <span class=s2>&#34;demo=1&#34;</span><span class=p>,</span>
+                <span class=s2>&#34;PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin&#34;</span>
+            <span class=p>]</span><span class=err>,</span>
+</code></pre></td></tr></table></div></div><p>在这里也可以看到我们设置的<code>demo=1</code>的变量。</p><p>接下来我们来运行一个<a href=https://en.wikipedia.org/wiki/MySQL>mysql</a>的容器</p><p>首先我们拉取一个mysql的镜像：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker pull mysql
+</code></pre></td></tr></table></div></div><p>查看一下mysql镜像的历史记录:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell> docker <span class=nb>history</span> mysql
+IMAGE          CREATED        CREATED BY                                      SIZE      COMMENT
+c8562eaf9d81   <span class=m>2</span> months ago   /bin/sh -c <span class=c1>#(nop)  CMD [&#34;mysqld&#34;]               0B</span>
+&lt;missing&gt;      <span class=m>2</span> months ago   /bin/sh -c <span class=c1>#(nop)  EXPOSE 3306 33060            0B</span>
+&lt;missing&gt;      <span class=m>2</span> months ago   /bin/sh -c <span class=c1>#(nop)  ENTRYPOINT [&#34;docker-entry…   0B</span>
+&lt;missing&gt;      <span class=m>2</span> months ago   /bin/sh -c ln -s usr/local/bin/docker-entryp…   34B
+&lt;missing&gt;      <span class=m>2</span> months ago   /bin/sh -c <span class=c1>#(nop) COPY file:a209112a748b68e0…   13.1kB</span>
+&lt;missing&gt;      <span class=m>2</span> months ago   /bin/sh -c <span class=c1>#(nop) COPY dir:2e040acc386ebd23b…   1.12kB</span>
+&lt;missing&gt;      <span class=m>2</span> months ago   /bin/sh -c <span class=c1>#(nop)  VOLUME [/var/lib/mysql]      0B</span>
+&lt;missing&gt;      <span class=m>2</span> months ago   /bin/sh -c <span class=o>{</span>   <span class=nb>echo</span> mysql-community-server m…   411MB
+&lt;missing&gt;      <span class=m>2</span> months ago   /bin/sh -c <span class=nb>echo</span> <span class=s1>&#39;deb http://repo.mysql.com/a…   55B
+</span><span class=s1>&lt;missing&gt;      2 months ago   /bin/sh -c #(nop)  ENV MYSQL_VERSION=8.0.23-…   0B
+</span><span class=s1>&lt;missing&gt;      2 months ago   /bin/sh -c #(nop)  ENV MYSQL_MAJOR=8.0          0B
+</span><span class=s1>&lt;missing&gt;      2 months ago   /bin/sh -c set -ex;  key=&#39;</span>A4A9406876FCBD3C45…   2.61kB
+&lt;missing&gt;      <span class=m>2</span> months ago   /bin/sh -c apt-get update <span class=o>&amp;&amp;</span> apt-get install…   52.2MB
+&lt;missing&gt;      <span class=m>2</span> months ago   /bin/sh -c mkdir /docker-entrypoint-initdb.d    0B
+&lt;missing&gt;      <span class=m>2</span> months ago   /bin/sh -c <span class=nb>set</span> -eux<span class=p>;</span>  <span class=nv>savedAptMark</span><span class=o>=</span><span class=s2>&#34;</span><span class=k>$(</span>apt-ma…   4.17MB
+&lt;missing&gt;      <span class=m>2</span> months ago   /bin/sh -c <span class=c1>#(nop)  ENV GOSU_VERSION=1.12        0B</span>
+&lt;missing&gt;      <span class=m>2</span> months ago   /bin/sh -c apt-get update <span class=o>&amp;&amp;</span> apt-get install…   9.34MB
+&lt;missing&gt;      <span class=m>2</span> months ago   /bin/sh -c groupadd -r mysql <span class=o>&amp;&amp;</span> useradd -r -…   329kB
+&lt;missing&gt;      <span class=m>2</span> months ago   /bin/sh -c <span class=c1>#(nop)  CMD [&#34;bash&#34;]                 0B</span>
+&lt;missing&gt;      <span class=m>2</span> months ago   /bin/sh -c <span class=c1>#(nop) ADD file:422aca8901ae3d869…   69.2MB</span>
+</code></pre></td></tr></table></div></div><p>这里要说明一下的是，这个mysql镜像的<code>mysqld</code>进程和我们刚刚运行的centos的<code>/bin/bash</code>是有本质的区别的。<code>mysqld</code>是一个守护进程，运行起来之后就不会关闭，但是<code>/bin/bash</code>是运行完成之后就退出来的这点是不一样的地方。</p><p>我们现在来创建一个mysql的容器：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker run -dit --name<span class=o>=</span>db --restart<span class=o>=</span>always mysql
+</code></pre></td></tr></table></div></div><p>然后去查看容器的状态：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker ps -a
+CONTAINER ID   IMAGE     COMMAND                  CREATED              STATUS                         PORTS     NAMES
+d5987f81202f   mysql     <span class=s2>&#34;docker-entrypoint.s…&#34;</span>   About a minute ago   Restarting <span class=o>(</span>1<span class=o>)</span> <span class=m>6</span> seconds ago             db
+</code></pre></td></tr></table></div></div><p>这里发现这个容器一直是在重启的，这个时候我们就需要去查看容器的日志。但是容器和虚拟机不一样没有那种console接口或者是显示器这个时候应该怎么办呢？</p><p>docker实际上有个log的命令，我们通过这个来看看容器究竟是发生了什么：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker logs db
+2021-04-03 17:54:47+00:00 <span class=o>[</span>Note<span class=o>]</span> <span class=o>[</span>Entrypoint<span class=o>]</span>: Entrypoint script <span class=k>for</span> MySQL Server 8.0.23-1debian10 started.
+2021-04-03 17:54:47+00:00 <span class=o>[</span>Note<span class=o>]</span> <span class=o>[</span>Entrypoint<span class=o>]</span>: Switching to dedicated user <span class=s1>&#39;mysql&#39;</span>
+2021-04-03 17:54:47+00:00 <span class=o>[</span>Note<span class=o>]</span> <span class=o>[</span>Entrypoint<span class=o>]</span>: Entrypoint script <span class=k>for</span> MySQL Server 8.0.23-1debian10 started.
+2021-04-03 17:54:47+00:00 <span class=o>[</span>ERROR<span class=o>]</span> <span class=o>[</span>Entrypoint<span class=o>]</span>: Database is uninitialized and password option is not specified
+	You need to specify one of MYSQL_ROOT_PASSWORD, MYSQL_ALLOW_EMPTY_PASSWORD and MYSQL_RANDOM_ROOT_PASSWORD
+</code></pre></td></tr></table></div></div><p>这里提示我们必须要给mysql设置一个密码，还记得我们之前是怎么给容器设置变量的吗？我们这次就是通过<code>-e</code>设置变量给到容器。</p><p>首先删除容器：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker rm -f db
+</code></pre></td></tr></table></div></div><p>重新创建mysql容器：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker run -dit --name<span class=o>=</span>db --restart<span class=o>=</span>always -e <span class=nv>MYSQL_ROOT_PASSWORD</span><span class=o>=</span>p@ssw0rd!  mysql
+</code></pre></td></tr></table></div></div><p>查看容器的状态：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS         PORTS                 NAMES
+ffeb7518206b   mysql     <span class=s2>&#34;docker-entrypoint.s…&#34;</span>   <span class=m>8</span> minutes ago   Up <span class=m>8</span> minutes   3306/tcp, 33060/tcp   db
+</code></pre></td></tr></table></div></div><p>这个时候我们看到这个容器已经启动起来了～</p><p>那么这里还有一个细节需要思考一下，容器里面运行的进程宿主机里面是否可以看到呢？</p><p>我们来查看一下宿主机上能不能看到<code>mysqld</code>的进程：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>ps -eauxf
+.......
+root      <span class=m>6033</span>  0.0  0.4 <span class=m>113364</span>  <span class=m>4272</span> ?        Sl   01:59   0:00 /usr/bin/containerd-shim-runc-v2 -namespace moby -id ffeb7518206b466234b52e3cca839883badc781fccc360ffcc17cd477114fd3e -addre
+polkitd   <span class=m>6053</span>  0.4 33.8 <span class=m>1272000</span> <span class=m>343236</span> pts/0  Ssl+ 01:59   0:02  <span class=se>\_</span> mysqld
+</code></pre></td></tr></table></div></div><p>答案是可以看到的和虚拟机不一样，虚拟机是可以做到进程的隔离的。</p><p>现在假设一下有个场景，我们需要进入到这个mysql的容器里面我们可以像之前那样进入这个容器吗？</p><p>如果像是我们之前的<code>attach</code>命令那么就是进入到了<code>/bin/bash</code>命令中，我们如果是<code>attach</code>这个mysql容器那么就是<code>mysqld</code>命令。这个是没有办法正常交互的啊，这个时候就需要另外的一个命令了<code>exec</code>这个就是额外打开一个<code>/bin/bash</code>的进程。</p><p>让我们来看一个例子：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker <span class=nb>exec</span> -it db /bin/bash
+root@ffeb7518206b:/#
+</code></pre></td></tr></table></div></div><p>我们可以登陆一个新的终端来查看一下这个db的容器都有哪些进程：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker top db
+UID                 PID                 PPID                C                   STIME               TTY                 TIME                CMD
+polkitd             <span class=m>6053</span>                <span class=m>6033</span>                <span class=m>0</span>                   01:59               pts/0               00:00:03            mysqld
+root                <span class=m>6469</span>                <span class=m>6033</span>                <span class=m>0</span>                   02:15               pts/1               00:00:00            /bin/bash
+</code></pre></td></tr></table></div></div><p>这里看到除了mysqld之外还有一个<code>/bin/bash</code>的进程。</p><p>接下来我们来尝试运行一个nginx的容器，但是和之前的mysql容器不一样的地方是我们想让其他的节点也能够访问这个nginx容器。</p><p>这里我们就涉及到了一些网络的问题了，不过在这个章节我们不会过多的讲述网络的内容，网络会有专门的一个章节来讲述，我们来运行一下这个nginx容器：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker run -dit --name<span class=o>=</span>web -p <span class=m>80</span> nginx
+</code></pre></td></tr></table></div></div><p>我们来查看一下容器的状态：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker ps 
+CONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS          PORTS                   NAMES
+54fd07690e1f   nginx     <span class=s2>&#34;/docker-entrypoint.…&#34;</span>   <span class=m>2</span> seconds ago    Up <span class=m>1</span> second     0.0.0.0:49153-&gt;80/tcp   web
+</code></pre></td></tr></table></div></div><p>在端口的地方我们看到来2个端口一个是<code>49153</code>和<code>80</code>我们首先指定的那个80其实是容器的端口，<code>49153</code>是在宿主机上随机映射的。</p><p>访问这个节点+端口就可以看到nginx的欢迎界面了：</p><p><img src=../../images/docker_nginx_welcome_page.png alt="docker nginx welcome page"></p><p>像是我们正常的去访问网站我们一般都是输入一个域名是不需要再去输入端口的，那么我们如何去指定这个端口呢？</p><p>首先删除容器：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker rm -f web
+</code></pre></td></tr></table></div></div><p>创建容器：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker run -dit --name<span class=o>=</span>web -p 80:80 nginx
+</code></pre></td></tr></table></div></div><p>冒号左边是宿主机的端口，右边是容器的。</p><p>我们现在再去查看一下容器：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker ps 
+CONTAINER ID   IMAGE     COMMAND                  CREATED              STATUS              PORTS                 NAMES
+b103ee75da33   nginx     <span class=s2>&#34;/docker-entrypoint.…&#34;</span>   About a minute ago   Up About a minute   0.0.0.0:80-&gt;80/tcp    web
+</code></pre></td></tr></table></div></div><p>这次我们直接通过IP访问：</p><p><img src=../../images/docker_nginx_welcome_page2.png alt="docker nginx welcome page2"></p><p>有的时候我们会运行一些测试容器，想要运行完成之后就直接把这个容器删除掉可以使用一个<code>--rm</code>的参数，我们来试试看：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker run --rm -it centos /bin/bash
+<span class=o>[</span>root@ce4da6691ad1 /<span class=o>]</span><span class=c1># echo 111</span>
+<span class=m>111</span>
+<span class=o>[</span>root@ce4da6691ad1 /<span class=o>]</span><span class=c1># exit</span>
+<span class=nb>exit</span>
+</code></pre></td></tr></table></div></div><p>查看容器：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker ps -a
+CONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS          PORTS                 NAMES
+b103ee75da33   nginx     <span class=s2>&#34;/docker-entrypoint.…&#34;</span>   <span class=m>6</span> minutes ago    Up <span class=m>6</span> minutes    0.0.0.0:80-&gt;80/tcp    web
+ffeb7518206b   mysql     <span class=s2>&#34;docker-entrypoint.s…&#34;</span>   <span class=m>43</span> minutes ago   Up <span class=m>43</span> minutes   3306/tcp, 33060/tcp   db
+</code></pre></td></tr></table></div></div><p>需要注意的是这个<code>--rm</code>参数是不能和<code>--restart</code>参数同时使用的</p><p>管理容器的常见命令：</p><ul><li>docker exec xxx</li><li>docker start</li><li>docker stop</li><li>docker restart</li><li>docker top</li><li>docker logs -f node</li><li>docker inspect</li></ul><p>文件拷贝：</p><p>宿主机文件拷贝到容器：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker cp delete_all_images.sh db:/tmp
+docker <span class=nb>exec</span> db ls /tmp
+</code></pre></td></tr></table></div></div><p>容器里面的文件拷贝到宿主机：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker cp db:/etc/hosts .
+</code></pre></td></tr></table></div></div><p>用scope做页面的容器展示：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>curl -LO git.io/scope
+chmod +x scope
+scope launch
+</code></pre></td></tr></table></div></div><p>然后打开页面http://192.168.56.30:4040/</p><p>如下图所示：</p><p><img src=../../images/scope_dashboard.png alt="scope dashboard"></p><h3 id=容器的权限设定>容器的权限设定</h3><p>一些业务出于需求或者是安全的考虑可能需要对容器的权限进行修改，比如说管理网络的能力
+，更改文件所属权限的能力，这里可以用过<a href=https://man7.org/linux/man-pages/man7/capabilities.7.html>kernel capabilities</a>去更改，比如说我们给容器去掉更改所属文件组的权限：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker run --name lab --rm -it --cap-add NET_ADMIN --cap-drop CHOWN busybox
+/ <span class=c1># touch  111</span>
+/ <span class=c1># chown bin 111</span>
+chown: 111: Operation not permitted
+</code></pre></td></tr></table></div></div><ul><li><code>--cap-add</code>添加权限</li><li><code>--cap-drop</code>删除权限</li></ul><p>这里就看到我们去更改<code>111</code>文件所属权限的时候就没办法去更改了。</p><h3 id=容器的安全计算模式>容器的安全计算模式</h3><p>安全计算模式通常缩写为<a href=https://en.wikipedia.org/wiki/Seccomp>seccomp</a>，用于限制用户对系统调用的访问，相比较于<code>kernel capabilities</code>更加详细和精密，这部分的内容比较多，我计划是放在之后的CKS部分的文章当中。</p><p>这里不去做过多的介绍。</p><h2 id=docker数据卷使用>Docker数据卷使用</h2><p>这个章节我们主要是了解数据卷的使用。</p><p>我们在容器内创建的文件实际上是会映射到宿主机上面去的：</p><p><img src=../../images/docker-container-file.svg alt="docker container file"></p><p>我们来实际做一个实验试试看：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker run --rm -it centos 
+<span class=o>[</span>root@66470e5ecd76 /<span class=o>]</span><span class=c1># touch  aa.txt</span>
+<span class=o>[</span>root@66470e5ecd76 /<span class=o>]</span><span class=c1>#</span>
+</code></pre></td></tr></table></div></div><p>我们再打开一个终端来看看宿主机上面是否有这个文件：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>find / -name <span class=s2>&#34;aa.txt&#34;</span>
+/var/lib/docker/overlay2/f1399dbbca8ffe26b6b40625f5b6f71620fae47389e500027e00ab3ccff0dfbb/diff/aa.txt
+/var/lib/docker/overlay2/f1399dbbca8ffe26b6b40625f5b6f71620fae47389e500027e00ab3ccff0dfbb/merged/aa.txt
+</code></pre></td></tr></table></div></div><p>这里看到有2个<code>aa.txt</code>文件，现在我们退出这个容器然后看看这两个文件会怎样：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell><span class=nb>exit</span>
+find / -name <span class=s2>&#34;aa.txt&#34;</span>
+</code></pre></td></tr></table></div></div><p>当我们退出这个容器之后容器被删除了对应的我们在容器内创建的文件也一起被删除了。</p><p>我们思考一下在实际场景下，比如说运行一个nginx容器访问的请求过来了之后会被写在容器的文件系统里面，当我们删除这个容器的时候相对应的访问日志也一并被删除了。我们肯定不希望这样子，那么有没有一种方法可以让这些数据持久保存呢？</p><p>当然有这一章的数据卷就是可以帮我们达成这个目的。</p><p>这里我们来创建一个centos的容器来看看如何实现数据卷的挂载以及权限的控制。</p><p>首先是在宿主机上创建一个数据卷</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>mkdir ~/demo
+</code></pre></td></tr></table></div></div><p>创建容器：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker run --rm -it -v ~/demo:/demo centos
+</code></pre></td></tr></table></div></div><p>冒号左边的是宿主机的目录，右边的是容器的目录，即使不存在也会被创建。</p><p>我们来生成一个测试文件：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell><span class=nb>echo</span> demo &gt; /demo/1.txt
+</code></pre></td></tr></table></div></div><p>然后退出容器查看宿主机上是否有这个<code>1.txt</code></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell><span class=nb>exit</span>
+cat demo/1.txt
+demo
+</code></pre></td></tr></table></div></div><p>接下来我们再去创建一个容器，这次呢挂载的权限要设置一下，这次想要实现只读的权限：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker run --rm -it -v ~/demo:/demo:ro centos
+</code></pre></td></tr></table></div></div><p>我们尝试去写一下文件：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell><span class=nb>echo</span> <span class=m>111</span> &gt; /demo/2.txt
+bash: /demo/2.txt: Read-only file system
+</code></pre></td></tr></table></div></div><p>这里就提示了这个是只读的文件系统没办法让我们去写入。</p><p>实际的数据持久化中需要根据实际的业务场景需要来设定，比如说像是<code>mysql</code>的<code>/var/lib/mysql</code>下面才是数据存放的目录那么就需要将这个目录挂载到宿主机的一个目录上。</p><h2 id=docker网络>Docker网络</h2><p>Docker网络这个章节是稍微有点复杂的章节，这个章节可能需要花费点时间好好看看。</p><p>我们先来看看Docker内置支持的4中网络类型</p><ul><li>None</li><li>Bridge</li><li>Overlay</li><li>Underlay</li></ul><p>为了能够更好的理解Docker的网络我们可以参考这张图：</p><p><img src=../../images/docker_network_archtypes.svg alt="docker network"></p><p>像是我们创建虚拟机的时候一般来说都会创建一对 veth设备: a pair
+一个链接到交换机上，一个链接到容器上这个交换机就是bridge交换机。</p><p>在我们安装并启动docker之后docker就自动创建了以下几个网络设备：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker network list
+NETWORK ID     NAME      DRIVER    SCOPE
+45a82ca52204   bridge    bridge    <span class=nb>local</span>
+c936ca3fb150   host      host      <span class=nb>local</span>
+c089ad8a6a6a   none      null      <span class=nb>local</span>
+</code></pre></td></tr></table></div></div><p>像是刚刚说的bridge设备其实我们再注意看上面的图，就会发现这个实际上会链接到一个docker网桥的，我们去机器上看看是不是有这个网桥设备：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>ip addr show
+.....
+4: docker0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class=m>1500</span> qdisc noqueue state UP group default
+    link/ether 02:42:e7:af:d2:3c brd ff:ff:ff:ff:ff:ff
+    inet 172.17.0.1/16 brd 172.17.255.255 scope global docker0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::42:e7ff:feaf:d23c/64 scope link
+       valid_lft forever preferred_lft forever
+....	   
+</code></pre></td></tr></table></div></div><p>这里可以看到是有一个docker0的网络设备这个网络地址是 172.17.0.1/16的网络。</p><p>像是我们之前运行的nginx和mysql容器默认就是运行在bridge的网络下面。</p><p>如果想要手动指定可以运行：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker run -it --name demo1 --net bridge busybox /bin/sh
+</code></pre></td></tr></table></div></div><p>然后可以使用<code>inspect</code>去查看详细的ip信息</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker inspect demo1 <span class=p>|</span>grep IPAddress
+</code></pre></td></tr></table></div></div><p>像是这样运行的时候并不是跨主机的，也就是容器的服务只能在本地使用，像是换一个主机就不能够正常的去访问了，在之前的nginx实验中我们使用了<code>-p</code>的参数这个参数实际上就是帮我们做了DNAT端口映射。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>iptables -t nat -vnL<span class=p>|</span>grep <span class=m>80</span>
+    <span class=m>0</span>     <span class=m>0</span> MASQUERADE  tcp  --  *      *       172.17.0.3           172.17.0.3           tcp dpt:80
+    <span class=m>0</span>     <span class=m>0</span> DNAT       tcp  --  !docker0 *       0.0.0.0/0            0.0.0.0/0            tcp dpt:80 to:172.17.0.3:80
+</code></pre></td></tr></table></div></div><p>这里可以看到就是做了一条DNAT规则</p><h3 id=网络的创建和删除>网络的创建和删除</h3><p>这里我们创建一个自定义的网络</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker network create -d bridge --subnet 10.10.0.0/24 mynet
+</code></pre></td></tr></table></div></div><p>创建成功后我们来查看一下：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker network inspect mynet
+</code></pre></td></tr></table></div></div><p>我们来看一下输出的内容：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-json data-lang=json><span class=p>[</span>
+    <span class=p>{</span>
+        <span class=nt>&#34;Name&#34;</span><span class=p>:</span> <span class=s2>&#34;mynet&#34;</span><span class=p>,</span>
+        <span class=nt>&#34;Id&#34;</span><span class=p>:</span> <span class=s2>&#34;e74e94baadc4abdb1faba9d5347be2afe92b72cb31760da427ba4958e1daa12d&#34;</span><span class=p>,</span>
+        <span class=nt>&#34;Created&#34;</span><span class=p>:</span> <span class=s2>&#34;2021-04-05T07:49:29.354166377+08:00&#34;</span><span class=p>,</span>
+        <span class=nt>&#34;Scope&#34;</span><span class=p>:</span> <span class=s2>&#34;local&#34;</span><span class=p>,</span>
+        <span class=nt>&#34;Driver&#34;</span><span class=p>:</span> <span class=s2>&#34;bridge&#34;</span><span class=p>,</span>
+        <span class=nt>&#34;EnableIPv6&#34;</span><span class=p>:</span> <span class=kc>false</span><span class=p>,</span>
+        <span class=nt>&#34;IPAM&#34;</span><span class=p>:</span> <span class=p>{</span>
+            <span class=nt>&#34;Driver&#34;</span><span class=p>:</span> <span class=s2>&#34;default&#34;</span><span class=p>,</span>
+            <span class=nt>&#34;Options&#34;</span><span class=p>:</span> <span class=p>{},</span>
+            <span class=nt>&#34;Config&#34;</span><span class=p>:</span> <span class=p>[</span>
+                <span class=p>{</span>
+                    <span class=nt>&#34;Subnet&#34;</span><span class=p>:</span> <span class=s2>&#34;10.10.0.0/24&#34;</span>
+                <span class=p>}</span>
+            <span class=p>]</span>
+        <span class=p>},</span>
+        <span class=nt>&#34;Internal&#34;</span><span class=p>:</span> <span class=kc>false</span><span class=p>,</span>
+        <span class=nt>&#34;Attachable&#34;</span><span class=p>:</span> <span class=kc>false</span><span class=p>,</span>
+        <span class=nt>&#34;Ingress&#34;</span><span class=p>:</span> <span class=kc>false</span><span class=p>,</span>
+        <span class=nt>&#34;ConfigFrom&#34;</span><span class=p>:</span> <span class=p>{</span>
+            <span class=nt>&#34;Network&#34;</span><span class=p>:</span> <span class=s2>&#34;&#34;</span>
+        <span class=p>},</span>
+        <span class=nt>&#34;ConfigOnly&#34;</span><span class=p>:</span> <span class=kc>false</span><span class=p>,</span>
+        <span class=nt>&#34;Containers&#34;</span><span class=p>:</span> <span class=p>{},</span>
+        <span class=nt>&#34;Options&#34;</span><span class=p>:</span> <span class=p>{},</span>
+        <span class=nt>&#34;Labels&#34;</span><span class=p>:</span> <span class=p>{}</span>
+    <span class=p>}</span>
+<span class=p>]</span>
+</code></pre></td></tr></table></div></div><p>这里面的subnet就是们之前配置过的，还有类型是bridge，同时我们可以查看一下宿主机的网络接口是不是多了一个网络接口：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>ip addr show
+.....
+119: br-e74e94baadc4: &lt;NO-CARRIER,BROADCAST,MULTICAST,UP&gt; mtu <span class=m>1500</span> qdisc noqueue state DOWN group default
+    link/ether 02:42:25:58:fb:e5 brd ff:ff:ff:ff:ff:ff
+    inet 10.10.0.1/24 brd 10.10.0.255 scope global br-e74e94baadc4
+       valid_lft forever preferred_lft forever
+</code></pre></td></tr></table></div></div><p>这里看到这里创建了一个网桥这个就是我们刚刚创建的那个网络。</p><p>如果删除的话就可以直接运行：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker network rm mynet
+</code></pre></td></tr></table></div></div><p>这样网络就会被删除掉了。</p><h3 id=容器互通测试>容器互通测试</h3><p>像是实际使用当中微服务往往都是需要多个组件和服务才能够正常运行起来，这里我们通过一个简单的测试来看看如何实现网络的互通。</p><p>这次我们使用的是bridge网络，创建2个busybox容器进行互ping测试。</p><p>创建busybox1:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker run -it --rm --name busybox1 busybox
+</code></pre></td></tr></table></div></div><p>创建busybox2:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker run -it --rm --name busybox2 busybox
+</code></pre></td></tr></table></div></div><p>查看busybox1的ip：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>/ <span class=c1># ip a</span>
+1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu <span class=m>65536</span> qdisc noqueue qlen <span class=m>1000</span>
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+120: eth0@if121: &lt;BROADCAST,MULTICAST,UP,LOWER_UP,M-DOWN&gt; mtu <span class=m>1500</span> qdisc noqueue
+    link/ether 02:42:ac:11:00:04 brd ff:ff:ff:ff:ff:ff
+    inet 172.17.0.4/16 brd 172.17.255.255 scope global eth0
+       valid_lft forever preferred_lft forever
+</code></pre></td></tr></table></div></div><p>使用busybox2进行测试：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>/ <span class=c1># ping -c2 172.17.0.4</span>
+PING 172.17.0.4 <span class=o>(</span>172.17.0.4<span class=o>)</span>: <span class=m>56</span> data bytes
+<span class=m>64</span> bytes from 172.17.0.4: <span class=nv>seq</span><span class=o>=</span><span class=m>0</span> <span class=nv>ttl</span><span class=o>=</span><span class=m>64</span> <span class=nv>time</span><span class=o>=</span>0.155 ms
+<span class=m>64</span> bytes from 172.17.0.4: <span class=nv>seq</span><span class=o>=</span><span class=m>1</span> <span class=nv>ttl</span><span class=o>=</span><span class=m>64</span> <span class=nv>time</span><span class=o>=</span>0.112 ms
+</code></pre></td></tr></table></div></div><p>这里可以看到在同一个网络下面网络是可以通讯的，在实际的生产中也要注意这个网络规划。</p><h2 id=docker自定义镜像>Docker自定义镜像</h2><p>这个章节我们将会了解一下如何自定义Docker自定义镜像。</p><p>Docker镜像并不是从0到1的过程，而是在一个存在的镜像的基础上，进行构建出来新的镜像。
+最底层是一个干净的系统一般是由厂商来提供</p><p>Docker镜像实现了标准化交付的结果，我们想要自己去做Docker镜像的话就需要去了解一下Dockerfile的语法。</p><p>Dockerfile的语法很简单，格式只有2种：</p><ol><li><code>#</code>开头的就是注释</li><li>Docker指定的参数（像是FROM、RUN、CMD之类的）</li></ol><p>在我们编写完成Dockerfile之后就需要用到一个工具来进行构建<code>docker build</code>，<code>FROM</code>一般是一个已经做好的镜像比如说<code>centos</code>、<code>ubuntu</code>之类的，不会从源头开始做镜像。<code>RUN</code>这层必须是<code>FROM</code>镜像中包含的命令，比如说指定了<code>CentOS</code>的镜像那么运行<code>apt</code>肯定是会构建失败的。</p><blockquote><p>执行命令 （RUN）
+在这一层运行的命令，比如说我们使用CentOS作为基础镜像然后安装一个<code>net-tools</code>的包：</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-dockerfile data-lang=dockerfile><span class=k>FROM</span><span class=s> centos</span><span class=err>
+</span><span class=err></span><span class=k>RUN</span> yum install net-tools -y<span class=err>
+</span></code></pre></td></tr></table></div></div><p>在临时容器里就会在这一层安装一个<code>net-tools</code>的包</p><blockquote><p>拷贝文件 （ADD）</p></blockquote><p>在这一层运行的命令是<code>ADD</code>，这个命令会将我们指定的文件从宿主机拷贝到容器中去：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-dockerfile data-lang=dockerfile><span class=k>FROM</span><span class=s> centos</span><span class=err>
+</span><span class=err></span><span class=k>RUN</span> yum install net-tools -y<span class=err>
+</span><span class=err></span><span class=k>ADD</span> &lt;src&gt; &lt;dest&gt;<span class=err>
+</span></code></pre></td></tr></table></div></div><p>和<code>ADD</code>这个命令类似的还有一个<code>COPY</code>的命令，<code>ADD</code>命令针对于压缩包会自动解压，而<code>COPY</code>命令只是单独的拷贝。</p><blockquote><p>卷 (VOLUME)</p></blockquote><p>这个命令是在容器定义一个卷，我们可以配置运行程序的目录为一个卷，方便后续的数据持久化。</p><p>这个卷在启动容器后会挂载到docker数据目录下，也可以通过 <code>-v</code>参数来手动指定。</p><blockquote><p>运行命令 (CMD)</p></blockquote><p>容器最终运行的守护进程，比如说：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-dockerfile data-lang=dockerfile><span class=k>FROM</span><span class=s> centos</span><span class=err>
+</span><span class=err></span><span class=k>RUN</span> yum install net-tools -y<span class=err>
+</span><span class=err></span><span class=k>ADD</span> &lt;src&gt; &lt;dest&gt;<span class=err>
+</span><span class=err>
+</span><span class=err></span><span class=k>CMD</span> <span class=p>[</span><span class=s2>&#34;/bin/bash&#34;</span><span class=p>]</span><span class=err>
+</span></code></pre></td></tr></table></div></div><p>这里我们运行的守护进程就是<code>/bin/bash</code></p><blockquote><p>变量 （ENV）</p></blockquote><p>在Dockerfile声明一下变量，就像是我们之前运行mysql容器那样给容器内的应用传递变量，一般这个可以用于初始化应用来使用，后面创建容器的时候也可以添加变量来使用。</p><blockquote><p>.dockerignore 文件</p></blockquote><p>这个文件就是告诉docker什么文件可以忽略掉，不用打包或者是复制。</p><p>比较实际的一个场景是当我们给容器复制整个目录的时候这个文件可以过滤掉我们不想要复制的文件。</p><blockquote><p>练习</p></blockquote><p>我们以alpine为基础镜像并在这个镜像里面部署一个nginx服务</p><p>这里我们来写一个例子（这个例子可以在<a href=https://github.com/yafa-xena/docker-compose/tree/dev/nginx>我的仓库</a>）：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-dockerfile data-lang=dockerfile><span class=k>FROM</span><span class=s> alpine</span><span class=err>
+</span><span class=err>
+</span><span class=err></span><span class=k>MAINTAINER</span><span class=s> &lt;i@yafa.moe&gt;</span><span class=err>
+</span><span class=err>
+</span><span class=err></span><span class=k>RUN</span> apk add nginx --update <span class=o>&amp;&amp;</span> mkdir /run/nginx <span class=o>&amp;&amp;</span> rm -rf /var/cache/apk/*<span class=err>
+</span><span class=err>
+</span><span class=err></span><span class=k>VOLUME</span><span class=s> /var/www/html</span><span class=err>
+</span><span class=err>
+</span><span class=err></span><span class=k>COPY</span> default.conf /etc/nginx/conf.d<span class=err>
+</span><span class=err>
+</span><span class=err></span><span class=k>EXPOSE</span><span class=s> 80</span><span class=err>
+</span><span class=err>
+</span><span class=err></span><span class=k>CMD</span> <span class=p>[</span><span class=s2>&#34;nginx&#34;</span><span class=p>,</span> <span class=s2>&#34;-g&#34;</span><span class=p>,</span> <span class=s2>&#34;daemon off;&#34;</span><span class=p>]</span><span class=err>
+</span></code></pre></td></tr></table></div></div><p>构建镜像：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker build -t demo .
+</code></pre></td></tr></table></div></div><p>运行镜像</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker run -it --rm --name demo -p80:80 demo
+</code></pre></td></tr></table></div></div><h2 id=搭建私有仓库>搭建私有仓库</h2><p>在实际的使用场景里面可能我们的节点都是不接入互联网，或者是不想让别人获取到这个镜像的时候我们就需要自己构建docker仓库。</p><h3 id=使用registry搭建仓库>使用registry搭建仓库</h3><p>docker官方提供里一个registry镜像，这个可以帮我们去搭建我们自己的镜像</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker run -d --name registry -p5000:5000 --restart<span class=o>=</span>always -v /root/vo:/var/lib/registry registry
+</code></pre></td></tr></table></div></div><blockquote><p>其他节点配置 registry 仓库</p></blockquote><p>修改默认的docker配置文件：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>vi /etc/docker/daemon.json
+</code></pre></td></tr></table></div></div><p>内容如下：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-json data-lang=json><span class=p>{</span>
+  <span class=nt>&#34;registry-mirrors&#34;</span><span class=p>:</span> <span class=p>[</span><span class=s2>&#34;https://56px195b.mirror.aliyuncs.com&#34;</span><span class=p>],</span>
+  <span class=nt>&#34;insecure-registries&#34;</span><span class=p>:</span> <span class=p>[</span><span class=s2>&#34;192.168.56.30:5000&#34;</span><span class=p>]</span>
+<span class=p>}</span>
+</code></pre></td></tr></table></div></div><p>保存并退出后重启docker</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>systemctl restart docker
+</code></pre></td></tr></table></div></div><p>上传镜像</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker tag demo 192.168.56.30:5000/lab/demo:v1
+docker push 192.168.56.30:5000/lab/demo:v1
+</code></pre></td></tr></table></div></div><p>查看镜像（这里写了一个简单的脚本）:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell><span class=cp>#!/bin/bash
+</span><span class=cp></span><span class=nv>file</span><span class=o>=</span><span class=k>$(</span>mktemp<span class=k>)</span>
+curl -s <span class=nv>$1</span>:5000/v2/_catalog <span class=p>|</span> jq <span class=p>|</span> egrep -v <span class=s1>&#39;\{|\}|\[|]&#39;</span> <span class=p>|</span> awk -F<span class=se>\&#34;</span> <span class=s1>&#39;{print $2}&#39;</span> &gt; <span class=nv>$file</span>
+<span class=k>while</span> <span class=nb>read</span> aa <span class=p>;</span> <span class=k>do</span>
+<span class=nv>tag</span><span class=o>=(</span><span class=k>$(</span>curl -s <span class=nv>$1</span>:5000/v2/<span class=nv>$aa</span>/tags/list <span class=p>|</span> jq <span class=p>|</span> egrep -v <span class=s1>&#39;\{|\}|\[|]|name&#39;</span> <span class=p>|</span> awk -F<span class=se>\&#34;</span> <span class=s1>&#39;{print $2}&#39;</span><span class=k>)</span><span class=o>)</span>
+	<span class=k>for</span> i in <span class=si>${</span><span class=nv>tag</span><span class=p>[*]</span><span class=si>}</span> <span class=p>;</span> <span class=k>do</span>
+	  <span class=nb>echo</span> <span class=nv>$1</span>:5000/<span class=si>${</span><span class=nv>aa</span><span class=si>}</span>:<span class=nv>$i</span>
+	<span class=k>done</span>
+<span class=k>done</span> &lt; <span class=nv>$file</span>
+rm -rf <span class=nv>$file</span>
+</code></pre></td></tr></table></div></div><p>运行容器：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker run -it --rm --name<span class=o>=</span>demo -p80:80 192.168.56.30:5000/lab/demo:v1
+</code></pre></td></tr></table></div></div><h3 id=使用harbor搭建私有仓库>使用harbor搭建私有仓库</h3><p>可以在：<a href=https://github.com/goharbor/harbor/releases>github harbor release page</a>这里下载最新的release文件。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>wget -c https://github.com/goharbor/harbor/releases/download/v2.1.5/harbor-offline-installer-v2.1.5.tgz
+wget -c https://github.com/goharbor/harbor/releases/download/v2.1.5/harbor-offline-installer-v2.1.5.tgz.asc
+gpg -v --keyserver hkps://keyserver.ubuntu.com --verify harbor-offline-installer-v2.1.5.tgz.asc
+</code></pre></td></tr></table></div></div><p>安装必要的包（提供了一个<code>docker-compose</code>编排的文件）：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>yum install -y docker-compose
+</code></pre></td></tr></table></div></div><p>备份默认的配置文件：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>cp harbor.yml.tmpl harbor.yml
+</code></pre></td></tr></table></div></div><p>修改配置文件：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>hostname: 192.168.56.31
+<span class=c1># 注释掉https</span>
+<span class=c1>#https:</span>
+  <span class=c1># https port for harbor, default is 443</span>
+<span class=c1>#  port: 443</span>
+  <span class=c1># The path of cert and key files for nginx</span>
+<span class=c1>#  certificate: /your/certificate/path</span>
+<span class=c1>#  private_key: /you  private_key: /your/private/key/path</span>
+</code></pre></td></tr></table></div></div><p>保存并退出之后进行准备脚本：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>./prepare
+</code></pre></td></tr></table></div></div><p>安装：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>./install.sh
+</code></pre></td></tr></table></div></div><p>运行完成之后用浏览器打开<code>192.168.56.31</code>这个地址就可以看到harbor的登录页面了：
+<img src=../../images/harbor_login_page.png alt="Harbor login page">
+默认的密码可以在我们之前修改的compose文件中找到：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>grep harbor_admin_password harbor.yml
+harbor_admin_password: Harbor12345
+</code></pre></td></tr></table></div></div><p>默认的用户为<code>admin</code>。</p><p>接下来我们来模拟一下类似于Docker hub的体验。</p><blockquote><p>创建一个公开的lab项目：</p></blockquote><p>首先点击创建项目：</p><p><img src=../../images/harbor_new_project.png alt="harbor create project"></p><p>名字我们这里就叫lab
+<img src=../../images/harbor_new_public_lab_project.png alt="harbor project public"></p><p>创建完成之后我们来看一下最终的结果：
+<img src=../../images/harbor_project_repo_overview.png alt="harbor project overivew"></p><p>除此之外我们还需要创建一个用户，使用这个全新的用户去管理这个仓库：</p><p><img src=../../images/harboar_new_user.png alt="create new user"></p><p>接下来在我们创建的这个yafa用户给到对应的权限：</p><p><img src=../../images/harbor_add_user_and_role.png alt=ss></p><p>这里我们的<code>lab</code>仓库就已经创建好了，接下里我们来修改一下我们的docker配置文件，让其指向我们创建的harbor地址。</p><p>修改docker的配置文件：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-json data-lang=json><span class=p>{</span>
+  <span class=nt>&#34;registry-mirrors&#34;</span><span class=p>:</span> <span class=p>[</span><span class=s2>&#34;https://56px195b.mirror.aliyuncs.com&#34;</span><span class=p>],</span>
+  <span class=nt>&#34;insecure-registries&#34;</span><span class=p>:</span> <span class=p>[</span><span class=s2>&#34;192.168.56.31:80&#34;</span><span class=p>]</span>
+<span class=p>}</span>
+
+<span class=err>重启docker：</span>
+
+<span class=err>```shell</span>
+<span class=err>systemctl</span> <span class=err>restart</span> <span class=err>docker</span>
+</code></pre></td></tr></table></div></div><p>使用我们创建的用户登录到harbor：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker login 192.168.56.31:80
+</code></pre></td></tr></table></div></div><p>上传镜像，这里我们以之前创建的demo镜像为例子进行测试；</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker tag demo 192.168.56.31:80/lab/demo:v1
+docker push 192.168.56.31:80/lab/demo:v1
+</code></pre></td></tr></table></div></div><h2 id=限制系统资源>限制系统资源</h2><p>在这个章节里主要是如何限制容器在运行时候的资源。</p><p>在开头我们有讲到Docker实际上就是使用<code>namespace</code>+<code>cgroups</code>去实现的一个runtime，这里说到的限制资源实际上也就是使用<a href=https://en.wikipedia.org/wiki/Cgroups>cgroups</a>进行限制。</p><p>为什么要做限制呢？</p><p>可以设想一下这样的一个场景，容器内运行了mysql+http的服务，每个服务都以为自己是唯一的进程相应的需要的资源竞争理论上应该是不存在的，但是在之前的namespace介绍种我们知道容器是通过namespace的技术做进程的隔离的，但是在操作系统看来容器的进程和宿主机运行的其他进程是一样的，也就是说容器内运行的进程还是要和宿主机的其他进程进行资源的竞争，为了解决这部分的问题容器引入了另外的一个技术也就是<a href=https://en.wikipedia.org/wiki/Cgroups>cgroup</a>。</p><p>在Linux系统中<code>cgroup</code>给用户暴露出来的接口是文件系统，它以文件和目录的方式在操作系统的<code>/sys/fs/cgroup</code>路径下，我们可以使用<code>mount</code>命令进行查看：</p><blockquote><p>这部分是我在Gentoo系统下的输出</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>mount -t cgroup
+openrc on /sys/fs/cgroup/openrc <span class=nb>type</span> cgroup <span class=o>(</span>rw,nosuid,nodev,noexec,relatime,release_agent<span class=o>=</span>/lib/rc/sh/cgroup-release-agent.sh,name<span class=o>=</span>openrc<span class=o>)</span>
+cpuset on /sys/fs/cgroup/cpuset <span class=nb>type</span> cgroup <span class=o>(</span>rw,nosuid,nodev,noexec,relatime,cpuset<span class=o>)</span>
+cpu on /sys/fs/cgroup/cpu <span class=nb>type</span> cgroup <span class=o>(</span>rw,nosuid,nodev,noexec,relatime,cpu<span class=o>)</span>
+cpuacct on /sys/fs/cgroup/cpuacct <span class=nb>type</span> cgroup <span class=o>(</span>rw,nosuid,nodev,noexec,relatime,cpuacct<span class=o>)</span>
+blkio on /sys/fs/cgroup/blkio <span class=nb>type</span> cgroup <span class=o>(</span>rw,nosuid,nodev,noexec,relatime,blkio<span class=o>)</span>
+memory on /sys/fs/cgroup/memory <span class=nb>type</span> cgroup <span class=o>(</span>rw,nosuid,nodev,noexec,relatime,memory<span class=o>)</span>
+devices on /sys/fs/cgroup/devices <span class=nb>type</span> cgroup <span class=o>(</span>rw,nosuid,nodev,noexec,relatime,devices<span class=o>)</span>
+freezer on /sys/fs/cgroup/freezer <span class=nb>type</span> cgroup <span class=o>(</span>rw,nosuid,nodev,noexec,relatime,freezer<span class=o>)</span>
+net_cls on /sys/fs/cgroup/net_cls <span class=nb>type</span> cgroup <span class=o>(</span>rw,nosuid,nodev,noexec,relatime,net_cls<span class=o>)</span>
+perf_event on /sys/fs/cgroup/perf_event <span class=nb>type</span> cgroup <span class=o>(</span>rw,nosuid,nodev,noexec,relatime,perf_event<span class=o>)</span>
+net_prio on /sys/fs/cgroup/net_prio <span class=nb>type</span> cgroup <span class=o>(</span>rw,nosuid,nodev,noexec,relatime,net_prio<span class=o>)</span>
+hugetlb on /sys/fs/cgroup/hugetlb <span class=nb>type</span> cgroup <span class=o>(</span>rw,nosuid,nodev,noexec,relatime,hugetlb<span class=o>)</span>
+pids on /sys/fs/cgroup/pids <span class=nb>type</span> cgroup <span class=o>(</span>rw,nosuid,nodev,noexec,relatime,pids<span class=o>)</span>
+rdma on /sys/fs/cgroup/rdma <span class=nb>type</span> cgroup <span class=o>(</span>rw,nosuid,nodev,noexec,relatime,rdma<span class=o>)</span>
+</code></pre></td></tr></table></div></div><p>这里可以看到在<code>/sys/fs/cgroup</code>目录下有很多的目录像是<code>cpuset</code>,<code>blkid</code>,<code>memory</code>这样的子目录，这些目录也叫做子系统。</p><p>这些都是在当前运行的操作系统下可以被Cgroups进行限制的资源种类。</p><p>我们在看看这些子系统的文件夹下包括什么：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>ls /sys/fs/cgroup/cpu
+cgroup.clone_children  cgroup.sane_behavior  cpu.cfs_quota_us  cpu.rt_runtime_us  cpu.stat           release_agent
+cgroup.procs           cpu.cfs_period_us     cpu.rt_period_us  cpu.shares         notify_on_release  tasks
+</code></pre></td></tr></table></div></div><p>这里的输出就是cpu子系统的配置文件，比如说<code>cpu.cfs_quota_us</code>,<code>cpu.rt_period_us</code>这些关键字。</p><p>这些参数可以组合使用来限制进程所能够分配的资源。</p><p>我们这里来做一个简单的实验，是打算限制一个进程能使用到的cpu带宽。</p><p>为了实现这个目的我们要使用到的是cpu的子系统我们可以在<code>/sys/fs/cgroup/cpu/</code>下创建一个名叫<code>container</code>的目录</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>mkdir -pv /sys/fs/cgroup/cpu/container
+ls /sys/fs/cgroup/cpu/container
+</code></pre></td></tr></table></div></div><p>我们来执行这么一条死循环的脚本：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell><span class=k>while</span> : <span class=p>;</span> <span class=k>do</span> : <span class=p>;</span> <span class=k>done</span> <span class=p>&amp;</span>
+</code></pre></td></tr></table></div></div><p>使用top工具来看cpu的使用率</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>%Cpu<span class=o>(</span>s<span class=o>)</span>: 99.7 us,  0.3 sy,  0.0 ni,  0.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+</code></pre></td></tr></table></div></div><p>更改进程只能使用20ms的cpu时间也就是在这个子系统下的进程只能用到20%的cpu带宽：</p><blockquote><p>tips: 20000 的单位是us</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell><span class=nb>echo</span> <span class=m>20000</span> &gt; /sys/fs/cgroup/cpu/container/cpu.cfs_quota_us
+</code></pre></td></tr></table></div></div><p>查看pid</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell><span class=nb>jobs</span> -l
+<span class=o>[</span>1<span class=o>]</span>+  <span class=m>1348</span> Running                 <span class=k>while</span> :<span class=p>;</span> <span class=k>do</span>
+    :<span class=p>;</span>
+<span class=k>done</span> <span class=p>&amp;</span>
+
+</code></pre></td></tr></table></div></div><p>将pid放到我们创建的container子系统中：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell><span class=nb>echo</span> <span class=m>1348</span> &gt; /sys/fs/cgroup/cpu/container/tasks
+</code></pre></td></tr></table></div></div><p>这里可以看到负载已经降下来了：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>%Cpu<span class=o>(</span>s<span class=o>)</span>: 19.5 us,  0.0 sy,  0.0 ni, 80.5 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+</code></pre></td></tr></table></div></div><p>除了cpu子系统之外，cgroups的每一个子系统都有其独有的资源限制能力，比如说常用到的：</p><ul><li><code>blkio</code>为块设备限制I/O，一般用于磁盘等设备。</li><li><code>cpuset</code> 为进程分配单独的CPU core和对应的内存节点。</li><li><code>memory</code> 为进程设定内存使用的限制</li></ul><p>除了这里列举的这些还有更多可以参考官方的<a href=https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v1/cgroups.html>内核文档</a></p><p>除了手动添加task到对应的子系统我们还可以通过systemd的serivces配置文件来进行配置，可以在服务中配置<code>Service</code>部分的字段，添加：
+<code>MemoryLimit=512M</code>这样的内容，就可以进行限制内存，更多可以参考Redhat的<a href=https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/resource_management_guide/chap-using_control_groups>Cgroups部分</a></p><p>对于Docker的容器而言，只需要在运行的时候加上特定的控制子系统再把这个进程的pid填写到对应的子系统的<code>tasks</code>文件中就可以了。</p><h3 id=限制内存资源>限制内存资源</h3><p>首先我们来运行一个临时的容器，这里提供了一个memload的程序这个程序可以在我的<a href=https://github.com/yafa-xena/cka-courses>Github Repo</a>中找到。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker run -it --rm --name<span class=o>=</span>demo -v /home/yafa/src/cka-courses/resources/:/resources centos /bin/bash
+</code></pre></td></tr></table></div></div><p>这里我们安装一个memload的程序，用于不断的消耗内存：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>rpm -i resources/rpm/memload-7.0-1.r29766.x86_64.rpm
+</code></pre></td></tr></table></div></div><p>我们这里需要再打开一个终端，来查看一下容器的资源消耗情况：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker stats demo
+CONTAINER ID   NAME      CPU %     MEM USAGE / LIMIT     MEM %     NET I/O         BLOCK I/O   PIDS
+fc0e7818e555   demo      0.00%     3.922MiB / 15.53GiB   0.02%     2.22kB / 769B   0B / 0B     <span class=m>1</span>
+</code></pre></td></tr></table></div></div><p>在这里可以看到容器默认认为自己可以分配的内存有16G，目前只占用了4MiB不到的内存，接下来我们使用memload来加大一些看看会是怎么样的。</p><p>我们这里使用memload来消耗1G的内存</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>memload <span class=m>1024</span>
+</code></pre></td></tr></table></div></div><p>这里可以看到确实已经消耗了1个G的内存：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>CONTAINER ID   NAME      CPU %     MEM USAGE / LIMIT    MEM %     NET I/O         BLOCK I/O   PIDS
+fc0e7818e555   demo      100.96%   1.01GiB / 15.53GiB   6.50%     2.22kB / 769B   0B / 0B     <span class=m>2</span>
+</code></pre></td></tr></table></div></div><p>我们退出容器，重新运行一个带内存限制的容器：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker run -it --rm -m 512m --name<span class=o>=</span>demo -v /home/yafa/src/cka-courses/resources/:/resources centos /bin/bash
+</code></pre></td></tr></table></div></div><p>安装memload：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>rpm -i resources/rpm/memload-7.0-1.r29766.x86_64.rpm
+</code></pre></td></tr></table></div></div><p>同时再打开另外一个终端查看容器的资源消耗情况：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker stats demo
+</code></pre></td></tr></table></div></div><p>这个时候就可以看到，容器的内存限制已经被限制在512MiB内存了：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>CONTAINER ID   NAME      CPU %     MEM USAGE / LIMIT   MEM %     NET I/O       BLOCK I/O   PIDS
+8ca47ca4903a   demo      0.00%     3.332MiB / 512MiB   0.65%     440B / 413B   0B / 0B     <span class=m>1</span>
+</code></pre></td></tr></table></div></div><p>我们可以去查看容器的进程的<code>pid</code>是否在对应的内存子系统中存在。</p><p>首先查看容器的<code>pid</code>：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>ps -ef <span class=p>|</span>grep <span class=s2>&#34;[d]emo&#34;</span> <span class=p>|</span>awk <span class=s1>&#39;{print $2 }&#39;</span>
+<span class=m>8698</span>
+</code></pre></td></tr></table></div></div><p>那么对应的我们可以在<code>/proc/</code>目录下找到对应的<code>pid</code>目录，查看在这个目录下<code>cgroup</code>文件中的内容：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>cat /proc/8698/cgroup
+14:rdma:/
+13:pids:/
+12:hugetlb:/
+11:net_prio:/
+10:perf_event:/
+9:net_cls:/
+8:freezer:/
+7:devices:/
+6:memory:/
+5:blkio:/
+4:cpuacct:/
+3:cpu:/
+2:cpuset:/
+1:name<span class=o>=</span>openrc:/2
+0::/display-manager
+</code></pre></td></tr></table></div></div><p>这里可以看到有个<code>6:memory:/</code>这个就是内存的子系统</p><p>查看在内存子系统中是否存在：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>cat /sys/fs/cgroup/memory/tasks <span class=p>|</span>grep <span class=m>8698</span> <span class=o>&amp;&amp;</span> <span class=nb>echo</span> yes
+</code></pre></td></tr></table></div></div><p>或者是：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell><span class=nb>cd</span> /sys/fs/ <span class=o>&amp;&amp;</span> find * -name <span class=s2>&#34;*.procs&#34;</span> -exec grep <span class=m>8698</span> <span class=o>{}</span> /dev/null <span class=se>\;</span> 2&gt; /dev/null
+</code></pre></td></tr></table></div></div><h3 id=对容器cpu的限制>对容器cpu的限制</h3><p>这里主要设置的是cpu的亲和性</p><p>我们在系统上运行很多个任务，任务可能运行在不同的cpu上，这个是由内核的调度系统来实现的，但是遇到特定的场景的时候我们可能需要使用cpu绑定技术将特定的进程放在特定的cpu上运行从而提高性能。</p><p>首先我们运行一个临时的容器</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker run -it --rm --name<span class=o>=</span>demo centos /bin/bash
+</code></pre></td></tr></table></div></div><p>接下来我们在这个容器中运行几个<code>cat</code>程序：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>cat /dev/zero &gt; /dev/null <span class=p>&amp;</span>
+cat /dev/zero &gt; /dev/null <span class=p>&amp;</span>
+cat /dev/zero &gt; /dev/null <span class=p>&amp;</span>
+cat /dev/zero &gt; /dev/null <span class=p>&amp;</span>
+</code></pre></td></tr></table></div></div><p>接下来我们宿主机上去查看这些<code>cat</code>进程：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>ps mo pid,comm,psr <span class=k>$(</span>pgrep cat<span class=k>)</span>
+
+  PID COMMAND         PSR
+<span class=m>21884</span> cat               -
+    - -                 <span class=m>2</span>
+<span class=m>21914</span> cat               -
+    - -                 <span class=m>1</span>
+<span class=m>21921</span> cat               -
+    - -                 <span class=m>3</span>
+<span class=m>21922</span> cat               -
+    - -                 <span class=m>2</span>
+<span class=m>23502</span> kworker/u9:1-rb   -
+    - -                 <span class=m>0</span>
+<span class=m>24129</span> kworker/u9:2-rb   -
+    - -                 <span class=m>1</span>
+</code></pre></td></tr></table></div></div><p>这里看到cat进程分别运行在<code>2 1 3 0</code>这么4个核心上也就是说分布在每个核心上了（这台机器有4个超线程）</p><p>接下来退出容器我们选择将所有的进程运行在cpu <code>1</code>上再看看有什么变化：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>docker run -it --rm --cpuset-cpus<span class=o>=</span><span class=m>1</span> --name<span class=o>=</span>demo centos /bin/bash
+</code></pre></td></tr></table></div></div><p>运行<code>cat</code>程序</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>cat /dev/zero &gt; /dev/null <span class=p>&amp;</span>
+cat /dev/zero &gt; /dev/null <span class=p>&amp;</span>
+cat /dev/zero &gt; /dev/null <span class=p>&amp;</span>
+cat /dev/zero &gt; /dev/null <span class=p>&amp;</span>
+</code></pre></td></tr></table></div></div><p>现在再查看一下运行的情况：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>ps mo pid,comm,psr <span class=k>$(</span>pgrep cat<span class=k>)</span>
+  PID COMMAND         PSR
+<span class=m>23502</span> kworker/u9:1-rb   -
+    - -                 <span class=m>3</span>
+<span class=m>24129</span> kworker/u9:2-rb   -
+    - -                 <span class=m>1</span>
+<span class=m>26770</span> cat               -
+    - -                 <span class=m>1</span>
+<span class=m>26771</span> cat               -
+    - -                 <span class=m>1</span>
+<span class=m>26772</span> cat               -
+    - -                 <span class=m>1</span>
+<span class=m>26773</span> cat               -
+    - -                 <span class=m>1</span>
+</code></pre></td></tr></table></div></div><p>这个时候就可以看到所有的<code>cat</code>进程已经运行在cpu1上面了。</p><h2 id=监控系统资源>监控系统资源</h2><p>在日常的使用中我们的系统上面可能有着许多的容器，每个容器都是需要消耗一定的cpu内存和网络以及硬盘的存储空间，在之前的章节里面我们将讲到过可以通过<code>docker stats</code>这个命令来看容器的一些资源开销。</p><p>这种命令行的方式在需要查看大量的容器资源开销的时候就变得非常不方便了，那么有没有一种方法可以解决这个问题呢？</p><p><a href=https://en.wikipedia.org/wiki/Google>Google</a>开源了一个叫[cadvisor](<a href=https://github.com/google/cadvisor%5D>https://github.com/google/cadvisor]</a>的工具，我们可以部署这个工具来达到监控容器资源开销的目的。</p><p>我们来创建一个<code>cadvisor</code>容器：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell><span class=nv>VERSION</span><span class=o>=</span>v0.36.0 <span class=c1># use the latest release version from https://github.com/google/cadvisor/releases</span>
+docker run <span class=se>\
+</span><span class=se></span>  --volume<span class=o>=</span>/:/rootfs:ro <span class=se>\
+</span><span class=se></span>  --volume<span class=o>=</span>/var/run:/var/run:ro <span class=se>\
+</span><span class=se></span>  --volume<span class=o>=</span>/sys:/sys:ro <span class=se>\
+</span><span class=se></span>  --volume<span class=o>=</span>/var/lib/docker/:/var/lib/docker:ro <span class=se>\
+</span><span class=se></span>  --publish<span class=o>=</span>8080:8080 <span class=se>\
+</span><span class=se></span>  --detach<span class=o>=</span><span class=nb>true</span> <span class=se>\
+</span><span class=se></span>  --name<span class=o>=</span>cadvisor <span class=se>\
+</span><span class=se></span>  --privileged <span class=se>\
+</span><span class=se></span>  --device<span class=o>=</span>/dev/kmsg <span class=se>\
+</span><span class=se></span>  gcr.io/cadvisor/cadvisor:<span class=nv>$VERSION</span>
+</code></pre></td></tr></table></div></div><p>在运行之后可以使用浏览器打开对应的 ip:port ，然后就可以看到<code>cadvisor</code>页面：</p><p><img src=../../images/cadvisor_dashboard.png alt=cadvisor></p><p>我这里用红线标注出来了正在运行的子容器信息，点击就可以进入子容器的详细信息页面，其中包括了主要的：</p><ul><li>cpu</li><li>内存</li><li>网络</li><li>磁盘
+这些主要的指标。</li></ul><p>这个简单用起来就会发现<code>cadvisor</code>像较于我们在前文中介绍到的<code>scope</code>功能非常的简单，在实际的生产环境我们考量的点会很多，那么应该使用什么呢？</p><p>我认为可以参考这篇知乎文章来选择：<a href=https://zhuanlan.zhihu.com/p/57740192>滴滴云：容器领域的十大监控系统对比</a></p><h2 id=结束语>结束语</h2><p>终于完成这篇文章了，比我想想的要慢了许多，其中涉及到了非常多的内核相关的概念。因此花了许多时间去查阅计算机系统相关的内容和内核相关的内容，我相信有了这么一个还算是及格的基础接下来的cka部分的学习压力就会小上很多。</p><h2 id=参考资料>参考资料</h2><ul><li><a href="https://www.bilibili.com/video/BV1r54y1v7Nb?p=1">马哥教育：Docker Kubernetes 应用入门</a></li><li><a href=https://docs.docker.com/>Docker Docs</a></li><li><a href=https://man7.org/linux/man-pages/man7/capabilities.7.html>Kernel capabilities</a></li><li><a href=https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/resource_management_guide/ch01>RedHat docs Cgroups</a></li><li><a href=https://thenewstack.io/container-networking-breakdown-explanation-analysis/>Container Networking: A Breakdown, Explanation and Analysis</a></li><li><a href=https://docs.docker.com/engine/reference/builder/#add>Docker docs: Dockerfile reference: ADD</a></li><li><a href=https://goharbor.io/docs/2.0.0/install-config/>Harbor Installation and Configuration</a></li><li><a href=https://github.com/google/cadvisor>Github cadvisor</a></li></ul></div><div class=post-copyright><p class=copyright-item><span class=item-title>Author</span>
+<span class=item-content>Yafa Xena</span></p><p class=copyright-item><span class=item-title>LastMod</span>
+<span class=item-content>2021-03-30</span></p></div><footer class=post-footer><div class=post-tags><a href=/tags/linux/>linux</a>
+<a href=/tags/docker/>docker</a>
+<a href=/tags/cka/>cka</a>
+<a href=/tags/certification/>certification</a>
+<a href=/tags/exam/>exam</a></div><nav class=post-nav><a class=next href=/post/ntp/><span class="next-text nav-default">NTP时间同步服务器</span>
+<span class="next-text nav-mobile">Next</span>
+<i class="iconfont icon-right"></i></a></nav></footer></article></div><script src=https://utteranc.es/client.js repo=yafa-xena/yafa-xena/blog-comments issue-term=pathname theme=github-light crossorigin=anonymous async></script><noscript>Please enable JavaScript to view the <a href=https://github.com/utterance>comments powered by utterances.</a></noscript></div></main><footer id=footer class=footer><div class=social-links><a href=mailto:i@yafa.moe class="iconfont icon-email" title=email></a><a href=https://twitter.com/XenaYafa class="iconfont icon-twitter" title=twitter></a><a href=https://github.com/yafa-xena/ class="iconfont icon-github" title=github></a><a href=https://www.yafa.moe/index.xml type=application/rss+xml class="iconfont icon-rss" title=rss></a></div><div class=copyright><span class=power-by>Powered by <a class=hexo-link href=https://gohugo.io>Hugo</a></span>
+<span class=division>|</span>
+<span class=theme-info>Theme -
+<a class=theme-link href=https://github.com/olOwOlo/hugo-theme-even>Even</a></span>
+<span class=copyright-year>&copy;
+2021<span class=heart><i class="iconfont icon-heart"></i></span><span>Yafa Xena</span></span></div></footer><div class=back-to-top id=back-to-top><i class="iconfont icon-up"></i></div></div><script src=https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin=anonymous></script><script type=text/javascript src=/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js></script><script type=text/javascript>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],tags:'ams',}};</script><script async src=https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin=anonymous></script><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','UA-194993895-1','auto');ga('set','anonymizeIp',true);ga('send','pageview');}</script><script async src=https://www.google-analytics.com/analytics.js></script></body></html>
