@@ -1,0 +1,257 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><title>CDH6.2.1部署 - Yafa Xena's blog</title><meta name=renderer content="webkit"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><meta http-equiv=cache-control content="no-transform"><meta http-equiv=cache-control content="no-siteapp"><meta name=theme-color content="#f8f5ec"><meta name=msapplication-navbutton-color content="#f8f5ec"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="#f8f5ec"><meta name=author content="Yafa Xena"><meta name=description content="前言 这里记录一下如何使用CDH部署大数据集群。 环境准备 这里准备了3台虚拟机用于本次的部署： 主机名 IP 角色 cdh-node1 192.168.122.52 CM Server Mysql 数据节点 CM Agent cdh-node2 192.168.122.53 数据节点 CM Agent"><meta name=keywords content="Linux,Emacs,Python,Golang,Devops,Zabbix,Kubernetes,Gentoo"><meta name=generator content="Hugo 0.79.1 with theme even"><link rel=canonical href=https://www.yafa.moe/post/cdh/><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/manifest.json><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link href=/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin=anonymous><meta property="og:title" content="CDH6.2.1部署"><meta property="og:description" content="前言 这里记录一下如何使用CDH部署大数据集群。 环境准备 这里准备了3台虚拟机用于本次的部署： 主机名 IP 角色 cdh-node1 192.168.122.52 CM Server Mysql 数据节点 CM Agent cdh-node2 192.168.122.53 数据节点 CM Agent"><meta property="og:type" content="article"><meta property="og:url" content="https://www.yafa.moe/post/cdh/"><meta property="article:published_time" content="2021-07-08T22:14:07+08:00"><meta property="article:modified_time" content="2021-07-08T22:14:07+08:00"><meta itemprop=name content="CDH6.2.1部署"><meta itemprop=description content="前言 这里记录一下如何使用CDH部署大数据集群。 环境准备 这里准备了3台虚拟机用于本次的部署： 主机名 IP 角色 cdh-node1 192.168.122.52 CM Server Mysql 数据节点 CM Agent cdh-node2 192.168.122.53 数据节点 CM Agent"><meta itemprop=datePublished content="2021-07-08T22:14:07+08:00"><meta itemprop=dateModified content="2021-07-08T22:14:07+08:00"><meta itemprop=wordCount content="3595"><meta itemprop=keywords content="hadoop,cdh,Linux,"><meta name=twitter:card content="summary"><meta name=twitter:title content="CDH6.2.1部署"><meta name=twitter:description content="前言 这里记录一下如何使用CDH部署大数据集群。 环境准备 这里准备了3台虚拟机用于本次的部署： 主机名 IP 角色 cdh-node1 192.168.122.52 CM Server Mysql 数据节点 CM Agent cdh-node2 192.168.122.53 数据节点 CM Agent"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script><script src=https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js></script><![endif]--></head><body><div id=mobile-navbar class=mobile-navbar><div class=mobile-header-logo><a href=/ class=logo>Yafa-Xena</a></div><div class=mobile-navbar-icon><span></span><span></span><span></span></div></div><nav id=mobile-menu class="mobile-menu slideout-menu"><ul class=mobile-menu-list><a href=/><li class=mobile-menu-item>Home</li></a><a href=/post/><li class=mobile-menu-item>Archives</li></a><a href=/tags/><li class=mobile-menu-item>Tags</li></a><a href=/todo><li class=mobile-menu-item>Todo</li></a><a href=/about><li class=mobile-menu-item>About</li></a><a href=/product><li class=mobile-menu-item>Product</li></a></ul></nav><div class=container id=mobile-panel><header id=header class=header><div class=logo-wrapper><a href=/ class=logo>Yafa-Xena</a></div><nav class=site-navbar><ul id=menu class=menu><li class=menu-item><a class=menu-item-link href=/>Home</a></li><li class=menu-item><a class=menu-item-link href=/post/>Archives</a></li><li class=menu-item><a class=menu-item-link href=/tags/>Tags</a></li><li class=menu-item><a class=menu-item-link href=/todo>Todo</a></li><li class=menu-item><a class=menu-item-link href=/about>About</a></li><li class=menu-item><a class=menu-item-link href=/product>Product</a></li></ul></nav></header><main id=main class=main><div class=content-wrapper><div id=content class=content><article class=post><header class=post-header><h1 class=post-title>CDH6.2.1部署</h1><div class=post-meta><span class=post-time>2021-07-08</span></div></header><div class=post-toc id=post-toc><h2 class=post-toc-title>Contents</h2><div class=post-toc-content><nav id=TableOfContents><ul><li><ul><li><a href=#前言>前言</a></li><li><a href=#环境准备>环境准备</a><ul><li><a href=#节点配置>节点配置</a></li><li><a href=#ntp-server>NTP Server</a></li><li><a href=#安装数据库>安装数据库</a></li><li><a href=#配置局域网yum源>配置局域网yum源</a></li></ul></li><li><a href=#安装cm>安装CM</a></li><li><a href=#部署集群>部署集群</a></li><li><a href=#故障排除>故障排除</a></li><li><a href=#添加服务>添加服务</a></li><li><a href=#参考资料>参考资料</a></li></ul></li></ul></nav></div></div><div class=post-content><h2 id=前言>前言</h2><p>这里记录一下如何使用CDH部署大数据集群。</p><h2 id=环境准备>环境准备</h2><p>这里准备了3台虚拟机用于本次的部署：</p><table><thead><tr><th>主机名</th><th>IP</th><th>角色</th></tr></thead><tbody><tr><td>cdh-node1</td><td>192.168.122.52</td><td>CM Server Mysql 数据节点 CM Agent</td></tr><tr><td>cdh-node2</td><td>192.168.122.53</td><td>数据节点 CM Agent</td></tr><tr><td>cdh-node3</td><td>192.168.122.54</td><td>数据节点 CM Agent</td></tr></tbody></table><p>操作系统为：CentOS 7.4</p><blockquote><p>额外的资源情况</p></blockquote><p>dns server： 192.168.122.1</p><p>如果不使用dns server需要在每个节点的<code>/etc/hosts</code>文件中添加如下内容：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>192.168.122.52 cdh-node1.nil.ml
+192.168.122.53 cdh-node2.nil.ml
+192.168.122.54 cdh-node3.nil.ml
+</code></pre></td></tr></table></div></div><h3 id=节点配置>节点配置</h3><blockquote><p>设置（每个节点）只有内存使用到90%才可以使用swap</p></blockquote><p>编辑<code>/etc/sysctl.conf</code>文件：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>vi /etc/sysctl.conf
+</code></pre></td></tr></table></div></div><p>添加内容如下：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>vm.swappiness <span class=o>=</span> <span class=m>10</span>
+</code></pre></td></tr></table></div></div><p>使其生效：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>sysctl -p /etc/sysctl.conf
+</code></pre></td></tr></table></div></div><blockquote><p>设置<code>hugepage</code>相关参数：</p></blockquote><p>编辑<code>/etc/rc.local</code>文件：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>vi /etc/rc.local
+</code></pre></td></tr></table></div></div><p>在文件末尾追加如下内容：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell><span class=nb>echo</span> never &gt;/sys/kernel/mm/transparent_hugepage/defrag
+<span class=nb>echo</span> never &gt;/sys/kernel/mm/transparent_hugepage/enabled
+</code></pre></td></tr></table></div></div><p>保存退出。</p><p>直接给<code>/etc/rc.local</code>文件添加执行权限是不生效的，需要给<code>/etc/rc.d/rc.local</code>这个原文件添加执行权限：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>chmod +x /etc/rc.d/rc.local
+</code></pre></td></tr></table></div></div><p>启动并开机启动<code>rc-local</code>服务：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>systemctl <span class=nb>enable</span> rc-local
+systemctl start  rc-local
+</code></pre></td></tr></table></div></div><blockquote><p>配置主机名，ip并关闭selinux和防火墙，最后重启：</p></blockquote><p>cdh-node1.nil.ml</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>hostnamectl set-hostname cdh-node1.nil.ml
+nmcli con mod eth0 ipv4.method manual ipv4.addresses 192.168.122.52/24 ipv4.dns <span class=s2>&#34;192.168.122.1, 114.114.114.114&#34;</span> ipv4.gateway 192.168.122.1 connection.autoconnect yes
+nmcli con up eth0
+sed -i <span class=s1>&#39;s/SELINUX=enforcing/SELINUX=disabled/g&#39;</span> /etc/selinux/config
+systemctl disable firewalld
+reboot
+</code></pre></td></tr></table></div></div><p>cdh-node2.nil.ml</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>hostnamectl set-hostname cdh-node2.nil.ml
+nmcli con mod eth0 ipv4.method manual ipv4.addresses 192.168.122.53/24 ipv4.dns <span class=s2>&#34;192.168.122.1, 114.114.114.114&#34;</span> ipv4.gateway 192.168.122.1 connection.autoconnect yes
+nmcli con up eth0
+sed -i <span class=s1>&#39;s/SELINUX=enforcing/SELINUX=disabled/g&#39;</span> /etc/selinux/config
+systemctl disable firewalld
+reboot
+</code></pre></td></tr></table></div></div><p>cdh-node3.nil.ml</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>hostnamectl set-hostname cdh-node3.nil.ml
+nmcli con mod eth0 ipv4.method manual ipv4.addresses 192.168.122.54/24 ipv4.dns <span class=s2>&#34;192.168.122.1, 114.114.114.114&#34;</span> ipv4.gateway 192.168.122.1 connection.autoconnect yes
+nmcli con up eth0
+sed -i <span class=s1>&#39;s/SELINUX=enforcing/SELINUX=disabled/g&#39;</span> /etc/selinux/config
+systemctl disable firewalld
+reboot
+</code></pre></td></tr></table></div></div><h3 id=ntp-server>NTP Server</h3><p>在集群中很重要的一个就是时间同步服务，时间不一致可能导致出现各种问题。</p><p>首先每个节点设置同样的时区：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>timedatectl set-timezone <span class=s2>&#34;Asia/Shanghai&#34;</span>
+</code></pre></td></tr></table></div></div><p>在<code>cdh-node1</code>节点上配置NTP服务器，首先安装<code>chrony</code>：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>yum install chrony -y
+</code></pre></td></tr></table></div></div><p>修改<code>/etc/chrony.conf</code>配置文件，修改内容如下：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>server ntp.aliyun.com iburst
+allow 192.168.122.0/24
+</code></pre></td></tr></table></div></div><p>开机启动<code>chronyd</code>服务并启动：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>systemctl <span class=nb>enable</span> chronyd.service --now
+</code></pre></td></tr></table></div></div><p>查看服务状态：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>systemctl status chronyd.service
+</code></pre></td></tr></table></div></div><p>其他节点上也部署 chrony：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>yum install chrony -y
+</code></pre></td></tr></table></div></div><p>修改<code>/etc/chrony.conf</code>配置文件，修改内容如下：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>server cdh-node1.nil.ml iburst
+</code></pre></td></tr></table></div></div><p>重启<code>chronyd</code>服务：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>systemctl restart chronyd.service
+</code></pre></td></tr></table></div></div><p>查看同步状态：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>chronyc sources
+</code></pre></td></tr></table></div></div><h3 id=安装数据库>安装数据库</h3><blockquote><p>在<code>cdh-node1</code>节点上配置数据库</p></blockquote><p>创建并编辑<code>/etc/yum.repos.d/mysql.repo</code>内容如下：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell><span class=o>[</span>mysql57<span class=o>]</span>
+<span class=nv>name</span><span class=o>=</span>mysql57
+<span class=nv>baseurl</span> <span class=o>=</span> https://mirrors.tuna.tsinghua.edu.cn/mysql/yum/mysql57-community-el7/
+<span class=nb>enable</span> <span class=o>=</span> <span class=m>1</span>
+<span class=nv>gpgcheck</span> <span class=o>=</span> <span class=m>0</span>
+</code></pre></td></tr></table></div></div><blockquote><p>安装mysql：</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>yum install mysql-community-server -y
+</code></pre></td></tr></table></div></div><blockquote><p>配置数据库</p></blockquote><p>首先启动mysql并将开机启动：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>systemctl <span class=nb>enable</span> mysqld --now
+</code></pre></td></tr></table></div></div><p>查看默认的mysql密码：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>grep password /var/log/mysqld.log
+2021-07-09T13:45:25.747757Z 1 [Note] A temporary password is generated for root@localhost: JPwlGsN)q4,)
+</code></pre></td></tr></table></div></div><p>使用这个密码连接到数据库：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>mysql -uroot -p
+</code></pre></td></tr></table></div></div><p>更改默认的数据库密码(不建议使用弱密码)：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sql data-lang=sql><span class=k>set</span> <span class=k>global</span> <span class=n>validate_password_policy</span><span class=o>=</span><span class=mi>0</span><span class=p>;</span>
+<span class=k>set</span> <span class=k>global</span> <span class=n>validate_password_length</span><span class=o>=</span><span class=mi>6</span><span class=p>;</span>
+<span class=k>ALTER</span> <span class=k>USER</span> <span class=s1>&#39;root&#39;</span><span class=o>@</span><span class=s1>&#39;localhost&#39;</span> <span class=n>IDENTIFIED</span> <span class=k>BY</span> <span class=s1>&#39;123456&#39;</span><span class=p>;</span>
+</code></pre></td></tr></table></div></div><blockquote><p>创建需要用到的数据库并授权：</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>CREATE DATABASE scm DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci<span class=p>;</span>
+CREATE DATABASE am DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci<span class=p>;</span>
+CREATE DATABASE hive DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci<span class=p>;</span>
+CREATE DATABASE oozie DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci<span class=p>;</span>
+CREATE DATABASE hue DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci<span class=p>;</span>
+</code></pre></td></tr></table></div></div><p>创建登录用户并授权：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>grant all on scm.* to <span class=s1>&#39;scm&#39;</span>@<span class=s1>&#39;%&#39;</span> identified by <span class=s1>&#39;123456&#39;</span><span class=p>;</span>
+grant all on am.* to <span class=s1>&#39;am&#39;</span>@<span class=s1>&#39;%&#39;</span> identified by <span class=s1>&#39;123456&#39;</span><span class=p>;</span>
+grant all on hive.* to <span class=s1>&#39;hive&#39;</span>@<span class=s1>&#39;%&#39;</span> identified by <span class=s1>&#39;123456&#39;</span><span class=p>;</span>
+grant all on oozie.* to <span class=s1>&#39;oozie&#39;</span>@<span class=s1>&#39;%&#39;</span> identified by <span class=s1>&#39;123456&#39;</span><span class=p>;</span>
+grant all on hue.* to <span class=s1>&#39;hue&#39;</span>@<span class=s1>&#39;%&#39;</span> identified by <span class=s1>&#39;123456&#39;</span><span class=p>;</span>
+FLUSH PRIVILEGES<span class=p>;</span>
+</code></pre></td></tr></table></div></div><h3 id=配置局域网yum源>配置局域网yum源</h3><p>这里取决于应用场景，比如说是离线的内网环境就需要准备一个离线的源来让各个节点获得服务运行的必要依赖。</p><p>这里用到了一个<a href=https://www.mysql.com/products/connector/>Connector</a>，可以在里面下载rpm包的版本。</p><p>这里使用<a href=https://httpd.apache.org/>httpd</a>进行发布。</p><blockquote><p>部署httpd</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>yum install httpd -y
+</code></pre></td></tr></table></div></div><p>删除原有的配置文件；</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>rm -f /etc/httpd/conf.d/welcome.conf
+rm -f /etc/httpd/conf.d/autoindex.conf
+rm -f /etc/httpd/conf.d/userdir.conf
+</code></pre></td></tr></table></div></div><p>创建并编辑局域网yum源vhost文件：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>vi /etc/httpd/conf.d/cdh.conf
+</code></pre></td></tr></table></div></div><p>内容如下：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>&lt;VirtualHost cdh-node1.nil.ml:80&gt;
+    DocumentRoot <span class=s2>&#34;/var/www/cloudera-repos&#34;</span>
+    ServerName cdh-node1.nil.ml
+&lt;/VirtualHost&gt;
+
+&lt;Directory <span class=s2>&#34;/var/www/cloudera-repos&#34;</span>&gt;
+    Options Indexes FollowSymLinks
+    AllowOverride None
+    Require all granted
+&lt;/Directory&gt;
+</code></pre></td></tr></table></div></div><p>保存退出之后将httpd加入开机启动并启动：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>systemctl <span class=nb>enable</span> httpd --now
+</code></pre></td></tr></table></div></div><p>查看服务状态：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>systemctl status httpd
+</code></pre></td></tr></table></div></div><p>上传所有的包到<code>cdh-node1</code>节点的<code>/var/www/cloudera-repos</code>目录：</p><blockquote><p>确保服务器上安装了rsync 如果没有安装可以使用包管理进行安装</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>rsync -avz cloudera-repos -e ssh root@192.168.122.50:/var/www
+</code></pre></td></tr></table></div></div><blockquote><p>在cm节点上配置cm的yum源：</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>vi /etc/yum.repos.d/cloudera-repo.repo
+</code></pre></td></tr></table></div></div><p>内容如下：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>[cloudera-repo]
+name=cloudera-repo
+baseurl=http://cdh-node1.nil.ml/cm6/6.2.1/redhat7/yum/
+enabled=1
+gpgcheck=0
+</code></pre></td></tr></table></div></div><h2 id=安装cm>安装CM</h2><blockquote><p>安装jdk(<code>cdh-node1</code>节点)</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>yum install -y http://cdh-node1.nil.ml/cm6/6.2.1/redhat7/yum/RPMS/x86_64/oracle-j2sdk1.8-1.8.0+update181-1.x86_64.rpm
+</code></pre></td></tr></table></div></div><blockquote><p>配置<code>/etc/profile</code>(<code>cdh-node1</code>节点)</p></blockquote><p>编辑<code>/etc/profile</code>文件：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>vi /etc/profile
+</code></pre></td></tr></table></div></div><p>在末尾追加如下内容：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell><span class=nb>export</span> <span class=nv>JAVA_HOME</span><span class=o>=</span>/usr/java/jdk1.8.0_181-cloudera
+<span class=nb>export</span> <span class=nv>JRE_HOME</span><span class=o>=</span><span class=nv>$JAVA_HOME</span>/jre
+<span class=nb>export</span> <span class=nv>PATH</span><span class=o>=</span><span class=nv>$JAVA_HOME</span>/bin:<span class=nv>$PATH</span>
+<span class=nb>export</span> <span class=nv>CLASSPATH</span><span class=o>=</span>.:<span class=nv>$JAVA_HOME</span>/lib:<span class=nv>$JRE_HOME</span>/lib
+</code></pre></td></tr></table></div></div><p>保存退出之后重新载入一下：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>. /etc/profile
+</code></pre></td></tr></table></div></div><p>验证：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>java -version
+</code></pre></td></tr></table></div></div><blockquote><p>JDBC(<code>cdh-node1</code>节点)</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>yum install http://cdh-node1.nil.ml/mysql-connector-java-8.0.25-1.el7.noarch.rpm -y
+</code></pre></td></tr></table></div></div><blockquote><p>安装cm-server</p></blockquote><p><code>cdh-node1</code>节点安装：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>yum install cloudera-manager-daemons cloudera-manager-agent cloudera-manager-server -y
+</code></pre></td></tr></table></div></div><blockquote><p>使用创建数据库的脚本：</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>/opt/cloudera/cm/schema/scm_prepare_database.sh mysql scm scm <span class=m>123456</span>
+</code></pre></td></tr></table></div></div><p>说明一下这个脚本的参数：</p><ul><li><code>mysql</code> 数据库类型这里我们使用的是mysql</li><li><code>scm</code> 数据库</li><li><code>scm</code> 用户</li><li><code>123456</code> 密码</li></ul><p>启动：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>systemctl start cloudera-scm-server
+systemctl <span class=nb>enable</span> cloudera-scm-server
+</code></pre></td></tr></table></div></div><p>查看启动日志直到出现：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>2021-07-27 15:24:05,530 INFO WebServerImpl:org.eclipse.jetty.server.Server: Started @55780ms
+2021-07-27 15:24:05,530 INFO WebServerImpl:com.cloudera.server.cmf.WebServerImpl: Started Jetty server.
+</code></pre></td></tr></table></div></div><p>这个时候我们用浏览器打开</p><p><a href=http://cdh-node1.nil.ml>http://cdh-node1.nil.ml</a>:7180</p><p>就可以看到CM的管理页面了：</p><p><img src=../../images/cdh-login-page.png alt="cdh login page"></p><p>默认的账户和密码是：</p><p>用户名：admin
+密码：admin</p><h2 id=部署集群>部署集群</h2><p>首先登陆CM的页面：
+<a href=http://cdh-node1.nil.ml>http://cdh-node1.nil.ml</a>:7180</p><p>登陆之后会到欢迎界面：
+<img src=../../images/cdh-welcome-page.png alt="welcome page">
+这里有许多的内容比如说release notes，新的功能和已知的一些问题，建议好好阅读一下。</p><p>选择继续后到了用户协议的页面，这里建议阅读一下，如果没有啥疑问选择同意然后选择继续：</p><p><img src=../../images/cdh-accept-license.png alt="user license"></p><p>这里让我们选择的我们需要的版本，这里提供了三种：</p><ol><li>免费（实际上现在也是收费了）</li><li>60天的企业适用</li><li>输入企业许可证</li></ol><p>根据实际的需要选择需要的版本，这里选择免费的许可然后选择继续：</p><p><img src=../../images/cdh-select-edition.png alt="select edition"></p><p>这里我们跳到了添加集群的欢迎界面：</p><p><img src=../../images/cdh-add-cluster-welcome.png alt="add cluster welcome page"></p><p>同样的这里也有一些快速链接可以参考查看，比如说安装手册、支持的操作系统、支持的数据库、支持的JDK版本。</p><p>这里让我们设置集群的名称，我这里保持默认的<code>Cluster 1</code>。当然你也可以设置自己想要的集群名称以方便区分未来的不同环境的集群：</p><p><img src=../../images/cdh-add-cluster-basics.png alt="add cluster basics"></p><p>这里我们需要指定我们安装的主机：</p><p><img src=../../images/cdh-add-cluster-specify-hosts.png alt="Specify Hosts">
+这里输入三台节点的主机名：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>cdh-node1.nil.ml
+cdh-node2.nil.ml
+cdh-node3.nil.ml
+</code></pre></td></tr></table></div></div><p>然后按<code>search</code>按钮，搜索的结果如下：</p><p><img src=../../images/cdh-add-cluster-scan-hosts.png alt="search hosts"></p><p>和我们之前规划的一致选择继续：</p><p><img src=../../images/cdh-add-cluster-select-repo.png alt="select repo"></p><p>这里的Custom Repository 我们不需要进行修改，我们需要设置一下Parcels的地址，点击<code>More Options</code>：
+<img src=../../images/cdh-add-cluster-remote-parcel-repo.png alt="remote repo">
+这里改成我们内网源的url，选择保存更改。</p><p>现在我们发现有一个CDH可以，同时也可以进行安装了：</p><p><img src=../../images/cdh-add-cluster-done-repo.png alt="done repo"></p><p>现在我们来到了接受JDK许可的界面，选择接受然后按继续：</p><p><img src=../../images/cdh-add-cluster-accept-jdk-license.png alt="accept jdk license"></p><p>这里是比较重要的一个步骤，登陆凭证，如果你是密钥对登陆需要将私钥复制粘贴进来，最好这个私钥的公钥已经发送到每个节点上了，或者是所有节点的密码一致：</p><p><img src=../../images/cdh-add-cluster-enter-credentials.png alt="enter credentials"></p><p>在选择继续后就进入到了安装agent的环节，耐心等待安装完成：</p><p><img src=../../images/cdh-add-cluster-install-agent.png alt="install agent">
+在agent安装完成之后会自动跳到安装Parcels的界面：</p><p><img src=../../images/cdh-add-cluster-install-parcels.png alt="install parcels"></p><p>安装parcels完成之后会自动跳到添加集群的最后一个界面就是检查集群的界面，这里有两个检查一个是检查网络，一个是检查节点：
+<img src=../../images/cdh-add-cluster-inspect-cluster.png alt="Inspect Cluster"></p><p>根据测试的结果如果有不能通过的需要检查原因修复之后重新检查直至检查通过：
+<img src=../../images/cdh-add-cluster-inspect-cluster-pass.png alt="inspect cluster pass">
+通过后选择继续<code>I understand the risks, let me continue with cluster creation.</code></p><p>现在我们来到了添加服务的页面：</p><p><img src=../../images/cdh-add-cluster-config-select-services.png alt="add services"></p><p>这里我们选择自定义服务：</p><p><img src=../../images/cdh-add-cluster-config-custom-services.png alt="custom services"></p><p>这里选择 HDFS，Zookeeper然后选择继续：</p><p><img src=../../images/cdh-add-cluster-config-assign-roles.png alt="assign roles">
+在这个角色这里，注意zookeeper和datanode服务要选择所有的节点（如果是双数节点比如说6那么最好减掉一个节点或者是添加一个节点）</p><p><img src=../../images/cdh-add-cluster-config-setup-databases.png alt="setup databases">
+这里设置一下Activity Monitor的数据库，然后点一下测试链接，没有问题之后选择继续。</p><p>这里可以设置一些HDFS块的大小，DataNode，NameNode的存储位置以及报警等等可以根据实际的需求进行设置：</p><p><img src=../../images/cdh-add-cluster-config-review-changes.png alt="Review Changes"></p><p>这里就是实际安装集群的一些细节，如果出现错误可以在这里进行查看修改后重新检查：
+<img src=../../images/cdh-add-cluster-config-command-details.png alt="Command Details"></p><p>最后选择完成：
+<img src=../../images/cdh-add-cluster-config-summary.png alt=Summary></p><p>完成安装之后我们就可以进入到集群的状态页面啦：</p><p><img src=../../images/cdh-cluster-status.png alt="Cluster Status"></p><h2 id=故障排除>故障排除</h2><p>这里我们可以看到有1个健康告警，在<code>All Health Issues</code>中可以看到是一个<code>Erasure Coding Policy Verification Test</code>：
+<img src=../../images/cdh-all-health-issues.png alt="All Health Issues"></p><p>我们可以点进去看详细的信息：</p><p><img src=../../images/cdh-coding-policy-v-test.png alt="Erasure Coding Policy Verification Test">
+这里我们可以看到提示的信息开启这个功能需要9个DataNode，我们当前只有3个所以这个功能是不能使用的，我们可以选择添加一些DataNode来启动或者是选择关掉。</p><p>这里选择关掉这个功能：</p><p><img src=../../images/cdh-change-policy.png alt="change policy"></p><p>然后我们回到HDFS的主页面，这里可以看到有一个类似于电源的按钮：</p><p><img src=../../images/cdh-hdfs-bt.png alt="hdfs bt">
+这个其实是当我们更改了一个服务的配置之后都会有的一个提示，我们点进去：</p><p><img src=../../images/cdh-stale-config.png alt=cdh-stale-config></p><p>这里类似于一个diff，展示我们更改的内容。这里可以看到<code>dfs.namenode.ec.system.default.policy</code>的值从<code>RS-6-3-1024k</code>改为了空，我们选择重启服务。</p><p>这里提示我们是否要将client的配置文件也重新部署一下，这里要注意选择上，节点配置不一样可能出现奇奇怪怪的问题：
+<img src=../../images/cdh-review-change.png alt="review changes">
+然后选择重启。</p><p>同样的这里也有一个指向命令详细的输出：</p><p><img src=../../images/cdh-change-command-d.png alt="change command d"></p><p>选择完成之后我们回到了主页，这里可以看到刚刚的健康警告没有了，但是还有3个配置警告：
+<img src=../../images/cdh-config-iss.png alt="cdh config wa"></p><p>我们点进去看一下都是什么原因：</p><p><img src=../../images/cdh-config-w-d.png alt="cdh config wa d"></p><ul><li><code>Java Heap Size</code> 4096</li><li><code>non-Java memory size</code> 一个是 2GiB 2048 一个是 6GiB 6144</li></ul><p>这里我们按照推荐的大小进行设置即可，设置完成之后重启：</p><p><img src=../../images/cdh-java-heap-size.png alt="Java heap"></p><p>最终可以看到服务都正常了：</p><p><img src=../../images/cdh-all-done.png alt="all done"></p><h2 id=添加服务>添加服务</h2><p>我们这里以添加一个hive服务为例子，选择添加服务</p><p><img src=../../images/cdh-add-new-services-b.png alt="add new services"></p><p>我们首先要选择添加yarn（hive依赖于yarn去调度，所以我们得先创建yarn）：</p><p><img src=../../images/cdh-add-new-services-yarn.png alt="add new services yarn"></p><p>资产的角色：</p><p><img src=../../images/cdh-add-new-services-yarn-role.png alt="add yarn Assign Roles"></p><p><img src=../../images/cdh-add-new-services-yarn-review-change.png alt="add yarn review change"></p><p>这里可以看到命令的详细信息：
+<img src=../../images/cdh-add-new-services-yarn-command-details.png alt="yarn command details"></p><p>最终可以看到完成：</p><p><img src=../../images/cdh-add-new-services-yarn-summary.png alt="yarn summary"></p><p>接下来我们添加hive的服务</p><p>选择hive:</p><p><img src=../../images/cdh-add-new-services-hive.png alt="add new services hive"></p><p><img src=../../images/cdh-add-new-services-hive-select-dependencies.png alt="cdh add new services hive select dependencies"></p><p>节点的角色：</p><p><img src=../../images/cdh-add-new-services-hive-assign-roles.png alt="cdh add new services hive assign roles"></p><p>初始化数据库：
+<img src=../../images/cdh-add-new-services-hive-setup-databases.png alt="cdh add new services hive setup databases">
+查看变更：
+<img src=../../images/cdh-add-new-services-hive-review-changes.png alt="cdh add new services hive review changes">
+命令详情：
+<img src=../../images/cdh-add-new-services-hive-command-details.png alt="cdh add new services hive command details">
+摘要：
+<img src=../../images/cdh-add-new-services-hive-summary.png alt="cdh add new services hive summary"></p><p>完成：
+<img src=../../images/cdh-add-new-services-all-done.png alt="cdh add done"></p><p>##　后记</p><p>CDH的部署没有那么难，跟我一起念：</p><p>先把资源规划好，时间同步最重要。</p><p>脑子清醒手要慢，笔记文档要跟上。</p><p>集群出错不要慌，先看提示后查错。</p><p>你学会了吗？</p><h2 id=参考资料>参考资料</h2><p><a href=https://docs.cloudera.com/csp/2.0.1/deployment/topics/csp-install-cdh.html>Install CDH</a></p></div><div class=post-copyright><p class=copyright-item><span class=item-title>Author</span>
+<span class=item-content>Yafa Xena</span></p><p class=copyright-item><span class=item-title>LastMod</span>
+<span class=item-content>2021-07-08</span></p><p class=copyright-item><span class=item-title>License</span>
+<span class=item-content><a rel="license noopener" href=https://creativecommons.org/licenses/by-nc-nd/4.0/ target=_blank>CC BY-NC-ND 4.0</a></span></p></div><footer class=post-footer><div class=post-tags><a href=/tags/hadoop/>hadoop</a>
+<a href=/tags/cdh/>cdh</a>
+<a href=/tags/linux/>Linux</a></div><nav class=post-nav><a class=prev href=/post/ztncui/><i class="iconfont icon-left"></i><span class="prev-text nav-default">Ztncui</span>
+<span class="prev-text nav-mobile">Prev</span></a>
+<a class=next href=/post/cka-docker-basic/><span class="next-text nav-default">CKA Docker 基础</span>
+<span class="next-text nav-mobile">Next</span>
+<i class="iconfont icon-right"></i></a></nav></footer></article></div></div></main><footer id=footer class=footer><div class=social-links><a href=mailto:yafa-xena@protonmail.com class="iconfont icon-email" title=email></a><a href=https://twitter.com/XenaYafa class="iconfont icon-twitter" title=twitter></a><a href=https://github.com/yafa-xena/ class="iconfont icon-github" title=github></a><a href=https://www.yafa.moe/index.xml type=application/rss+xml class="iconfont icon-rss" title=rss></a></div><div class=copyright><span class=power-by>Powered by <a class=hexo-link href=https://gohugo.io>Hugo</a></span>
+<span class=division>|</span>
+<span class=theme-info>Theme -
+<a class=theme-link href=https://github.com/olOwOlo/hugo-theme-even>Even</a></span>
+<span class=copyright-year>&copy;
+2021<span class=heart><i class="iconfont icon-heart"></i></span><span>Yafa Xena</span></span></div></footer><div class=back-to-top id=back-to-top><i class="iconfont icon-up"></i></div></div><script src=https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin=anonymous></script><script type=text/javascript src=/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js></script><script type=text/javascript>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],tags:'ams',}};</script><script async src=https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin=anonymous></script><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','UA-194993895-1','auto');ga('set','anonymizeIp',true);ga('send','pageview');}</script><script async src=https://www.google-analytics.com/analytics.js></script></body></html>

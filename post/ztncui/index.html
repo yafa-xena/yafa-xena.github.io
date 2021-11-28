@@ -1,0 +1,102 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><title>Ztncui - Yafa Xena's blog</title><meta name=renderer content="webkit"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><meta http-equiv=cache-control content="no-transform"><meta http-equiv=cache-control content="no-siteapp"><meta name=theme-color content="#f8f5ec"><meta name=msapplication-navbutton-color content="#f8f5ec"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="#f8f5ec"><meta name=author content="Yafa Xena"><meta name=description content="前言 在有了树莓派之后想要使用树莓派提供一个文件同步服务，但是没有公网ip，无法发布出去。 后面了解到有一个ztncui，这个就是zerotie"><meta name=keywords content="Linux,Emacs,Python,Golang,Devops,Zabbix,Kubernetes,Gentoo"><meta name=generator content="Hugo 0.79.1 with theme even"><link rel=canonical href=https://www.yafa.moe/post/ztncui/><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/manifest.json><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link href=/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin=anonymous><meta property="og:title" content="Ztncui"><meta property="og:description" content="前言 在有了树莓派之后想要使用树莓派提供一个文件同步服务，但是没有公网ip，无法发布出去。 后面了解到有一个ztncui，这个就是zerotie"><meta property="og:type" content="article"><meta property="og:url" content="https://www.yafa.moe/post/ztncui/"><meta property="article:published_time" content="2021-07-11T19:16:21+08:00"><meta property="article:modified_time" content="2021-07-11T19:16:21+08:00"><meta itemprop=name content="Ztncui"><meta itemprop=description content="前言 在有了树莓派之后想要使用树莓派提供一个文件同步服务，但是没有公网ip，无法发布出去。 后面了解到有一个ztncui，这个就是zerotie"><meta itemprop=datePublished content="2021-07-11T19:16:21+08:00"><meta itemprop=dateModified content="2021-07-11T19:16:21+08:00"><meta itemprop=wordCount content="978"><meta itemprop=keywords content="vpn,zerotier,linux,"><meta name=twitter:card content="summary"><meta name=twitter:title content="Ztncui"><meta name=twitter:description content="前言 在有了树莓派之后想要使用树莓派提供一个文件同步服务，但是没有公网ip，无法发布出去。 后面了解到有一个ztncui，这个就是zerotie"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script><script src=https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js></script><![endif]--></head><body><div id=mobile-navbar class=mobile-navbar><div class=mobile-header-logo><a href=/ class=logo>Yafa-Xena</a></div><div class=mobile-navbar-icon><span></span><span></span><span></span></div></div><nav id=mobile-menu class="mobile-menu slideout-menu"><ul class=mobile-menu-list><a href=/><li class=mobile-menu-item>Home</li></a><a href=/post/><li class=mobile-menu-item>Archives</li></a><a href=/tags/><li class=mobile-menu-item>Tags</li></a><a href=/todo><li class=mobile-menu-item>Todo</li></a><a href=/about><li class=mobile-menu-item>About</li></a><a href=/product><li class=mobile-menu-item>Product</li></a></ul></nav><div class=container id=mobile-panel><header id=header class=header><div class=logo-wrapper><a href=/ class=logo>Yafa-Xena</a></div><nav class=site-navbar><ul id=menu class=menu><li class=menu-item><a class=menu-item-link href=/>Home</a></li><li class=menu-item><a class=menu-item-link href=/post/>Archives</a></li><li class=menu-item><a class=menu-item-link href=/tags/>Tags</a></li><li class=menu-item><a class=menu-item-link href=/todo>Todo</a></li><li class=menu-item><a class=menu-item-link href=/about>About</a></li><li class=menu-item><a class=menu-item-link href=/product>Product</a></li></ul></nav></header><main id=main class=main><div class=content-wrapper><div id=content class=content><article class=post><header class=post-header><h1 class=post-title>Ztncui</h1><div class=post-meta><span class=post-time>2021-07-11</span></div></header><div class=post-toc id=post-toc><h2 class=post-toc-title>Contents</h2><div class=post-toc-content><nav id=TableOfContents><ul><li><ul><li><a href=#前言>前言</a></li><li><a href=#网络架构>网络架构</a></li><li><a href=#安装>安装</a><ul><li><a href=#server>Server</a></li><li><a href=#配置对外访问>配置对外访问</a></li></ul></li><li><a href=#创建网络>创建网络</a></li><li><a href=#客户端使用>客户端使用</a></li><li><a href=#客户端离开网络>客户端离开网络</a></li><li><a href=#后记>后记</a></li><li><a href=#参考连接>参考连接</a></li></ul></li></ul></nav></div></div><div class=post-content><h2 id=前言>前言</h2><p>在有了树莓派之后想要使用树莓派提供一个文件同步服务，但是没有公网ip，无法发布出去。</p><p>后面了解到有一个ztncui，这个就是zerotier的替代版本（只是有一个可以管理用户的界面，和zerotier的api差很多），这篇就记录一下如何安装和配置</p><h2 id=网络架构>网络架构</h2><p>设计的网络架构如下图所示：</p><p><img src=../../images/zctui.png alt></p><p>想要实现的就是从外网dns解析进来到vps的nginx，nginx vhost的upstream指向后端服务zerotier的服务地址提供服务。</p><h2 id=安装>安装</h2><blockquote><p>这里以CentOS7操作系统为例子进行安装部署</p></blockquote><h3 id=server>Server</h3><p>服务端安装zerotier-one和ztncui:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh>curl -s https://install.zerotier.com/ <span class=p>|</span> sudo bash
+sudo yum install https://download.key-networks.com/el7/ztncui/1/ztncui-release-1-1.noarch.rpm -y
+sudo yum install ztncui -y
+</code></pre></td></tr></table></div></div><p>ztncui默认端口为：3000</p><p>默认帐号密码为：admin/admin</p><h3 id=配置对外访问>配置对外访问</h3><p>首先在DNS上添加一条A记录：
+<img src=../../images/net.png alt></p><p>安装nginx：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh>yum install epel-release -y
+yum install nginx -y
+</code></pre></td></tr></table></div></div><p>开机启动nginx并启动：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>systemctl <span class=nb>enable</span> nginx
+systemctl start nginx
+</code></pre></td></tr></table></div></div><p>nginx 配置</p><p>创建并编辑<code>/etc/nginx/conf.d/net.yafa.moe.conf</code>文件，内容如下：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh>server <span class=o>{</span>
+    listen 80<span class=p>;</span>
+    listen <span class=o>[</span>::<span class=o>]</span>:80<span class=p>;</span>
+    server_name net.yafa.moe<span class=p>;</span>
+    <span class=c1># enforce https</span>
+    <span class=k>return</span> <span class=m>301</span> https://<span class=nv>$server_name</span>:443<span class=nv>$request_uri</span><span class=p>;</span>
+<span class=o>}</span>
+
+server <span class=o>{</span>
+    listen <span class=m>443</span> ssl http2<span class=p>;</span>
+    listen <span class=o>[</span>::<span class=o>]</span>:443 ssl http2<span class=p>;</span>
+    server_name net.yafa.moe<span class=p>;</span>
+    <span class=c1>#ssl_certificate /etc/letsencrypt/live/net.yafa.moe/fullchain.pem; # managed by Certbot</span>
+    <span class=c1>#ssl_certificate_key /etc/letsencrypt/live/net.yafa.moe/privkey.pem; # managed by Certbot</span>
+    access_log off<span class=p>;</span>
+    error_log off<span class=p>;</span>
+
+    location / <span class=o>{</span>
+        proxy_redirect off<span class=p>;</span>
+        proxy_pass http://localhost:3000<span class=p>;</span>
+        proxy_http_version 1.1<span class=p>;</span>
+        proxy_set_header Upgrade <span class=nv>$http_upgrade</span><span class=p>;</span>
+        proxy_set_header Connection <span class=s2>&#34;upgrade&#34;</span><span class=p>;</span>
+        proxy_set_header Host <span class=nv>$http_host</span><span class=p>;</span>
+<span class=o>}</span>
+<span class=o>}</span>
+</code></pre></td></tr></table></div></div><p>重载nginx：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>sudo nginx -s reload
+</code></pre></td></tr></table></div></div><p>用<a href=https://certbot.eff.org/>certbot</a>生成ssl证书:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>/usr/bin/certbot -d net.yafa.moe
+</code></pre></td></tr></table></div></div><p>生成证书之后将<code>/etc/nginx/conf.d/net.yafa.moe.conf</code>文件中证书<code>ssl_certificate</code>的部分取消注释。</p><p>验证配置文件</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh>sudo nginx -t
+</code></pre></td></tr></table></div></div><p>验证无误后重载nginx：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>sudo nginx -s reload
+</code></pre></td></tr></table></div></div><blockquote><p>验证</p></blockquote><p>使用浏览器打开 <a href=https://net.yafa.moe>https://net.yafa.moe</a></p><p>默认用户 admin。密码 admin</p><h2 id=创建网络>创建网络</h2><p>登录ztncui创建一个网络供我们使用。</p><p><img src=../../images/zerotier_add_network.png alt></p><p>这里创建一个名叫 <code>Yafa Xena Network</code>:</p><p><img src=../../images/zerotier_generate_network_address.png alt></p><p>这里的网段设置需要注意一下尽量不要和自己常用的网段一样。</p><p>最终的网络信息：
+<img src=../../images/zerotier_network_overview.png alt></p><h2 id=客户端使用>客户端使用</h2><p>这里以Gentoo的客户端为例子</p><p>安装zerotier</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh>sudo emerge -av zerotier
+</code></pre></td></tr></table></div></div><p>启动zerotier并加入到开机启动：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>sudo /etc/init.d/zerotier start
+sudo rc-update add zerotier default
+</code></pre></td></tr></table></div></div><p>加入zerotier网络：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>sudo zerotier-cli join your_zerotier_network_id
+</code></pre></td></tr></table></div></div><p>在ztncui的页面上可以看到新加入的客户端：</p><p><img src=../../images/zerotier_add_member.png alt></p><h2 id=客户端离开网络>客户端离开网络</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh>zerotier-cli leave your_zerotier_network_id
+</code></pre></td></tr></table></div></div><h2 id=后记>后记</h2><p>折腾好了zerotier之后发现连接的速度有点慢，有的时候会很快。
+查了资料之后发现zerotier的moon大部分都是在国外，连接会比较慢，后续有国内vps后更新一下如何使用国内的vps做moon节点。</p><h2 id=参考连接>参考连接</h2><p><a href=https://www.cnblogs.com/Yogile/p/12642423.html>ZeroTier 搭建 moon 服务器</a></p><p><a href=https://key-networks.com/ztncui/>ZeroTier network controller user interface</a></p></div><div class=post-copyright><p class=copyright-item><span class=item-title>Author</span>
+<span class=item-content>Yafa Xena</span></p><p class=copyright-item><span class=item-title>LastMod</span>
+<span class=item-content>2021-07-11</span></p><p class=copyright-item><span class=item-title>License</span>
+<span class=item-content><a rel="license noopener" href=https://creativecommons.org/licenses/by-nc-nd/4.0/ target=_blank>CC BY-NC-ND 4.0</a></span></p></div><footer class=post-footer><div class=post-tags><a href=/tags/vpn/>vpn</a>
+<a href=/tags/zerotier/>zerotier</a>
+<a href=/tags/linux/>linux</a></div><nav class=post-nav><a class=prev href=/post/aliyun-ossfs/><i class="iconfont icon-left"></i><span class="prev-text nav-default">阿里云OSSFS安装和使用</span>
+<span class="prev-text nav-mobile">Prev</span></a>
+<a class=next href=/post/cdh/><span class="next-text nav-default">CDH6.2.1部署</span>
+<span class="next-text nav-mobile">Next</span>
+<i class="iconfont icon-right"></i></a></nav></footer></article></div></div></main><footer id=footer class=footer><div class=social-links><a href=mailto:yafa-xena@protonmail.com class="iconfont icon-email" title=email></a><a href=https://twitter.com/XenaYafa class="iconfont icon-twitter" title=twitter></a><a href=https://github.com/yafa-xena/ class="iconfont icon-github" title=github></a><a href=https://www.yafa.moe/index.xml type=application/rss+xml class="iconfont icon-rss" title=rss></a></div><div class=copyright><span class=power-by>Powered by <a class=hexo-link href=https://gohugo.io>Hugo</a></span>
+<span class=division>|</span>
+<span class=theme-info>Theme -
+<a class=theme-link href=https://github.com/olOwOlo/hugo-theme-even>Even</a></span>
+<span class=copyright-year>&copy;
+2021<span class=heart><i class="iconfont icon-heart"></i></span><span>Yafa Xena</span></span></div></footer><div class=back-to-top id=back-to-top><i class="iconfont icon-up"></i></div></div><script src=https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin=anonymous></script><script type=text/javascript src=/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js></script><script type=text/javascript>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],tags:'ams',}};</script><script async src=https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin=anonymous></script><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','UA-194993895-1','auto');ga('set','anonymizeIp',true);ga('send','pageview');}</script><script async src=https://www.google-analytics.com/analytics.js></script></body></html>
